@@ -1,0 +1,2237 @@
+{
+  "catalogue": [
+    {
+      "name": "Amber & Sandalwood Pillar Candle",
+      "sku": "CND-001",
+      "price": 28.0,
+      "description": "A warm, grounding pillar candle blending amber resin and sandalwood. Burns evenly for up to 60 hours.",
+      "materials": "100% soy wax, cotton wick",
+      "dimensions": "H 15cm \u00d7 \u00d8 7cm",
+      "colours": [
+        "Ivory",
+        "Caramel"
+      ],
+      "care": "Trim wick to 5mm before each burn. Keep away from drafts.",
+      "stock": "In Stock",
+      "tags": [
+        "pillar",
+        "soy",
+        "amber",
+        "sandalwood",
+        "warm scent"
+      ],
+      "category": "Candles"
+    },
+    {
+      "name": "Sea Salt & Driftwood Jar Candle",
+      "sku": "CND-002",
+      "price": 22.0,
+      "description": "Fresh coastal notes of sea salt and sun-bleached driftwood in a reusable glass jar. 50-hour burn time.",
+      "materials": "Coconut-soy blend wax, wood wick, glass jar",
+      "dimensions": "H 10cm \u00d7 \u00d8 8cm",
+      "colours": [
+        "Frosted White"
+      ],
+      "care": "Allow wax to pool fully on first burn to prevent tunnelling.",
+      "stock": "In Stock",
+      "tags": [
+        "jar",
+        "coastal",
+        "fresh",
+        "wood wick"
+      ],
+      "category": "Candles"
+    },
+    {
+      "name": "Black Fig & Cassis Taper Candles (Set of 4)",
+      "sku": "CND-003",
+      "price": 18.0,
+      "description": "Elegant unscented tapers in deep jewel tones, perfect for dinner table settings.",
+      "materials": "Paraffin wax, cotton wick",
+      "dimensions": "H 25cm \u00d7 \u00d8 2.2cm",
+      "colours": [
+        "Midnight Black",
+        "Deep Plum",
+        "Forest Green",
+        "Burgundy"
+      ],
+      "care": "Place in a secure candle holder. Never leave unattended.",
+      "stock": "In Stock",
+      "tags": [
+        "taper",
+        "dinner",
+        "set",
+        "unscented",
+        "elegant"
+      ],
+      "category": "Candles"
+    },
+    {
+      "name": "Lavender & Chamomile Sleep Candle",
+      "sku": "CND-004",
+      "price": 26.0,
+      "description": "Calming lavender and chamomile blend formulated to promote relaxation. Ideal for bedrooms. 45-hour burn.",
+      "materials": "100% soy wax, cotton wick",
+      "dimensions": "H 9cm \u00d7 \u00d8 9cm",
+      "colours": [
+        "Pale Lavender"
+      ],
+      "care": "Extinguish 30 minutes before sleep.",
+      "stock": "In Stock",
+      "tags": [
+        "sleep",
+        "lavender",
+        "relaxing",
+        "bedroom",
+        "soy"
+      ],
+      "category": "Candles"
+    },
+    {
+      "name": "Cedarwood & Smoke Ritual Candle",
+      "sku": "CND-005",
+      "price": 34.0,
+      "description": "Deep, smoky cedarwood with hints of leather and black pepper. Hand-poured in small batches. 55-hour burn.",
+      "materials": "Beeswax blend, wooden wick",
+      "dimensions": "H 12cm \u00d7 \u00d8 8cm",
+      "colours": [
+        "Charcoal",
+        "Natural Beeswax"
+      ],
+      "care": "Burn on a heat-resistant surface. Keep wick centred.",
+      "stock": "Low Stock",
+      "tags": [
+        "cedarwood",
+        "smoke",
+        "artisan",
+        "hand-poured",
+        "beeswax"
+      ],
+      "category": "Candles"
+    },
+    {
+      "name": "Lemon Verbena & Basil Candle",
+      "sku": "CND-006",
+      "price": 20.0,
+      "description": "Bright, herbaceous kitchen candle that neutralises cooking odours. 40-hour burn time.",
+      "materials": "Coconut wax, cotton wick",
+      "dimensions": "H 8cm \u00d7 \u00d8 7cm",
+      "colours": [
+        "Citrus Yellow",
+        "White"
+      ],
+      "care": "Ideal for kitchens. Keep away from food surfaces when lit.",
+      "stock": "In Stock",
+      "tags": [
+        "kitchen",
+        "fresh",
+        "lemon",
+        "herb",
+        "odour neutralising"
+      ],
+      "category": "Candles"
+    },
+    {
+      "name": "Oud & Rose Luxury Candle",
+      "sku": "CND-007",
+      "price": 48.0,
+      "description": "A sophisticated blend of Middle Eastern oud and Turkish rose petals. Presented in a gift-ready matte black vessel. 70-hour burn.",
+      "materials": "Premium soy-paraffin blend, cotton wick, ceramic vessel",
+      "dimensions": "H 14cm \u00d7 \u00d8 9cm",
+      "colours": [
+        "Matte Black"
+      ],
+      "care": "Ceramic vessel can be repurposed as a pot or storage cup after use.",
+      "stock": "In Stock",
+      "tags": [
+        "luxury",
+        "oud",
+        "rose",
+        "gift",
+        "ceramic"
+      ],
+      "category": "Candles"
+    },
+    {
+      "name": "Vanilla Bean & Tonka Candle",
+      "sku": "CND-008",
+      "price": 24.0,
+      "description": "Sweet, cosy vanilla bean enriched with warm tonka bean. A best-seller for autumn and winter. 50-hour burn.",
+      "materials": "100% soy wax, cotton wick",
+      "dimensions": "H 10cm \u00d7 \u00d8 8cm",
+      "colours": [
+        "Cream",
+        "Warm White"
+      ],
+      "care": "Store in a cool, dry place away from direct sunlight.",
+      "stock": "In Stock",
+      "tags": [
+        "vanilla",
+        "cosy",
+        "autumn",
+        "winter",
+        "bestseller"
+      ],
+      "category": "Candles"
+    },
+    {
+      "name": "Eucalyptus & Mint Candle",
+      "sku": "CND-009",
+      "price": 22.0,
+      "description": "Invigorating eucalyptus and peppermint. Popular for home offices and bathrooms. 40-hour burn.",
+      "materials": "Soy wax, cotton wick",
+      "dimensions": "H 9cm \u00d7 \u00d8 7cm",
+      "colours": [
+        "Sage Green",
+        "White"
+      ],
+      "care": "Do not burn for more than 4 hours at a time.",
+      "stock": "In Stock",
+      "tags": [
+        "eucalyptus",
+        "mint",
+        "fresh",
+        "office",
+        "bathroom"
+      ],
+      "category": "Candles"
+    },
+    {
+      "name": "Petrichor & Green Tea Candle",
+      "sku": "CND-010",
+      "price": 30.0,
+      "description": "Captures the scent of rain on dry earth with a clean green tea finish. A unique, conversation-starting fragrance. 55-hour burn.",
+      "materials": "Coconut-soy wax, wood wick",
+      "dimensions": "H 11cm \u00d7 \u00d8 8cm",
+      "colours": [
+        "Slate Grey",
+        "Moss"
+      ],
+      "care": "Allow to cool completely before moving.",
+      "stock": "In Stock",
+      "tags": [
+        "unique",
+        "rain",
+        "green tea",
+        "wood wick",
+        "conversation"
+      ],
+      "category": "Candles"
+    },
+    {
+      "name": "Chunky Knit Throw \u2014 Oatmeal",
+      "sku": "CTH-001",
+      "price": 65.0,
+      "description": "Oversized hand-knitted throw in a thick oatmeal yarn. Adds instant texture to sofas and armchairs.",
+      "materials": "100% merino wool",
+      "dimensions": "130cm \u00d7 170cm",
+      "colours": [
+        "Oatmeal",
+        "Ivory",
+        "Charcoal"
+      ],
+      "care": "Dry clean only. Store folded in a breathable bag.",
+      "stock": "In Stock",
+      "tags": [
+        "throw",
+        "knit",
+        "merino",
+        "cosy",
+        "sofa"
+      ],
+      "category": "Cushions & Throws"
+    },
+    {
+      "name": "Velvet Cushion Cover \u2014 Midnight Blue",
+      "sku": "CTH-002",
+      "price": 28.0,
+      "description": "Plush velvet cushion cover with a hidden zip. Reversible with a complementary linen back.",
+      "materials": "Velvet front, linen reverse",
+      "dimensions": "50cm \u00d7 50cm",
+      "colours": [
+        "Midnight Blue",
+        "Emerald",
+        "Blush",
+        "Terracotta"
+      ],
+      "care": "Spot clean only. Do not tumble dry.",
+      "stock": "In Stock",
+      "tags": [
+        "cushion",
+        "velvet",
+        "colour",
+        "reversible"
+      ],
+      "category": "Cushions & Throws"
+    },
+    {
+      "name": "Linen Cushion \u2014 Striped Natural",
+      "sku": "CTH-003",
+      "price": 32.0,
+      "description": "Casual woven linen cushion with vintage-style ticking stripes. Removable cover with button fastening.",
+      "materials": "100% stonewashed linen",
+      "dimensions": "45cm \u00d7 45cm",
+      "colours": [
+        "Natural/White",
+        "Blue/White",
+        "Sand/Olive"
+      ],
+      "care": "Machine wash 30\u00b0C. Line dry.",
+      "stock": "In Stock",
+      "tags": [
+        "linen",
+        "stripe",
+        "natural",
+        "casual",
+        "washable"
+      ],
+      "category": "Cushions & Throws"
+    },
+    {
+      "name": "Faux Fur Cushion \u2014 Arctic White",
+      "sku": "CTH-004",
+      "price": 38.0,
+      "description": "Ultra-soft faux fur cushion with inner pad included. A luxurious accent for bedrooms and living rooms.",
+      "materials": "Faux fur cover, hollow fibre inner",
+      "dimensions": "50cm \u00d7 50cm",
+      "colours": [
+        "Arctic White",
+        "Silver Grey",
+        "Blush Pink"
+      ],
+      "care": "Surface clean with damp cloth. Do not machine wash.",
+      "stock": "In Stock",
+      "tags": [
+        "faux fur",
+        "luxury",
+        "soft",
+        "bedroom",
+        "accent"
+      ],
+      "category": "Cushions & Throws"
+    },
+    {
+      "name": "Recycled Cotton Throw \u2014 Dusty Rose",
+      "sku": "CTH-005",
+      "price": 45.0,
+      "description": "Lightweight throw woven from recycled cotton yarn. Carries a Global Recycled Standard certification.",
+      "materials": "100% recycled cotton",
+      "dimensions": "125cm \u00d7 150cm",
+      "colours": [
+        "Dusty Rose",
+        "Sage Green",
+        "Sky Blue",
+        "Warm Sand"
+      ],
+      "care": "Machine wash 40\u00b0C. Tumble dry low.",
+      "stock": "In Stock",
+      "tags": [
+        "sustainable",
+        "recycled",
+        "throw",
+        "lightweight",
+        "certified"
+      ],
+      "category": "Cushions & Throws"
+    },
+    {
+      "name": "Embroidered Floral Cushion",
+      "sku": "CTH-006",
+      "price": 42.0,
+      "description": "Hand-embroidered botanical motif on a cotton canvas base. Each piece is slightly unique.",
+      "materials": "Cotton canvas, polyester fill",
+      "dimensions": "45cm \u00d7 45cm",
+      "colours": [
+        "Natural with Blue Embroidery",
+        "White with Terracotta Embroidery"
+      ],
+      "care": "Dry clean recommended. Spot clean minor marks.",
+      "stock": "Low Stock",
+      "tags": [
+        "embroidered",
+        "floral",
+        "handmade",
+        "artisan",
+        "botanical"
+      ],
+      "category": "Cushions & Throws"
+    },
+    {
+      "name": "Sherpa Fleece Throw \u2014 Caramel",
+      "sku": "CTH-007",
+      "price": 55.0,
+      "description": "Double-sided sherpa fleece throw \u2014 soft pile on one side, smooth fleece on the reverse. Extra-large for wrapping up.",
+      "materials": "100% polyester sherpa fleece",
+      "dimensions": "150cm \u00d7 200cm",
+      "colours": [
+        "Caramel",
+        "Cream",
+        "Stone Grey"
+      ],
+      "care": "Machine wash 30\u00b0C. Do not iron.",
+      "stock": "In Stock",
+      "tags": [
+        "sherpa",
+        "fleece",
+        "warm",
+        "large",
+        "double-sided"
+      ],
+      "category": "Cushions & Throws"
+    },
+    {
+      "name": "Moroccan Pom-Pom Throw",
+      "sku": "CTH-008",
+      "price": 58.0,
+      "description": "Handwoven in Morocco with authentic pom-pom fringe detailing. A statement piece for any living space.",
+      "materials": "Cotton and acrylic blend",
+      "dimensions": "130cm \u00d7 160cm",
+      "colours": [
+        "White/Multi",
+        "Grey/White",
+        "Mustard/White"
+      ],
+      "care": "Hand wash cold. Lay flat to dry.",
+      "stock": "In Stock",
+      "tags": [
+        "moroccan",
+        "pom-pom",
+        "handwoven",
+        "statement",
+        "fringe"
+      ],
+      "category": "Cushions & Throws"
+    },
+    {
+      "name": "Linen Floor Cushion \u2014 Sage",
+      "sku": "CTH-009",
+      "price": 72.0,
+      "description": "Large floor cushion perfect for casual seating, meditation, or children's rooms. Removable linen cover.",
+      "materials": "Stonewashed linen cover, buckwheat hull fill",
+      "dimensions": "70cm \u00d7 70cm \u00d7 15cm",
+      "colours": [
+        "Sage Green",
+        "Natural",
+        "Dusty Blue"
+      ],
+      "care": "Remove cover and machine wash 30\u00b0C.",
+      "stock": "In Stock",
+      "tags": [
+        "floor cushion",
+        "linen",
+        "meditation",
+        "casual",
+        "large"
+      ],
+      "category": "Cushions & Throws"
+    },
+    {
+      "name": "Ombre Gradient Cushion \u2014 Sunset",
+      "sku": "CTH-010",
+      "price": 35.0,
+      "description": "Gradient-dyed cushion moving from deep coral to pale peach. A contemporary pop of colour for neutral spaces.",
+      "materials": "Cotton canvas, polyester fill",
+      "dimensions": "50cm \u00d7 30cm",
+      "colours": [
+        "Sunset (Coral to Peach)",
+        "Dusk (Navy to Lilac)"
+      ],
+      "care": "Machine wash 30\u00b0C. Cool iron if needed.",
+      "stock": "In Stock",
+      "tags": [
+        "ombre",
+        "gradient",
+        "colour",
+        "contemporary",
+        "lumbar"
+      ],
+      "category": "Cushions & Throws"
+    },
+    {
+      "name": "Rattan Table Lamp \u2014 Natural",
+      "sku": "LGT-001",
+      "price": 95.0,
+      "description": "Hand-woven rattan shade on a solid mango wood base. Creates warm dappled light patterns. E27 bulb compatible.",
+      "materials": "Rattan shade, mango wood base",
+      "dimensions": "H 45cm \u00d7 \u00d8 30cm shade",
+      "colours": [
+        "Natural Rattan"
+      ],
+      "care": "Dust regularly with a soft brush. Avoid moisture.",
+      "stock": "In Stock",
+      "tags": [
+        "rattan",
+        "table lamp",
+        "natural",
+        "warm",
+        "E27"
+      ],
+      "category": "Lighting"
+    },
+    {
+      "name": "Marble & Brass Floor Lamp",
+      "sku": "LGT-002",
+      "price": 245.0,
+      "description": "Statement floor lamp with a white marble base and brushed brass stem. Fabric drum shade included. E27 bulb.",
+      "materials": "Marble base, brass-finish steel stem, linen shade",
+      "dimensions": "H 160cm, shade \u00d8 45cm",
+      "colours": [
+        "White Marble/Brass"
+      ],
+      "care": "Wipe marble with a damp cloth. Polish brass with specialist cleaner.",
+      "stock": "In Stock",
+      "tags": [
+        "floor lamp",
+        "marble",
+        "brass",
+        "statement",
+        "luxury"
+      ],
+      "category": "Lighting"
+    },
+    {
+      "name": "Concrete Pendant Light",
+      "sku": "LGT-003",
+      "price": 78.0,
+      "description": "Minimalist cast concrete pendant in a tapered form. 1.5m fabric cable. Ideal for kitchen islands and dining tables.",
+      "materials": "Concrete, fabric cable",
+      "dimensions": "H 20cm \u00d7 \u00d8 18cm",
+      "colours": [
+        "Light Grey",
+        "Charcoal",
+        "White"
+      ],
+      "care": "Wipe with a dry cloth only.",
+      "stock": "In Stock",
+      "tags": [
+        "pendant",
+        "concrete",
+        "minimalist",
+        "kitchen",
+        "dining"
+      ],
+      "category": "Lighting"
+    },
+    {
+      "name": "Bamboo Arc Floor Lamp",
+      "sku": "LGT-004",
+      "price": 185.0,
+      "description": "Elegant arching bamboo floor lamp that extends over sofas and reading chairs. Rice paper shade diffuses light softly.",
+      "materials": "Natural bamboo, rice paper shade",
+      "dimensions": "H 180cm, reach 120cm",
+      "colours": [
+        "Natural Bamboo"
+      ],
+      "care": "Do not expose to direct sunlight for extended periods. Avoid humidity.",
+      "stock": "Low Stock",
+      "tags": [
+        "bamboo",
+        "arc",
+        "floor lamp",
+        "reading",
+        "natural"
+      ],
+      "category": "Lighting"
+    },
+    {
+      "name": "Ceramic Bedside Lamp \u2014 Terracotta",
+      "sku": "LGT-005",
+      "price": 68.0,
+      "description": "Thrown on a wheel by hand, each lamp is slightly unique. Warm terracotta glaze with a linen drum shade.",
+      "materials": "Ceramic base, linen shade",
+      "dimensions": "H 35cm, shade \u00d8 20cm",
+      "colours": [
+        "Terracotta",
+        "Sage Green",
+        "Chalk White"
+      ],
+      "care": "Handle base with care \u2014 ceramic is fragile. Dust shade gently.",
+      "stock": "In Stock",
+      "tags": [
+        "ceramic",
+        "bedside",
+        "handmade",
+        "terracotta",
+        "wheel-thrown"
+      ],
+      "category": "Lighting"
+    },
+    {
+      "name": "Industrial Cage Wall Sconce",
+      "sku": "LGT-006",
+      "price": 52.0,
+      "description": "Vintage-inspired cage wall light in aged black metal. Requires hardwiring. E14 bulb compatible.",
+      "materials": "Powder-coated steel",
+      "dimensions": "H 22cm \u00d7 W 14cm",
+      "colours": [
+        "Aged Black",
+        "Antique Brass"
+      ],
+      "care": "Wipe with dry cloth. Professional installation recommended.",
+      "stock": "In Stock",
+      "tags": [
+        "wall light",
+        "industrial",
+        "cage",
+        "vintage",
+        "sconce"
+      ],
+      "category": "Lighting"
+    },
+    {
+      "name": "Washi Paper Table Lamp",
+      "sku": "LGT-007",
+      "price": 82.0,
+      "description": "Japanese-inspired table lamp with a handmade washi paper shade. Emits a calm, diffused glow. E27 compatible.",
+      "materials": "Washi paper shade, oak base",
+      "dimensions": "H 40cm, shade \u00d8 25cm",
+      "colours": [
+        "Natural White",
+        "Blush"
+      ],
+      "care": "Keep away from moisture and direct heat sources.",
+      "stock": "In Stock",
+      "tags": [
+        "washi",
+        "japanese",
+        "table lamp",
+        "diffused",
+        "calm"
+      ],
+      "category": "Lighting"
+    },
+    {
+      "name": "LED Edison Bulb String Lights",
+      "sku": "LGT-008",
+      "price": 34.0,
+      "description": "10m string of warm-white LED Edison bulbs. Plug-in with transformer included. Indoor/outdoor rated.",
+      "materials": "PVC cable, LED bulbs",
+      "dimensions": "10m length, 20 bulbs",
+      "colours": [
+        "Warm White (2700K)"
+      ],
+      "care": "Do not exceed 10 connections in series. Store coiled to avoid kinks.",
+      "stock": "In Stock",
+      "tags": [
+        "string lights",
+        "Edison",
+        "LED",
+        "outdoor",
+        "fairy lights"
+      ],
+      "category": "Lighting"
+    },
+    {
+      "name": "Sculptural Plaster Table Lamp",
+      "sku": "LGT-009",
+      "price": 120.0,
+      "description": "Architecturally inspired plaster lamp with an irregular organic form. A functional sculpture for living rooms. E27.",
+      "materials": "Plaster of Paris, cotton flex",
+      "dimensions": "H 38cm \u00d7 W 22cm",
+      "colours": [
+        "Pure White",
+        "Raw Plaster"
+      ],
+      "care": "Handle carefully \u2014 do not drop. Clean with dry brush only.",
+      "stock": "In Stock",
+      "tags": [
+        "plaster",
+        "sculptural",
+        "organic",
+        "art",
+        "statement"
+      ],
+      "category": "Lighting"
+    },
+    {
+      "name": "Plug-in Canopy Pendant Light",
+      "sku": "LGT-010",
+      "price": 44.0,
+      "description": "Simple plug-in pendant with a ceiling canopy plate and 2m braided cable. No hardwiring needed. E27.",
+      "materials": "Metal canopy, braided fabric cable",
+      "dimensions": "2m cable length",
+      "colours": [
+        "Blush/Gold",
+        "Black/Brass",
+        "Grey/Chrome"
+      ],
+      "care": "Ensure plug socket is accessible. Do not exceed 60W bulb.",
+      "stock": "In Stock",
+      "tags": [
+        "pendant",
+        "plug-in",
+        "easy install",
+        "rental-friendly",
+        "versatile"
+      ],
+      "category": "Lighting"
+    },
+    {
+      "name": "Reed Diffuser \u2014 Bergamot & Neroli",
+      "sku": "FRG-001",
+      "price": 36.0,
+      "description": "Light, uplifting citrus diffuser with bergamot and neroli. 200ml oil with 8 reeds. Lasts approximately 3 months.",
+      "materials": "Fragrance oil, rattan reeds, glass bottle",
+      "dimensions": "H 15cm (bottle), 25cm reeds",
+      "colours": [
+        "Frosted Glass"
+      ],
+      "care": "Flip reeds weekly for stronger throw. Keep away from direct sunlight.",
+      "stock": "In Stock",
+      "tags": [
+        "diffuser",
+        "bergamot",
+        "citrus",
+        "fresh",
+        "reed"
+      ],
+      "category": "Fragrance & Diffusers"
+    },
+    {
+      "name": "Room Spray \u2014 Linen & White Tea",
+      "sku": "FRG-002",
+      "price": 22.0,
+      "description": "Instant freshness with a clean linen and white tea blend. 100ml pump spray. Safe on most fabrics.",
+      "materials": "Alcohol-based fragrance spray",
+      "dimensions": "100ml",
+      "colours": [
+        "Frosted White Bottle"
+      ],
+      "care": "Test on a small hidden area before spraying on fabrics. Do not spray on polished surfaces.",
+      "stock": "In Stock",
+      "tags": [
+        "room spray",
+        "linen",
+        "fresh",
+        "instant",
+        "fabric-safe"
+      ],
+      "category": "Fragrance & Diffusers"
+    },
+    {
+      "name": "Ceramic Aroma Diffuser \u2014 Pebble",
+      "sku": "FRG-003",
+      "price": 58.0,
+      "description": "Ultrasonic ceramic diffuser in a smooth pebble form. 300ml tank, 8-hour continuous mode, auto-shutoff. Includes 10ml starter oil.",
+      "materials": "Ceramic, BPA-free plastic internals",
+      "dimensions": "H 12cm \u00d7 \u00d8 14cm",
+      "colours": [
+        "White",
+        "Blush",
+        "Stone Grey"
+      ],
+      "care": "Clean weekly with a cotton swab and white vinegar solution.",
+      "stock": "In Stock",
+      "tags": [
+        "ultrasonic",
+        "electric",
+        "diffuser",
+        "ceramic",
+        "humidifier"
+      ],
+      "category": "Fragrance & Diffusers"
+    },
+    {
+      "name": "Wax Melts \u2014 Orchard Collection (Set of 6)",
+      "sku": "FRG-004",
+      "price": 18.0,
+      "description": "Six hand-poured soy wax melts in apple, pear, and quince scents. Compatible with all standard wax warmers.",
+      "materials": "Soy wax, fragrance oils",
+      "dimensions": "Each melt approx 5cm \u00d7 4cm",
+      "colours": [
+        "Blush Pink",
+        "Pale Yellow",
+        "Cream"
+      ],
+      "care": "Never leave wax warmer unattended. Replace melt when scent fades.",
+      "stock": "In Stock",
+      "tags": [
+        "wax melts",
+        "soy",
+        "fruity",
+        "set",
+        "wax warmer"
+      ],
+      "category": "Fragrance & Diffusers"
+    },
+    {
+      "name": "Incense Stick Set \u2014 Sacred Spaces",
+      "sku": "FRG-005",
+      "price": 14.0,
+      "description": "Set of 40 hand-rolled incense sticks across four scents: frankincense, palo santo, sandalwood, white sage. Wooden holder included.",
+      "materials": "Natural plant-based incense",
+      "dimensions": "Pack of 40 sticks, 24cm each",
+      "colours": [
+        "Natural"
+      ],
+      "care": "Burn in a well-ventilated area. Place holder on a heat-resistant surface.",
+      "stock": "In Stock",
+      "tags": [
+        "incense",
+        "frankincense",
+        "palo santo",
+        "ritual",
+        "meditation"
+      ],
+      "category": "Fragrance & Diffusers"
+    },
+    {
+      "name": "Car Diffuser \u2014 Vetiver & Cedarwood",
+      "sku": "FRG-006",
+      "price": 16.0,
+      "description": "Compact vent-clip diffuser with a long-lasting vetiver and cedarwood oil pad. Lasts 30 days per pad. Refills available.",
+      "materials": "Plastic clip, fragrance pad",
+      "dimensions": "7cm \u00d7 4cm",
+      "colours": [
+        "Black",
+        "Natural Wood"
+      ],
+      "care": "Replace pad monthly. Keep oil away from car interior surfaces.",
+      "stock": "In Stock",
+      "tags": [
+        "car",
+        "diffuser",
+        "vent clip",
+        "compact",
+        "refillable"
+      ],
+      "category": "Fragrance & Diffusers"
+    },
+    {
+      "name": "Linen Water Spray \u2014 Lavender",
+      "sku": "FRG-007",
+      "price": 18.0,
+      "description": "Ironing and linen spray with pure lavender essential oil. Refreshes bed linen, towels, and clothing. 250ml.",
+      "materials": "Distilled water, lavender essential oil",
+      "dimensions": "250ml",
+      "colours": [
+        "Purple Label Bottle"
+      ],
+      "care": "Shake before use. Store in a cool place. Do not use on silk or delicate fabrics.",
+      "stock": "In Stock",
+      "tags": [
+        "linen spray",
+        "lavender",
+        "ironing",
+        "sleep",
+        "fabric"
+      ],
+      "category": "Fragrance & Diffusers"
+    },
+    {
+      "name": "Potpourri Jar \u2014 Festive Spice",
+      "sku": "FRG-008",
+      "price": 24.0,
+      "description": "Decorative potpourri blend of dried orange peel, cinnamon sticks, cloves, and star anise. Long-lasting natural fragrance.",
+      "materials": "Dried botanicals, fragrance refresh oil included",
+      "dimensions": "350ml jar",
+      "colours": [
+        "Natural Browns/Oranges"
+      ],
+      "care": "Add a few drops of the included refresh oil to revive scent. Keep dry.",
+      "stock": "In Stock",
+      "tags": [
+        "potpourri",
+        "spice",
+        "festive",
+        "natural",
+        "decorative"
+      ],
+      "category": "Fragrance & Diffusers"
+    },
+    {
+      "name": "Soy Wax Tart Burner Set",
+      "sku": "FRG-009",
+      "price": 32.0,
+      "description": "Glazed ceramic wax burner with six assorted soy wax tarts. Safe tea-light heated design. A great gift set.",
+      "materials": "Glazed ceramic, soy wax tarts",
+      "dimensions": "Burner H 10cm \u00d7 \u00d8 9cm",
+      "colours": [
+        "Speckled Cream",
+        "Midnight Blue"
+      ],
+      "care": "Use only unscented tea lights. Replace tart when liquid wax no longer emits scent.",
+      "stock": "In Stock",
+      "tags": [
+        "wax burner",
+        "ceramic",
+        "gift set",
+        "tart",
+        "soy"
+      ],
+      "category": "Fragrance & Diffusers"
+    },
+    {
+      "name": "Essential Oil Blend \u2014 Rest & Restore",
+      "sku": "FRG-010",
+      "price": 28.0,
+      "description": "Pure essential oil blend of lavender, frankincense, and Roman chamomile. For use in diffusers, baths, or diluted for massage. 30ml.",
+      "materials": "100% pure essential oils",
+      "dimensions": "30ml dropper bottle",
+      "colours": [
+        "Amber Glass Bottle"
+      ],
+      "care": "Do not apply undiluted to skin. Keep out of reach of children. Store in a cool dark place.",
+      "stock": "In Stock",
+      "tags": [
+        "essential oil",
+        "lavender",
+        "frankincense",
+        "pure",
+        "blend"
+      ],
+      "category": "Fragrance & Diffusers"
+    },
+    {
+      "name": "Seagrass Basket \u2014 Large",
+      "sku": "STG-001",
+      "price": 42.0,
+      "description": "Hand-woven seagrass storage basket with leather handles. Ideal for blankets, laundry, or toys. Naturally sustainable.",
+      "materials": "Seagrass, leather handles",
+      "dimensions": "H 40cm \u00d7 \u00d8 45cm",
+      "colours": [
+        "Natural",
+        "Bleached White"
+      ],
+      "care": "Wipe with a dry cloth. Avoid prolonged moisture exposure.",
+      "stock": "In Stock",
+      "tags": [
+        "basket",
+        "seagrass",
+        "storage",
+        "natural",
+        "sustainable"
+      ],
+      "category": "Storage & Organisation"
+    },
+    {
+      "name": "Linen Drawer Liners (Set of 5)",
+      "sku": "STG-002",
+      "price": 20.0,
+      "description": "Scented linen drawer liners with a subtle lavender fragrance. Cut-to-size. Pack of 5 sheets.",
+      "materials": "Recycled paper, lavender fragrance",
+      "dimensions": "45cm \u00d7 55cm each",
+      "colours": [
+        "Pale Grey",
+        "Natural Cream"
+      ],
+      "care": "Replace every 6 months or when scent fades. Do not use in damp drawers.",
+      "stock": "In Stock",
+      "tags": [
+        "drawer liners",
+        "scented",
+        "lavender",
+        "organisation",
+        "wardrobe"
+      ],
+      "category": "Storage & Organisation"
+    },
+    {
+      "name": "Stackable Linen Storage Boxes (Set of 3)",
+      "sku": "STG-003",
+      "price": 55.0,
+      "description": "Set of three stackable fabric storage boxes with removable lids. Label windows on the front. Foldable when empty.",
+      "materials": "Linen outer, cardboard inner frame",
+      "dimensions": "Small 20cm\u00b3, Medium 25cm\u00b3, Large 30cm\u00b3",
+      "colours": [
+        "Natural Linen",
+        "Grey",
+        "Navy"
+      ],
+      "care": "Spot clean only. Do not overfill \u2014 maintain box shape.",
+      "stock": "In Stock",
+      "tags": [
+        "storage boxes",
+        "linen",
+        "stackable",
+        "set",
+        "foldable"
+      ],
+      "category": "Storage & Organisation"
+    },
+    {
+      "name": "Bamboo Desk Organiser",
+      "sku": "STG-004",
+      "price": 38.0,
+      "description": "Six-compartment bamboo desk organiser for stationery, phones, and small accessories. Smooth sanded finish.",
+      "materials": "100% FSC-certified bamboo",
+      "dimensions": "H 12cm \u00d7 W 30cm \u00d7 D 15cm",
+      "colours": [
+        "Natural Bamboo"
+      ],
+      "care": "Wipe with a slightly damp cloth. Apply bamboo oil annually to maintain finish.",
+      "stock": "In Stock",
+      "tags": [
+        "desk",
+        "organiser",
+        "bamboo",
+        "stationery",
+        "sustainable"
+      ],
+      "category": "Storage & Organisation"
+    },
+    {
+      "name": "Hanging Wardrobe Organiser \u2014 6 Pockets",
+      "sku": "STG-005",
+      "price": 26.0,
+      "description": "Canvas hanging organiser with 6 deep pockets. Hooks over wardrobe rail. Ideal for shoes, accessories, or folded clothes.",
+      "materials": "Heavy-duty canvas, metal hooks",
+      "dimensions": "H 120cm \u00d7 W 30cm",
+      "colours": [
+        "Stone Grey",
+        "Natural",
+        "Navy"
+      ],
+      "care": "Machine wash 30\u00b0C. Reshape while damp.",
+      "stock": "In Stock",
+      "tags": [
+        "wardrobe",
+        "hanging",
+        "organiser",
+        "canvas",
+        "shoes"
+      ],
+      "category": "Storage & Organisation"
+    },
+    {
+      "name": "Rattan Storage Tray \u2014 Oval",
+      "sku": "STG-006",
+      "price": 32.0,
+      "description": "Open-weave rattan tray for coffee tables, ottomans, and shelving. Corrals remote controls, books, and accessories.",
+      "materials": "Hand-woven rattan",
+      "dimensions": "L 45cm \u00d7 W 30cm \u00d7 H 8cm",
+      "colours": [
+        "Natural Rattan"
+      ],
+      "care": "Dust regularly. Avoid direct sunlight to prevent bleaching.",
+      "stock": "In Stock",
+      "tags": [
+        "tray",
+        "rattan",
+        "coffee table",
+        "organiser",
+        "natural"
+      ],
+      "category": "Storage & Organisation"
+    },
+    {
+      "name": "Under-Bed Storage Bag (Set of 2)",
+      "sku": "STG-007",
+      "price": 30.0,
+      "description": "Breathable cotton under-bed bags with a clear window and zip closure. Ideal for seasonal clothing and bedding.",
+      "materials": "Cotton, PVC window",
+      "dimensions": "L 70cm \u00d7 W 50cm \u00d7 H 15cm",
+      "colours": [
+        "Natural",
+        "Grey"
+      ],
+      "care": "Machine wash 40\u00b0C. Air dry fully before storing items.",
+      "stock": "In Stock",
+      "tags": [
+        "under bed",
+        "storage",
+        "seasonal",
+        "cotton",
+        "zip"
+      ],
+      "category": "Storage & Organisation"
+    },
+    {
+      "name": "Ceramic Trinket Dish Set",
+      "sku": "STG-008",
+      "price": 24.0,
+      "description": "Set of three nesting ceramic dishes for jewellery, keys, and small items. Hand-painted with a speckled glaze.",
+      "materials": "Stoneware ceramic",
+      "dimensions": "Small \u00d8 8cm, Medium \u00d8 12cm, Large \u00d8 16cm",
+      "colours": [
+        "Speckled White",
+        "Terracotta Speckle",
+        "Navy Dip"
+      ],
+      "care": "Hand wash recommended. Not suitable for microwave or dishwasher.",
+      "stock": "In Stock",
+      "tags": [
+        "trinket dish",
+        "ceramic",
+        "jewellery",
+        "nesting",
+        "set"
+      ],
+      "category": "Storage & Organisation"
+    },
+    {
+      "name": "Jute Magazine Basket",
+      "sku": "STG-009",
+      "price": 28.0,
+      "description": "Tall, slim jute basket designed for magazines, newspapers, books, or umbrellas. Sturdy enough to hold its shape.",
+      "materials": "Braided jute",
+      "dimensions": "H 50cm \u00d7 \u00d8 20cm",
+      "colours": [
+        "Natural Jute",
+        "Dark Brown"
+      ],
+      "care": "Wipe with a dry cloth. Do not expose to rain or moisture.",
+      "stock": "In Stock",
+      "tags": [
+        "magazine",
+        "basket",
+        "jute",
+        "slim",
+        "floor"
+      ],
+      "category": "Storage & Organisation"
+    },
+    {
+      "name": "Pegboard Wall Organiser Kit",
+      "sku": "STG-010",
+      "price": 68.0,
+      "description": "Wooden pegboard with 12 assorted hooks and shelves. Mounts to any wall. Customisable layout for kitchen, office, or hallway.",
+      "materials": "MDF pegboard, beech wood accessories",
+      "dimensions": "60cm \u00d7 60cm board",
+      "colours": [
+        "White",
+        "Natural Wood",
+        "Black"
+      ],
+      "care": "Wipe with a damp cloth. Redistribute weight evenly across hooks.",
+      "stock": "In Stock",
+      "tags": [
+        "pegboard",
+        "wall organiser",
+        "kitchen",
+        "office",
+        "modular"
+      ],
+      "category": "Storage & Organisation"
+    },
+    {
+      "name": "Stonewashed Linen Duvet Cover \u2014 King",
+      "sku": "BED-001",
+      "price": 145.0,
+      "description": "Pre-washed linen duvet cover with a relaxed, lived-in texture. Button fastening. Gets softer with every wash.",
+      "materials": "100% European flax linen",
+      "dimensions": "King: 220cm \u00d7 260cm",
+      "colours": [
+        "Natural",
+        "Slate Blue",
+        "Dusty Rose",
+        "Sage"
+      ],
+      "care": "Machine wash 40\u00b0C. Tumble dry low. Iron while slightly damp for a crisp look or leave for a casual texture.",
+      "stock": "In Stock",
+      "tags": [
+        "linen",
+        "duvet cover",
+        "stonewashed",
+        "king",
+        "breathable"
+      ],
+      "category": "Bedding & Linens"
+    },
+    {
+      "name": "Egyptian Cotton Pillowcase Set \u2014 Standard",
+      "sku": "BED-002",
+      "price": 45.0,
+      "description": "Set of two 400-thread-count Egyptian cotton pillowcases with an envelope closure. Noticeably soft from the first wash.",
+      "materials": "100% long-staple Egyptian cotton, 400TC",
+      "dimensions": "Standard: 48cm \u00d7 74cm each",
+      "colours": [
+        "Crisp White",
+        "Ivory",
+        "Pale Grey",
+        "Midnight Navy"
+      ],
+      "care": "Machine wash 60\u00b0C. Tumble dry medium. Iron on cotton setting.",
+      "stock": "In Stock",
+      "tags": [
+        "pillowcase",
+        "Egyptian cotton",
+        "400TC",
+        "set",
+        "luxury"
+      ],
+      "category": "Bedding & Linens"
+    },
+    {
+      "name": "Weighted Blanket \u2014 7kg",
+      "sku": "BED-003",
+      "price": 110.0,
+      "description": "Glass-bead weighted blanket designed to ease anxiety and improve sleep quality. Removable microfibre cover.",
+      "materials": "Glass beads fill, microfibre cover",
+      "dimensions": "150cm \u00d7 200cm, 7kg",
+      "colours": [
+        "Charcoal",
+        "Navy",
+        "Blush Grey"
+      ],
+      "care": "Machine wash cover 30\u00b0C. Spot clean blanket only. Lay flat to dry.",
+      "stock": "In Stock",
+      "tags": [
+        "weighted blanket",
+        "anxiety",
+        "sleep",
+        "7kg",
+        "therapeutic"
+      ],
+      "category": "Bedding & Linens"
+    },
+    {
+      "name": "Organic Cotton Flat Sheet \u2014 Double",
+      "sku": "BED-004",
+      "price": 65.0,
+      "description": "GOTS-certified organic cotton flat sheet. Percale weave for a cool, crisp feel. Generous tuck-in allowance.",
+      "materials": "100% GOTS-certified organic cotton, percale weave",
+      "dimensions": "Double: 230cm \u00d7 260cm",
+      "colours": [
+        "White",
+        "Ecru",
+        "Soft Blue"
+      ],
+      "care": "Machine wash 60\u00b0C. Tumble dry medium. Iron on high for crispness.",
+      "stock": "In Stock",
+      "tags": [
+        "flat sheet",
+        "organic",
+        "GOTS",
+        "percale",
+        "double"
+      ],
+      "category": "Bedding & Linens"
+    },
+    {
+      "name": "Merino Wool Blanket \u2014 Herringbone",
+      "sku": "BED-005",
+      "price": 165.0,
+      "description": "Classic herringbone merino wool blanket. Lightweight yet warm \u2014 perfect as a bed layer or sofa throw.",
+      "materials": "100% merino wool",
+      "dimensions": "140cm \u00d7 200cm",
+      "colours": [
+        "Oatmeal/Caramel",
+        "Grey/Charcoal",
+        "Navy/Cream"
+      ],
+      "care": "Dry clean or hand wash cold. Lay flat to dry. Fold for storage.",
+      "stock": "In Stock",
+      "tags": [
+        "merino",
+        "wool",
+        "herringbone",
+        "blanket",
+        "heritage"
+      ],
+      "category": "Bedding & Linens"
+    },
+    {
+      "name": "Jersey Fitted Sheet \u2014 Queen",
+      "sku": "BED-006",
+      "price": 48.0,
+      "description": "T-shirt soft jersey fitted sheet with 35cm deep elasticated pocket. Stays put all night. Machine washable.",
+      "materials": "100% combed cotton jersey",
+      "dimensions": "Queen: 160cm \u00d7 200cm \u00d7 35cm pocket",
+      "colours": [
+        "White",
+        "Grey Marl",
+        "Slate Blue",
+        "Dusty Lilac"
+      ],
+      "care": "Machine wash 40\u00b0C. Tumble dry low. Do not iron.",
+      "stock": "In Stock",
+      "tags": [
+        "fitted sheet",
+        "jersey",
+        "soft",
+        "queen",
+        "deep pocket"
+      ],
+      "category": "Bedding & Linens"
+    },
+    {
+      "name": "Bamboo Duvet \u2014 All Seasons (King)",
+      "sku": "BED-007",
+      "price": 175.0,
+      "description": "Temperature-regulating bamboo-fill duvet with a 400TC cotton cover. All-season 10.5 tog rating. Hypoallergenic.",
+      "materials": "Bamboo fibre fill, cotton cover",
+      "dimensions": "King: 220cm \u00d7 260cm, 10.5 tog",
+      "colours": [
+        "White"
+      ],
+      "care": "Machine wash 40\u00b0C on gentle cycle. Tumble dry low. Re-plump after washing.",
+      "stock": "In Stock",
+      "tags": [
+        "duvet",
+        "bamboo",
+        "all seasons",
+        "10.5 tog",
+        "hypoallergenic"
+      ],
+      "category": "Bedding & Linens"
+    },
+    {
+      "name": "Waffle Weave Throw Blanket",
+      "sku": "BED-008",
+      "price": 55.0,
+      "description": "Textured waffle weave cotton blanket. Absorbs moisture and dries quickly \u2014 doubles as a light summer duvet.",
+      "materials": "100% cotton waffle weave",
+      "dimensions": "130cm \u00d7 180cm",
+      "colours": [
+        "White",
+        "Warm Sand",
+        "Dusty Blue",
+        "Terracotta"
+      ],
+      "care": "Machine wash 40\u00b0C. Tumble dry medium. Softer with each wash.",
+      "stock": "In Stock",
+      "tags": [
+        "waffle",
+        "cotton",
+        "throw",
+        "summer",
+        "texture"
+      ],
+      "category": "Bedding & Linens"
+    },
+    {
+      "name": "Linen Fitted Sheet \u2014 Single",
+      "sku": "BED-009",
+      "price": 62.0,
+      "description": "Stonewashed linen fitted sheet with a 30cm pocket depth. Regulates temperature naturally in summer and winter.",
+      "materials": "100% European flax linen",
+      "dimensions": "Single: 90cm \u00d7 200cm \u00d7 30cm pocket",
+      "colours": [
+        "Natural",
+        "White",
+        "Sage Green",
+        "Terracotta"
+      ],
+      "care": "Machine wash 40\u00b0C. Line dry preferred. Softer with every wash.",
+      "stock": "In Stock",
+      "tags": [
+        "linen",
+        "fitted sheet",
+        "single",
+        "stonewashed",
+        "temperature regulating"
+      ],
+      "category": "Bedding & Linens"
+    },
+    {
+      "name": "Silk Pillowcase \u2014 Standard (Set of 2)",
+      "sku": "BED-010",
+      "price": 88.0,
+      "description": "22 momme mulberry silk pillowcases with a hidden zip. Reduces hair friction and helps maintain skin moisture overnight.",
+      "materials": "100% mulberry silk, 22 momme",
+      "dimensions": "Standard: 48cm \u00d7 74cm each",
+      "colours": [
+        "Champagne",
+        "Pearl White",
+        "Dusty Rose",
+        "Midnight Black"
+      ],
+      "care": "Hand wash cold with silk detergent. Do not tumble dry or wring. Iron on low with a cloth barrier.",
+      "stock": "Low Stock",
+      "tags": [
+        "silk",
+        "pillowcase",
+        "mulberry",
+        "hair",
+        "skin",
+        "luxury"
+      ],
+      "category": "Bedding & Linens"
+    },
+    {
+      "name": "Stoneware Dinner Set \u2014 12 Piece",
+      "sku": "KIT-001",
+      "price": 135.0,
+      "description": "Artisan-style stoneware set for four: 4 dinner plates, 4 side plates, 4 bowls. Each piece is hand-dipped in a reactive glaze for a unique finish.",
+      "materials": "Stoneware, reactive glaze",
+      "dimensions": "Dinner plate \u00d8 27cm, side plate \u00d8 20cm, bowl \u00d8 16cm",
+      "colours": [
+        "Speckled Cream",
+        "Ocean Blue",
+        "Terracotta Dip"
+      ],
+      "care": "Dishwasher safe. Not suitable for microwave. Handle with care \u2014 stoneware can chip.",
+      "stock": "In Stock",
+      "tags": [
+        "dinner set",
+        "stoneware",
+        "artisan",
+        "reactive glaze",
+        "12 piece"
+      ],
+      "category": "Kitchen & Dining"
+    },
+    {
+      "name": "Linen Napkins (Set of 4)",
+      "sku": "KIT-002",
+      "price": 28.0,
+      "description": "Generously sized pre-washed linen napkins. Hemstitched edges. Get softer and more absorbent with every wash.",
+      "materials": "100% linen",
+      "dimensions": "45cm \u00d7 45cm each",
+      "colours": [
+        "Natural",
+        "Blush",
+        "Sage",
+        "Midnight Blue"
+      ],
+      "care": "Machine wash 40\u00b0C. Tumble dry low. Iron while slightly damp for a crisp look.",
+      "stock": "In Stock",
+      "tags": [
+        "napkins",
+        "linen",
+        "set",
+        "table",
+        "sustainable"
+      ],
+      "category": "Kitchen & Dining"
+    },
+    {
+      "name": "Acacia Wood Cheese Board",
+      "sku": "KIT-003",
+      "price": 48.0,
+      "description": "Large acacia wood serving board with a juice groove and built-in ceramic dip bowls. For cheese, charcuterie, and sharing platters.",
+      "materials": "Solid acacia wood, ceramic bowls",
+      "dimensions": "L 45cm \u00d7 W 30cm \u00d7 H 2cm",
+      "colours": [
+        "Natural Acacia"
+      ],
+      "care": "Hand wash only. Dry immediately. Oil with food-grade mineral oil monthly.",
+      "stock": "In Stock",
+      "tags": [
+        "cheese board",
+        "acacia",
+        "serving",
+        "charcuterie",
+        "entertaining"
+      ],
+      "category": "Kitchen & Dining"
+    },
+    {
+      "name": "Recycled Glass Tumblers (Set of 6)",
+      "sku": "KIT-004",
+      "price": 42.0,
+      "description": "Handblown recycled glass tumblers with a subtle green tint from the recycled material. No two are identical.",
+      "materials": "100% recycled glass",
+      "dimensions": "H 10cm, 300ml capacity",
+      "colours": [
+        "Recycled Clear/Green Tint"
+      ],
+      "care": "Dishwasher safe on low temperature. Handle with care \u2014 handblown glass is delicate.",
+      "stock": "In Stock",
+      "tags": [
+        "tumblers",
+        "recycled glass",
+        "handblown",
+        "set",
+        "eco"
+      ],
+      "category": "Kitchen & Dining"
+    },
+    {
+      "name": "Cast Iron Trivet \u2014 Round",
+      "sku": "KIT-005",
+      "price": 24.0,
+      "description": "Round cast iron trivet for protecting dining tables from hot pots and pans. A functional kitchen-to-table piece.",
+      "materials": "Cast iron",
+      "dimensions": "\u00d8 20cm",
+      "colours": [
+        "Matte Black"
+      ],
+      "care": "Dry immediately after washing to prevent rust. Wipe with a light coat of oil before storage.",
+      "stock": "In Stock",
+      "tags": [
+        "trivet",
+        "cast iron",
+        "kitchen",
+        "table protection",
+        "functional"
+      ],
+      "category": "Kitchen & Dining"
+    },
+    {
+      "name": "Beeswax Food Wraps (Set of 3)",
+      "sku": "KIT-006",
+      "price": 16.0,
+      "description": "Reusable beeswax wraps in three sizes as a sustainable alternative to cling film. Made with organic cotton and sustainably sourced beeswax.",
+      "materials": "Organic cotton, beeswax, tree resin, jojoba oil",
+      "dimensions": "Small 18cm\u00b2, Medium 25cm\u00b2, Large 33cm\u00b2",
+      "colours": [
+        "Botanical Print",
+        "Stripe",
+        "Plain Yellow"
+      ],
+      "care": "Wash with cool water and mild soap. Never use hot water or microwave. Air dry.",
+      "stock": "In Stock",
+      "tags": [
+        "beeswax wrap",
+        "sustainable",
+        "eco",
+        "reusable",
+        "cling film alternative"
+      ],
+      "category": "Kitchen & Dining"
+    },
+    {
+      "name": "Rattan Placemats (Set of 4)",
+      "sku": "KIT-007",
+      "price": 32.0,
+      "description": "Flat-woven natural rattan placemats. Heat resistant up to 150\u00b0C. Add natural texture to any dining table.",
+      "materials": "Hand-woven rattan",
+      "dimensions": "\u00d8 35cm each",
+      "colours": [
+        "Natural Rattan",
+        "Bleached White"
+      ],
+      "care": "Wipe with a damp cloth. Do not submerge in water. Air dry.",
+      "stock": "In Stock",
+      "tags": [
+        "placemats",
+        "rattan",
+        "natural",
+        "set",
+        "dining"
+      ],
+      "category": "Kitchen & Dining"
+    },
+    {
+      "name": "Handthrown Mug \u2014 Set of 2",
+      "sku": "KIT-008",
+      "price": 38.0,
+      "description": "Pair of wheel-thrown stoneware mugs with a comfortable looped handle. Each has a unique glaze variation. 350ml capacity.",
+      "materials": "Stoneware",
+      "dimensions": "H 10cm, 350ml",
+      "colours": [
+        "Speckled White",
+        "Ocean Dip",
+        "Terracotta"
+      ],
+      "care": "Dishwasher safe. Microwave safe. Glaze may develop a natural patina over time.",
+      "stock": "In Stock",
+      "tags": [
+        "mug",
+        "handthrown",
+        "stoneware",
+        "set",
+        "350ml"
+      ],
+      "category": "Kitchen & Dining"
+    },
+    {
+      "name": "Linen Table Runner \u2014 Stripe",
+      "sku": "KIT-009",
+      "price": 26.0,
+      "description": "Stonewashed linen table runner with subtle woven stripes. Adds texture without overpowering a table setting.",
+      "materials": "100% linen",
+      "dimensions": "40cm \u00d7 140cm",
+      "colours": [
+        "Natural/White Stripe",
+        "Blue/White Stripe",
+        "Sage/Natural Stripe"
+      ],
+      "care": "Machine wash 40\u00b0C. Line dry. Iron while damp.",
+      "stock": "In Stock",
+      "tags": [
+        "table runner",
+        "linen",
+        "stripe",
+        "dining",
+        "texture"
+      ],
+      "category": "Kitchen & Dining"
+    },
+    {
+      "name": "Marble Canister Set \u2014 3 Piece",
+      "sku": "KIT-010",
+      "price": 72.0,
+      "description": "Set of three marble-effect ceramic canisters with bamboo lids. For tea, coffee, and sugar. Creates an elegant kitchen countertop display.",
+      "materials": "Ceramic with marble glaze, bamboo lids",
+      "dimensions": "Small H 12cm, Medium H 15cm, Large H 18cm",
+      "colours": [
+        "White Marble",
+        "Black Marble"
+      ],
+      "care": "Hand wash lids. Ceramic canisters are dishwasher safe on top rack.",
+      "stock": "In Stock",
+      "tags": [
+        "canister",
+        "marble",
+        "ceramic",
+        "kitchen",
+        "storage set"
+      ],
+      "category": "Kitchen & Dining"
+    },
+    {
+      "name": "Abstract Ink Print \u2014 Framed",
+      "sku": "WDC-001",
+      "price": 85.0,
+      "description": "Gicl\u00e9e print of an original abstract ink painting. Professionally framed in a thin oak frame with non-reflective glass.",
+      "materials": "Gicl\u00e9e print, oak frame, non-reflective glass",
+      "dimensions": "50cm \u00d7 70cm framed",
+      "colours": [
+        "Black/White/Gold",
+        "Blue/Grey/Cream"
+      ],
+      "care": "Dust frame with a soft cloth. Avoid hanging in direct sunlight.",
+      "stock": "In Stock",
+      "tags": [
+        "print",
+        "abstract",
+        "framed",
+        "gicl\u00e9e",
+        "wall art"
+      ],
+      "category": "Wall D\u00e9cor"
+    },
+    {
+      "name": "Macram\u00e9 Wall Hanging \u2014 Large",
+      "sku": "WDC-002",
+      "price": 78.0,
+      "description": "Large handmade macram\u00e9 wall hanging in natural cotton rope. Adds a boho-organic texture to living rooms and bedrooms.",
+      "materials": "Natural cotton rope, driftwood rod",
+      "dimensions": "W 60cm \u00d7 H 90cm including fringe",
+      "colours": [
+        "Natural White",
+        "Bleached Ivory"
+      ],
+      "care": "Shake gently to remove dust. Spot clean with a damp cloth. Do not machine wash.",
+      "stock": "Low Stock",
+      "tags": [
+        "macram\u00e9",
+        "wall hanging",
+        "boho",
+        "handmade",
+        "cotton"
+      ],
+      "category": "Wall D\u00e9cor"
+    },
+    {
+      "name": "Botanical Illustration Set (3 Prints)",
+      "sku": "WDC-003",
+      "price": 55.0,
+      "description": "Set of three unframed botanical illustrations \u2014 fern, monstera, and olive branch. Printed on archival matte paper.",
+      "materials": "Archival matte print paper, 200gsm",
+      "dimensions": "Each A4 (21cm \u00d7 29.7cm)",
+      "colours": [
+        "Line Art on Cream Paper",
+        "Colour on White Paper"
+      ],
+      "care": "Frame before hanging. Store flat and away from moisture if unframed.",
+      "stock": "In Stock",
+      "tags": [
+        "botanical",
+        "print",
+        "set",
+        "A4",
+        "illustration"
+      ],
+      "category": "Wall D\u00e9cor"
+    },
+    {
+      "name": "Woven Wall Tapestry \u2014 Sunset Landscape",
+      "sku": "WDC-004",
+      "price": 92.0,
+      "description": "Hand-woven wool tapestry depicting an abstract sunset landscape. A one-of-a-kind textile artwork.",
+      "materials": "Wool and cotton blend, wooden rod",
+      "dimensions": "W 80cm \u00d7 H 55cm",
+      "colours": [
+        "Terracotta/Ochre/Cream",
+        "Blue/Grey/Dusk"
+      ],
+      "care": "Vacuum gently on low setting with a brush attachment. Do not wash.",
+      "stock": "In Stock",
+      "tags": [
+        "tapestry",
+        "woven",
+        "textile",
+        "landscape",
+        "handmade"
+      ],
+      "category": "Wall D\u00e9cor"
+    },
+    {
+      "name": "Brass Wall Hooks \u2014 Set of 3",
+      "sku": "WDC-005",
+      "price": 36.0,
+      "description": "Minimalist single-arm brass wall hooks. Suitable for coats, bags, and towels. Wall plugs and screws included.",
+      "materials": "Solid brass with satin finish",
+      "dimensions": "Each H 5cm \u00d7 \u00d8 3cm",
+      "colours": [
+        "Satin Brass",
+        "Matte Black",
+        "Brushed Nickel"
+      ],
+      "care": "Wipe with a soft cloth. Avoid abrasive cleaners. Polish with brass cloth if needed.",
+      "stock": "In Stock",
+      "tags": [
+        "hooks",
+        "brass",
+        "wall",
+        "minimalist",
+        "set"
+      ],
+      "category": "Wall D\u00e9cor"
+    },
+    {
+      "name": "Round Mirror \u2014 Rattan Frame",
+      "sku": "WDC-006",
+      "price": 110.0,
+      "description": "Circular mirror with a hand-wrapped natural rattan frame. Adds warmth and a sense of space to any room.",
+      "materials": "Glass mirror, rattan frame",
+      "dimensions": "\u00d8 60cm",
+      "colours": [
+        "Natural Rattan"
+      ],
+      "care": "Clean mirror glass with glass cleaner. Dust rattan with a dry brush.",
+      "stock": "In Stock",
+      "tags": [
+        "mirror",
+        "round",
+        "rattan",
+        "natural",
+        "hallway"
+      ],
+      "category": "Wall D\u00e9cor"
+    },
+    {
+      "name": "Pressed Flower Frame \u2014 Meadow Collection",
+      "sku": "WDC-007",
+      "price": 44.0,
+      "description": "Professionally pressed and mounted meadow wildflowers in a deep-set oak shadow box frame. Ready to hang.",
+      "materials": "Pressed botanicals, oak shadow box frame",
+      "dimensions": "30cm \u00d7 30cm",
+      "colours": [
+        "Natural Botanicals on Cream Mount"
+      ],
+      "care": "Avoid direct sunlight to prevent fading. Dust frame with a soft cloth.",
+      "stock": "In Stock",
+      "tags": [
+        "pressed flowers",
+        "shadow box",
+        "botanical",
+        "frame",
+        "natural"
+      ],
+      "category": "Wall D\u00e9cor"
+    },
+    {
+      "name": "Minimalist Wall Clock \u2014 Concrete",
+      "sku": "WDC-008",
+      "price": 65.0,
+      "description": "Slim concrete-finish wall clock with brushed brass hands. Quiet sweep mechanism \u2014 no ticking. AA battery.",
+      "materials": "Resin concrete finish, brass-tone hands",
+      "dimensions": "\u00d8 30cm",
+      "colours": [
+        "Light Grey Concrete",
+        "Charcoal Concrete"
+      ],
+      "care": "Dust with a dry cloth. Do not expose to moisture. Replace battery annually.",
+      "stock": "In Stock",
+      "tags": [
+        "clock",
+        "concrete",
+        "minimalist",
+        "silent",
+        "brass"
+      ],
+      "category": "Wall D\u00e9cor"
+    },
+    {
+      "name": "Gallery Wall Kit \u2014 9 Frames",
+      "sku": "WDC-009",
+      "price": 120.0,
+      "description": "Nine frames in assorted sizes (A5, A4, A3) for a curated gallery wall. Mix of portrait and landscape orientations. Includes positioning template.",
+      "materials": "MDF frame, glass front",
+      "dimensions": "A5, A4, A3 assorted",
+      "colours": [
+        "Black",
+        "White",
+        "Natural Oak"
+      ],
+      "care": "Wipe with dry cloth. Position on wall using the included paper template for perfect spacing.",
+      "stock": "In Stock",
+      "tags": [
+        "gallery wall",
+        "frames",
+        "set",
+        "kit",
+        "assorted"
+      ],
+      "category": "Wall D\u00e9cor"
+    },
+    {
+      "name": "Neon Sign \u2014 Warm White Script",
+      "sku": "WDC-010",
+      "price": 95.0,
+      "description": "LED neon flex sign in a warm white 'Home' script. Low energy, cool to touch. 2m cable with UK plug. Indoor use only.",
+      "materials": "LED neon flex on acrylic backing",
+      "dimensions": "W 50cm \u00d7 H 25cm",
+      "colours": [
+        "Warm White",
+        "Blush Pink",
+        "Golden Yellow"
+      ],
+      "care": "Dust with a dry cloth. Do not bend sharply. Keep away from water.",
+      "stock": "In Stock",
+      "tags": [
+        "neon",
+        "LED",
+        "sign",
+        "home",
+        "warm white"
+      ],
+      "category": "Wall D\u00e9cor"
+    },
+    {
+      "name": "Jute Area Rug \u2014 Natural (Large)",
+      "sku": "RUG-001",
+      "price": 185.0,
+      "description": "Chunky hand-woven jute rug. A durable, sustainable floor covering that adds natural texture to living rooms and hallways.",
+      "materials": "100% natural jute",
+      "dimensions": "200cm \u00d7 300cm",
+      "colours": [
+        "Natural",
+        "Bleached"
+      ],
+      "care": "Vacuum regularly without beater bar. Spot clean with mild detergent. Avoid moisture and direct sunlight.",
+      "stock": "In Stock",
+      "tags": [
+        "jute",
+        "rug",
+        "natural",
+        "large",
+        "sustainable"
+      ],
+      "category": "Rugs & Flooring"
+    },
+    {
+      "name": "Moroccan Berber Rug \u2014 Cream",
+      "sku": "RUG-002",
+      "price": 320.0,
+      "description": "Authentic Moroccan Berber rug hand-knotted by artisans in the Atlas Mountains. Lozenge pattern in traditional cream and black.",
+      "materials": "100% pure new wool",
+      "dimensions": "160cm \u00d7 230cm",
+      "colours": [
+        "Cream/Black",
+        "Ivory/Brown",
+        "Grey/Cream"
+      ],
+      "care": "Professional clean recommended. Vacuum regularly without beater bar. Rotate annually for even wear.",
+      "stock": "Low Stock",
+      "tags": [
+        "berber",
+        "moroccan",
+        "handknotted",
+        "wool",
+        "authentic"
+      ],
+      "category": "Rugs & Flooring"
+    },
+    {
+      "name": "Cotton Flatweave Runner \u2014 Stripe",
+      "sku": "RUG-003",
+      "price": 55.0,
+      "description": "Reversible cotton flatweave runner for hallways, kitchens, and bedside use. Machine washable.",
+      "materials": "100% recycled cotton",
+      "dimensions": "60cm \u00d7 180cm",
+      "colours": [
+        "Blue/White",
+        "Terracotta/Natural",
+        "Black/White"
+      ],
+      "care": "Machine wash 40\u00b0C. Tumble dry low. Non-slip underlay recommended.",
+      "stock": "In Stock",
+      "tags": [
+        "runner",
+        "flatweave",
+        "cotton",
+        "washable",
+        "stripe"
+      ],
+      "category": "Rugs & Flooring"
+    },
+    {
+      "name": "Sheepskin Rug \u2014 Single Pelt",
+      "sku": "RUG-004",
+      "price": 95.0,
+      "description": "Genuine single sheepskin rug. Luxuriously soft and warm. Perfect beside a bed or in front of a fireplace.",
+      "materials": "100% genuine sheepskin, suede back",
+      "dimensions": "Approx 60cm \u00d7 90cm (natural shape)",
+      "colours": [
+        "Ivory",
+        "Caramel",
+        "Grey"
+      ],
+      "care": "Shake outdoors to freshen. Spot clean with wool shampoo. Brush pile when dry.",
+      "stock": "In Stock",
+      "tags": [
+        "sheepskin",
+        "genuine",
+        "soft",
+        "warm",
+        "natural"
+      ],
+      "category": "Rugs & Flooring"
+    },
+    {
+      "name": "Velvet Tufted Rug \u2014 Blush (Medium)",
+      "sku": "RUG-005",
+      "price": 145.0,
+      "description": "Ultra-plush hand-tufted velvet rug with a dense, low pile. A tactile statement piece for bedrooms and living rooms.",
+      "materials": "100% polyester velvet, latex backing",
+      "dimensions": "140cm \u00d7 200cm",
+      "colours": [
+        "Blush Pink",
+        "Sage Green",
+        "Deep Teal",
+        "Ivory"
+      ],
+      "care": "Vacuum regularly without beater bar. Professional clean recommended. Avoid crushing pile.",
+      "stock": "In Stock",
+      "tags": [
+        "velvet",
+        "tufted",
+        "plush",
+        "bedroom",
+        "soft"
+      ],
+      "category": "Rugs & Flooring"
+    },
+    {
+      "name": "Hemp & Cotton Braided Rug \u2014 Round",
+      "sku": "RUG-006",
+      "price": 68.0,
+      "description": "Hand-braided round rug from recycled hemp and cotton. Ideal for kitchens, bathrooms, and entryways.",
+      "materials": "Recycled hemp and cotton braid",
+      "dimensions": "\u00d8 90cm",
+      "colours": [
+        "Natural/White",
+        "Grey/Blue",
+        "Terracotta/Natural"
+      ],
+      "care": "Machine wash 30\u00b0C. Tumble dry low. Non-slip mat recommended on hard floors.",
+      "stock": "In Stock",
+      "tags": [
+        "braided",
+        "round",
+        "hemp",
+        "recycled",
+        "bathroom"
+      ],
+      "category": "Rugs & Flooring"
+    },
+    {
+      "name": "Kilim-Inspired Wool Rug \u2014 Geometric",
+      "sku": "RUG-007",
+      "price": 210.0,
+      "description": "Flat-woven wool rug with a bold geometric kilim-inspired pattern. Handmade in India. Reversible.",
+      "materials": "100% wool, cotton warp",
+      "dimensions": "150cm \u00d7 210cm",
+      "colours": [
+        "Rust/Cream/Navy",
+        "Blue/White/Grey",
+        "Ochre/Black/Terracotta"
+      ],
+      "care": "Vacuum flat side. Spot clean with mild wool detergent. Dry clean for deep cleaning.",
+      "stock": "In Stock",
+      "tags": [
+        "kilim",
+        "geometric",
+        "wool",
+        "reversible",
+        "handmade"
+      ],
+      "category": "Rugs & Flooring"
+    },
+    {
+      "name": "Anti-Fatigue Kitchen Mat",
+      "sku": "RUG-008",
+      "price": 42.0,
+      "description": "Ergonomic kitchen mat with a bevelled edge and anti-fatigue foam core. Easy to wipe clean. Non-slip back.",
+      "materials": "PVC foam, polyester surface",
+      "dimensions": "50cm \u00d7 80cm",
+      "colours": [
+        "Charcoal",
+        "Stone",
+        "Cream"
+      ],
+      "care": "Wipe with a damp cloth and mild detergent. Do not machine wash.",
+      "stock": "In Stock",
+      "tags": [
+        "kitchen mat",
+        "anti-fatigue",
+        "ergonomic",
+        "non-slip",
+        "easy clean"
+      ],
+      "category": "Rugs & Flooring"
+    },
+    {
+      "name": "Bamboo Bath Mat",
+      "sku": "RUG-009",
+      "price": 35.0,
+      "description": "Slatted bamboo bath mat that dries quickly and resists mold. A spa-inspired alternative to fabric bath mats.",
+      "materials": "FSC-certified bamboo",
+      "dimensions": "60cm \u00d7 40cm",
+      "colours": [
+        "Natural Bamboo"
+      ],
+      "care": "Wipe dry after use. Oil annually with bamboo oil. Do not leave submerged in water.",
+      "stock": "In Stock",
+      "tags": [
+        "bath mat",
+        "bamboo",
+        "spa",
+        "quick dry",
+        "sustainable"
+      ],
+      "category": "Rugs & Flooring"
+    },
+    {
+      "name": "Shaggy Bedroom Rug \u2014 Ivory (Large)",
+      "sku": "RUG-010",
+      "price": 165.0,
+      "description": "Deep-pile shaggy rug for a luxurious underfoot feel in bedrooms. Sink-your-toes-in softness.",
+      "materials": "100% polyester shag pile",
+      "dimensions": "160cm \u00d7 230cm, 5cm pile height",
+      "colours": [
+        "Ivory",
+        "Blush",
+        "Silver Grey",
+        "Caramel"
+      ],
+      "care": "Vacuum regularly with suction only \u2014 no beater bar. Brush pile to restore. Spot clean.",
+      "stock": "In Stock",
+      "tags": [
+        "shaggy",
+        "deep pile",
+        "bedroom",
+        "soft",
+        "large"
+      ],
+      "category": "Rugs & Flooring"
+    },
+    {
+      "name": "Terracotta Plant Pot \u2014 Set of 3",
+      "sku": "OUT-001",
+      "price": 38.0,
+      "description": "Classic terracotta pots in three sizes with drainage holes. Frost-resistant for year-round outdoor use.",
+      "materials": "Frost-resistant terracotta",
+      "dimensions": "Small H 12cm, Medium H 18cm, Large H 24cm",
+      "colours": [
+        "Traditional Terracotta",
+        "Antique White Washed"
+      ],
+      "care": "Water freely \u2014 terracotta is breathable and drains well. Protect from standing water in winter.",
+      "stock": "In Stock",
+      "tags": [
+        "terracotta",
+        "plant pot",
+        "outdoor",
+        "set",
+        "frost resistant"
+      ],
+      "category": "Outdoor & Garden"
+    },
+    {
+      "name": "Outdoor Lantern \u2014 Powder Coated Steel",
+      "sku": "OUT-002",
+      "price": 56.0,
+      "description": "Large outdoor lantern for candles or LED candles. Powder-coated finish is weather and rust resistant.",
+      "materials": "Powder-coated steel",
+      "dimensions": "H 50cm \u00d7 W 22cm",
+      "colours": [
+        "Matte Black",
+        "Antique Bronze",
+        "Garden Green"
+      ],
+      "care": "Wipe clean with a damp cloth. Remove candles in heavy rain. Store indoors in harsh winter conditions.",
+      "stock": "In Stock",
+      "tags": [
+        "lantern",
+        "outdoor",
+        "weather resistant",
+        "candle",
+        "garden"
+      ],
+      "category": "Outdoor & Garden"
+    },
+    {
+      "name": "Hanging Egg Chair \u2014 Natural Rattan",
+      "sku": "OUT-003",
+      "price": 345.0,
+      "description": "Indoor/outdoor hanging egg chair with a cushioned seat and back. Includes ceiling hook and hanging rope. Max load 120kg.",
+      "materials": "Natural rattan frame, cotton canvas cushion",
+      "dimensions": "Chair H 110cm \u00d7 W 100cm, cushion included",
+      "colours": [
+        "Natural Rattan/Cream Cushion",
+        "White Rattan/Grey Cushion"
+      ],
+      "care": "Cover or store cushion indoors during rain. Treat rattan with outdoor varnish annually.",
+      "stock": "Low Stock",
+      "tags": [
+        "egg chair",
+        "hanging",
+        "rattan",
+        "outdoor",
+        "statement"
+      ],
+      "category": "Outdoor & Garden"
+    },
+    {
+      "name": "Solar Garden String Lights \u2014 5m",
+      "sku": "OUT-004",
+      "price": 28.0,
+      "description": "Solar-powered warm white string lights with 20 globe bulbs. No wiring needed. Auto on at dusk, off at dawn.",
+      "materials": "IP65 waterproof LED globes, solar panel",
+      "dimensions": "5m length, 20 globe bulbs",
+      "colours": [
+        "Warm White (2700K)"
+      ],
+      "care": "Ensure solar panel receives 6+ hours of direct sun daily. Store indoors in winter.",
+      "stock": "In Stock",
+      "tags": [
+        "solar",
+        "string lights",
+        "outdoor",
+        "garden",
+        "globe"
+      ],
+      "category": "Outdoor & Garden"
+    },
+    {
+      "name": "Raised Garden Bed \u2014 Cedar Wood",
+      "sku": "OUT-005",
+      "price": 95.0,
+      "description": "Flat-pack cedar wood raised bed for growing herbs, vegetables, and flowers. Natural cedar resists rot and insects.",
+      "materials": "FSC-certified cedar wood",
+      "dimensions": "L 120cm \u00d7 W 60cm \u00d7 H 30cm",
+      "colours": [
+        "Natural Cedar"
+      ],
+      "care": "Apply a natural wood oil annually. No lining needed \u2014 cedar is naturally rot-resistant.",
+      "stock": "In Stock",
+      "tags": [
+        "raised bed",
+        "cedar",
+        "gardening",
+        "vegetables",
+        "herbs"
+      ],
+      "category": "Outdoor & Garden"
+    },
+    {
+      "name": "Outdoor Cushion \u2014 Stripe (Set of 2)",
+      "sku": "OUT-006",
+      "price": 48.0,
+      "description": "Fade-resistant outdoor cushions filled with quick-dry hollowfibre. For garden furniture and sun loungers.",
+      "materials": "Solution-dyed acrylic cover, quick-dry hollowfibre",
+      "dimensions": "45cm \u00d7 45cm each",
+      "colours": [
+        "Blue/White Stripe",
+        "Terracotta/Natural",
+        "Olive/Cream"
+      ],
+      "care": "Machine wash 30\u00b0C. Dry outdoors. Store in a waterproof bag over winter.",
+      "stock": "In Stock",
+      "tags": [
+        "outdoor cushion",
+        "fade resistant",
+        "garden",
+        "stripe",
+        "set"
+      ],
+      "category": "Outdoor & Garden"
+    },
+    {
+      "name": "Bird Bath \u2014 Speckled Ceramic",
+      "sku": "OUT-007",
+      "price": 68.0,
+      "description": "Hand-glazed ceramic bird bath on a powder-coated steel stand. Weighted base for stability in wind.",
+      "materials": "Glazed ceramic bowl, powder-coated steel stand",
+      "dimensions": "H 70cm, bowl \u00d8 35cm",
+      "colours": [
+        "Speckled Blue",
+        "Cream/White",
+        "Terracotta Brown"
+      ],
+      "care": "Empty and refill with fresh water every 2\u20133 days. Store indoors or cover in hard frost.",
+      "stock": "In Stock",
+      "tags": [
+        "bird bath",
+        "ceramic",
+        "garden",
+        "wildlife",
+        "glazed"
+      ],
+      "category": "Outdoor & Garden"
+    },
+    {
+      "name": "Galvanised Watering Can \u2014 8L",
+      "sku": "OUT-008",
+      "price": 32.0,
+      "description": "Classic galvanised steel watering can with a long spout and removable rose head for gentle watering.",
+      "materials": "Galvanised steel",
+      "dimensions": "H 35cm, 8 litre capacity",
+      "colours": [
+        "Galvanised Silver",
+        "Sage Green",
+        "Matte Black"
+      ],
+      "care": "Empty after use to prevent rust. Store in a dry place. Oil moving parts if stiff.",
+      "stock": "In Stock",
+      "tags": [
+        "watering can",
+        "galvanised",
+        "classic",
+        "8L",
+        "garden"
+      ],
+      "category": "Outdoor & Garden"
+    },
+    {
+      "name": "Outdoor Scented Candle \u2014 Citronella & Eucalyptus",
+      "sku": "OUT-009",
+      "price": 26.0,
+      "description": "Citronella and eucalyptus candle in a terracotta pot. Naturally deters insects while adding ambience. 30-hour burn.",
+      "materials": "Soy and beeswax blend, essential oils",
+      "dimensions": "H 10cm \u00d7 \u00d8 11cm",
+      "colours": [
+        "Terracotta"
+      ],
+      "care": "Burn in sheltered outdoor areas. Extinguish in wind. Keep away from plants and flammable materials.",
+      "stock": "In Stock",
+      "tags": [
+        "citronella",
+        "outdoor candle",
+        "insect repellent",
+        "terracotta",
+        "garden"
+      ],
+      "category": "Outdoor & Garden"
+    },
+    {
+      "name": "Garden Kneeler & Tool Bag Set",
+      "sku": "OUT-010",
+      "price": 44.0,
+      "description": "Foam kneeler that converts to a seat, paired with a canvas tool bag. Includes 3 essential stainless steel tools.",
+      "materials": "High-density foam kneeler, canvas bag, stainless steel tools",
+      "dimensions": "Kneeler: 35cm \u00d7 24cm \u00d7 22cm",
+      "colours": [
+        "Olive Green/Natural",
+        "Charcoal/Black"
+      ],
+      "care": "Wipe kneeler clean with damp cloth. Dry tools before storage to prevent rust.",
+      "stock": "In Stock",
+      "tags": [
+        "kneeler",
+        "gardening",
+        "tool bag",
+        "set",
+        "stainless"
+      ],
+      "category": "Outdoor & Garden"
+    }
+  ]
+}
