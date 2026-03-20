@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luminary Home — Product Knowledge Base</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f2ee;
+    --surface: #ffffff;
+    --surface-alt: #faf8f5;
+    --border: #e8e2d9;
+    --text: #1a1714;
+    --text-muted: #8a7f74;
+    --accent: #2d6a4f;
+    --accent-light: #52b788;
+    --accent-pale: #d8f3dc;
+    --gold: #c9a84c;
+    --retrieved: #fff8e8;
+    --retrieved-border: #f0d080;
+    --tag-bg: #eef7f1;
+    --tag-text: #2d6a4f;
+    --user-bg: #1a1714;
+    --user-text: #ffffff;
+    --shadow: 0 2px 16px rgba(26,23,20,0.08);
+    --shadow-lg: 0 8px 40px rgba(26,23,20,0.12);
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: var(--shadow);
+  }
+  .header-left { display: flex; align-items: center; gap: 14px; }
+  .logo {
+    width: 38px; height: 38px;
+    background: var(--accent);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'DM Serif Display', serif;
+    font-size: 16px; color: #fff;
+    letter-spacing: -0.5px;
+  }
+  .header-titles { display: flex; flex-direction: column; }
+  .header-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 15px; font-weight: 400;
+    color: var(--text); letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 11px; font-weight: 500;
+    letter-spacing: .08em; text-transform: uppercase;
+    color: var(--text-muted);
+    margin-top: 1px;
+  }
+  .header-badge {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 600;
+    letter-spacing: .06em; text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-pale);
+    padding: 5px 12px; border-radius: 20px;
+  }
+  .header-badge::before {
+    content: ''; width: 6px; height: 6px;
+    border-radius: 50%; background: var(--accent-light);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+  /* ── LAYOUT ── */
+  .layout {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 24px 20px;
+    gap: 20px;
+    align-items: start;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar { display: flex; flex-direction: column; gap: 14px; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    box-shadow: var(--shadow);
+  }
+  .card-label {
+    font-size: 9px; font-weight: 700;
+    letter-spacing: .14em; text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .card p {
+    font-size: 12.5px; color: var(--text-muted);
+    line-height: 1.65; margin-bottom: 6px;
+  }
+  .card p:last-child { margin-bottom: 0; }
+  .card p strong { color: var(--text); font-weight: 500; }
+
+  .suggestions { display: flex; flex-direction: column; gap: 7px; }
+  .suggestion {
+    background: var(--surface-alt);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 12px; color: var(--text-muted);
+    cursor: pointer;
+    transition: all .15s;
+    line-height: 1.4;
+  }
+  .suggestion:hover {
+    border-color: var(--accent);
+    background: var(--accent-pale);
+    color: var(--accent);
+  }
+
+  .ctags { display: flex; flex-wrap: wrap; gap: 5px; }
+  .ctag {
+    font-size: 10px; font-weight: 600;
+    letter-spacing: .04em; text-transform: uppercase;
+    padding: 3px 9px; border-radius: 4px;
+    background: var(--tag-bg);
+    color: var(--tag-text);
+    border: 1px solid rgba(45,106,79,0.2);
+  }
+
+  /* ── CHAT CONTAINER ── */
+  .chat-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    height: 620px;
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+  }
+
+  /* ── RAG INDICATOR BAR ── */
+  .rag-bar {
+    background: var(--surface-alt);
+    border-bottom: 1px solid var(--border);
+    padding: 8px 18px;
+    display: flex; align-items: center; gap: 8px;
+    font-size: 11px; font-weight: 500;
+    color: var(--text-muted);
+  }
+  .rag-bar svg { width: 13px; height: 13px; opacity: .6; }
+  .rag-pill {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: .06em; text-transform: uppercase;
+    padding: 2px 8px; border-radius: 10px;
+    background: var(--accent-pale);
+    color: var(--accent);
+  }
+
+  /* ── MESSAGES ── */
+  .messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 18px;
+    display: flex; flex-direction: column; gap: 18px;
+    scroll-behavior: smooth;
+  }
+  .messages::-webkit-scrollbar { width: 4px; }
+  .messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .msg { display: flex; gap: 10px; align-items: flex-start; }
+  .msg.user { flex-direction: row-reverse; }
+
+  .avatar {
+    width: 30px; height: 30px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .avatar.bot {
+    background: var(--accent);
+    color: #fff;
+    font-family: 'DM Serif Display', serif;
+  }
+  .avatar.user { background: var(--user-bg); color: #fff; }
+
+  .msg-body { max-width: 80%; display: flex; flex-direction: column; gap: 10px; }
+  .msg.user .msg-body { align-items: flex-end; }
+
+  .bubble {
+    padding: 12px 15px;
+    border-radius: 12px;
+    font-size: 13.5px;
+    line-height: 1.7;
+  }
+  .msg.bot .bubble {
+    background: var(--surface-alt);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-top-left-radius: 3px;
+  }
+  .msg.user .bubble {
+    background: var(--user-bg);
+    color: var(--user-text);
+    border-top-right-radius: 3px;
+  }
+
+  /* ── RETRIEVED PRODUCTS CARDS ── */
+  .retrieved-section {
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .retrieved-label {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: .1em; text-transform: uppercase;
+    color: var(--text-muted);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .retrieved-label::before {
+    content: '';
+    display: inline-block; width: 12px; height: 1px;
+    background: var(--border);
+  }
+  .product-cards { display: flex; flex-direction: column; gap: 6px; }
+  .product-card {
+    background: var(--retrieved);
+    border: 1px solid var(--retrieved-border);
+    border-radius: 10px;
+    padding: 11px 14px;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+  .product-card-name {
+    font-weight: 600; color: var(--text);
+    font-size: 12.5px; margin-bottom: 3px;
+  }
+  .product-card-meta {
+    color: var(--text-muted); font-size: 11px;
+    margin-bottom: 5px;
+  }
+  .product-card-desc {
+    color: var(--text); font-size: 12px;
+    line-height: 1.55;
+  }
+  .product-card-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+  .product-card-tag {
+    font-size: 10px; font-weight: 600;
+    letter-spacing: .04em; text-transform: uppercase;
+    padding: 2px 7px; border-radius: 3px;
+    background: rgba(45,106,79,0.08);
+    color: var(--accent);
+    border: 1px solid rgba(45,106,79,0.15);
+  }
+
+  /* ── TYPING INDICATOR ── */
+  .typing {
+    display: flex; gap: 4px; align-items: center;
+    padding: 14px 15px;
+  }
+  .typing span {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--accent-light);
+    animation: bounce 1.2s infinite;
+  }
+  .typing span:nth-child(2) { animation-delay: .2s; }
+  .typing span:nth-child(3) { animation-delay: .4s; }
+  @keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-6px)} }
+
+  /* ── INPUT BAR ── */
+  .input-bar {
+    padding: 14px 16px;
+    border-top: 1px solid var(--border);
+    display: flex; gap: 8px; align-items: flex-end;
+    background: var(--surface);
+  }
+  .input {
+    flex: 1; border: 1px solid var(--border); border-radius: 10px;
+    padding: 11px 14px; font-size: 13.5px; font-family: inherit;
+    color: var(--text); background: var(--surface-alt); outline: none;
+    resize: none; min-height: 44px; max-height: 120px;
+    transition: border-color .15s, box-shadow .15s;
+    line-height: 1.5;
+  }
+  .input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(45,106,79,0.1);
+    background: var(--surface);
+  }
+  .input::placeholder { color: #b0a898; }
+
+  .send {
+    width: 44px; height: 44px;
+    background: var(--accent); border: none; border-radius: 10px;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: background .15s, transform .1s; flex-shrink: 0;
+  }
+  .send:hover { background: var(--accent-light); }
+  .send:active { transform: scale(.95); }
+  .send:disabled { background: var(--border); cursor: not-allowed; }
+  .send svg { width: 17px; height: 17px; fill: #fff; }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center; padding: 14px;
+    font-size: 11px; color: var(--text-muted);
+  }
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  @media(max-width: 700px) {
+    .layout { grid-template-columns: 1fr; padding: 12px; }
+    .sidebar { order: 2; }
+    .chat-wrap { height: 480px; order: 1; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <div class="logo">LH</div>
+    <div class="header-titles">
+      <div class="header-name">Luminary Home — Product Knowledge Base</div>
+      <div class="header-sub">Retail RAG Agent · Agent 02</div>
+    </div>
+  </div>
+  <div class="header-badge">RAG Live</div>
+</div>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="card">
+      <p class="card-label">About this agent</p>
+      <p>Ask any question about the Luminary Home product catalogue. The agent retrieves the <strong>top 3 matching products</strong> from a Pinecone vector database, then uses Claude to generate a grounded answer.</p>
+      <p>It only answers from retrieved products — no guessing.</p>
+    </div>
+
+    <div class="card">
+      <p class="card-label">Try asking</p>
+      <div class="suggestions">
+        <div class="suggestion" onclick="suggest('Do you have any lavender candles?')">Do you have any lavender candles?</div>
+        <div class="suggestion" onclick="suggest('What rugs are suitable for a bedroom?')">What rugs are suitable for a bedroom?</div>
+        <div class="suggestion" onclick="suggest('I need a gift under £50 for someone who loves fragrance.')">Gift idea under £50 for a fragrance lover</div>
+        <div class="suggestion" onclick="suggest('What outdoor lighting options do you have?')">What outdoor lighting options do you have?</div>
+        <div class="suggestion" onclick="suggest('Show me sustainable storage products.')">Show me sustainable storage products</div>
+        <div class="suggestion" onclick="suggest('What bedding is best for hot sleepers?')">What bedding is best for hot sleepers?</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="card-label">Concepts demonstrated</p>
+      <div class="ctags">
+        <span class="ctag">RAG Pipeline</span>
+        <span class="ctag">Vector Search</span>
+        <span class="ctag">Pinecone</span>
+        <span class="ctag">Embeddings</span>
+        <span class="ctag">Grounding</span>
+        <span class="ctag">Retrieval</span>
+        <span class="ctag">Source Citing</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHAT -->
+  <div class="chat-wrap">
+    <div class="rag-bar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      Retrieval-Augmented Generation &nbsp;·&nbsp; Pinecone vector search &nbsp;·&nbsp;
+      <span class="rag-pill">Strict grounding</span>
+    </div>
+
+    <div class="messages" id="messages">
+      <div class="msg bot">
+        <div class="avatar bot">LH</div>
+        <div class="msg-body">
+          <div class="bubble">
+            Welcome! I'm the Luminary Home Product Knowledge Base. Ask me anything about our catalogue — candles, lighting, bedding, rugs, outdoor, and more.<br><br>
+            I'll search our product database and show you exactly which products I retrieved to answer your question.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="input-bar">
+      <textarea class="input" id="inp" placeholder="Ask about any Luminary Home product…" rows="1"
+        onkeydown="handleKey(event)" oninput="resize(this)"></textarea>
+      <button class="send" id="sendBtn" onclick="send()">
+        <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  Built by <a href="https://linkedin.com/in/vikramyeldandi" target="_blank">Vikram Yeldandi</a> · Applied AI PM Portfolio · Agent 02 of 12
+</div>
+
+<script>
+// ── CONFIG ────────────────────────────────────────────────────────────────
+const WORKER_URL = 'https://luminary-proxy.vikramyeldandi.workers.dev/';
+// All API keys are stored securely in Cloudflare Worker environment variables
+// ─────────────────────────────────────────────────────────────────────────
+
+const SYSTEM = `You are the Luminary Home Product Knowledge Base assistant.
+
+YOUR ROLE: Answer customer questions about Luminary Home products using ONLY the product information provided to you in each message. Do not use general knowledge about products.
+
+STRICT RULES:
+1. Only answer from the retrieved product information provided.
+2. If the retrieved products don't match the question, say so honestly — do not invent products.
+3. Be specific — mention product names, SKUs, prices, and key details.
+4. If asked about something not in the catalogue, say: "I couldn't find a matching product in our catalogue for that. Try rephrasing or ask about a different product type."
+5. Always be helpful, warm, and concise.
+
+FORMAT: 2-4 sentences. Mention specific product names. End with "Is there anything else I can help you find?"`;
+
+let history = [];
+
+function resize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+}
+
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
+}
+
+function scrollDown() {
+  const m = document.getElementById('messages');
+  m.scrollTop = m.scrollHeight;
+}
+
+function addUserMsg(text) {
+  const m = document.getElementById('messages');
+  const d = document.createElement('div');
+  d.className = 'msg user';
+  d.innerHTML = `
+    <div class="avatar user">VY</div>
+    <div class="msg-body">
+      <div class="bubble">${escHtml(text)}</div>
+    </div>`;
+  m.appendChild(d);
+  scrollDown();
+}
+
+function addBotMsg(text, products) {
+  const m = document.getElementById('messages');
+  const d = document.createElement('div');
+  d.className = 'msg bot';
+
+  let productsHtml = '';
+  if (products && products.length > 0) {
+    const cards = products.map(p => `
+      <div class="product-card">
+        <div class="product-card-name">${escHtml(p.name)} <span style="font-weight:400;color:var(--text-muted);font-size:11px;">· ${escHtml(p.sku)}</span></div>
+        <div class="product-card-meta">${escHtml(p.category)} · £${parseFloat(p.price).toFixed(2)} · ${escHtml(p.stock)}</div>
+        <div class="product-card-desc">${escHtml(p.text ? p.text.split('\n')[3] || '' : '')}</div>
+      </div>`).join('');
+
+    productsHtml = `
+      <div class="retrieved-section">
+        <div class="retrieved-label">Retrieved from Pinecone (top ${products.length})</div>
+        <div class="product-cards">${cards}</div>
+      </div>`;
+  }
+
+  d.innerHTML = `
+    <div class="avatar bot">LH</div>
+    <div class="msg-body">
+      <div class="bubble">${escHtml(text)}</div>
+      ${productsHtml}
+    </div>`;
+  m.appendChild(d);
+  scrollDown();
+}
+
+function showTyping() {
+  const m = document.getElementById('messages');
+  const d = document.createElement('div');
+  d.className = 'msg bot'; d.id = 'typing';
+  d.innerHTML = `
+    <div class="avatar bot">LH</div>
+    <div class="msg-body">
+      <div class="bubble" style="padding:0">
+        <div class="typing"><span></span><span></span><span></span></div>
+      </div>
+    </div>`;
+  m.appendChild(d);
+  scrollDown();
+}
+
+function removeTyping() {
+  const t = document.getElementById('typing');
+  if (t) t.remove();
+}
+
+function escHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;');
+}
+
+function suggest(text) {
+  document.getElementById('inp').value = text;
+  send();
+}
+
+// ── STEP 1: Embed the user query via Cloudflare Worker ───────────────────
+async function embedQuery(query) {
+  const res = await fetch(WORKER_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action: 'embed', query })
+  });
+  const data = await res.json();
+  if (!data.data || !data.data[0]) {
+    throw new Error('Embedding failed: ' + JSON.stringify(data));
+  }
+  return data.data[0].embedding;
+}
+
+// ── STEP 2: Query Pinecone via Cloudflare Worker ─────────────────────────
+async function retrieveProducts(embedding) {
+  const res = await fetch(WORKER_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action: 'retrieve', embedding })
+  });
+  const data = await res.json();
+  return data.matches.map(m => m.metadata);
+}
+
+// ── STEP 3: Ask Claude with retrieved context ─────────────────────────────
+async function askClaude(query, products) {
+  const context = products.map((p, i) =>
+    `[Product ${i+1}]\n${p.text}`
+  ).join('\n\n');
+
+  const userMessage = `Customer question: ${query}\n\nRetrieved products from catalogue:\n${context}`;
+
+  history.push({ role: 'user', content: userMessage });
+
+  const res = await fetch(WORKER_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      action: 'chat',
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 512,
+      system: SYSTEM,
+      messages: history
+    })
+  });
+
+  const data = await res.json();
+  const reply = data.content?.[0]?.text || 'Sorry, something went wrong. Please try again.';
+  history.push({ role: 'assistant', content: reply });
+  return reply;
+}
+
+// ── MAIN SEND FUNCTION ────────────────────────────────────────────────────
+async function send() {
+  const inp = document.getElementById('inp');
+  const btn = document.getElementById('sendBtn');
+  const text = inp.value.trim();
+  if (!text) return;
+
+  inp.value = ''; inp.style.height = 'auto';
+  btn.disabled = true;
+
+  addUserMsg(text);
+  showTyping();
+
+  try {
+    // RAG pipeline: embed → retrieve → generate
+    const embedding = await embedQuery(text);
+    const products  = await retrieveProducts(embedding);
+    const answer    = await askClaude(text, products);
+
+    removeTyping();
+    addBotMsg(answer, products);
+  } catch(err) {
+    removeTyping();
+    addBotMsg('I ran into a technical issue. Please try again in a moment.', []);
+    console.error(err);
+  }
+
+  btn.disabled = false;
+  inp.focus();
+}
+</script>
+</body>
+</html>
