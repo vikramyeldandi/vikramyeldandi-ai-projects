@@ -561,6 +561,10 @@ async function retrieveProducts(embedding) {
     body: JSON.stringify({ action: 'retrieve', embedding })
   });
   const data = await res.json();
+  console.log('Pinecone response:', JSON.stringify(data).substring(0, 500));
+  if (!data.matches) {
+    throw new Error('Pinecone returned no matches: ' + JSON.stringify(data));
+  }
   return data.matches.map(m => m.metadata);
 }
 
