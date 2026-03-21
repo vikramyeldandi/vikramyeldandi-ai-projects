@@ -304,6 +304,11 @@
   }
   .status-live { background:rgba(29,158,117,0.15); color:#5dcaa5; border:0.5px solid rgba(29,158,117,0.3); }
   .status-soon { background:rgba(255,255,255,0.04); color:var(--text-muted); border:0.5px solid var(--border); }
+  .status-high { background:rgba(127,119,221,0.15); color:#afa9ec; border:0.5px solid rgba(127,119,221,0.4); }
+  .agent-card.high-signal { border-color: rgba(127,119,221,0.25); }
+  .agent-card.high-signal::before { background: linear-gradient(90deg, #7f77dd, #afa9ec); }
+  .agent-card.high-signal:hover { border-color: rgba(127,119,221,0.5); }
+  .tag.high { background:rgba(127,119,221,0.1); border-color:rgba(127,119,221,0.3); color:#afa9ec; }
 
   /* ─── SKILLS ─── */
   .skills-grid {
@@ -646,7 +651,7 @@
         </div>
         <div class="mini-stat-divider"></div>
         <div class="mini-stat">
-          <div class="mini-stat-val">12</div>
+          <div class="mini-stat-val">14</div>
           <div class="mini-stat-label">AI Agents &amp; Counting</div>
         </div>
         <div class="mini-stat-divider"></div>
@@ -783,93 +788,129 @@
     <div class="agent-card">
       <span class="agent-status status-soon">Coming Soon</span>
       <p class="agent-num">Agent 05</p>
-      <h3 class="agent-name">Customer Review Analyser</h3>
-      <p class="agent-desc">Processes raw customer reviews — classifies sentiment, clusters themes, ranks issues by frequency, and outputs a prioritised product insight report.</p>
+      <h3 class="agent-name">Promotional Copy Generator</h3>
+      <p class="agent-desc">Generates on-brand marketing copy in multiple formats — email subject line, product description, social caption, and push notification — from a product name and key features.</p>
       <div class="agent-tags">
         <span class="tag retail">Retail</span>
-        <span class="tag">Classification</span>
-        <span class="tag">Sentiment</span>
-        <span class="tag">Clustering</span>
+        <span class="tag">Structured Output</span>
+        <span class="tag">Multi-Format</span>
+        <span class="tag">Brand Tone</span>
       </div>
     </div>
 
     <div class="agent-card">
       <span class="agent-status status-soon">Coming Soon</span>
       <p class="agent-num">Agent 06</p>
-      <h3 class="agent-name">Fraud Pattern Explainer</h3>
-      <p class="agent-desc">Analyses transaction descriptions, identifies suspicious patterns, explains reasoning in plain English, and rates risk — with full chain-of-thought transparency.</p>
+      <h3 class="agent-name">Multimodal Product Image Analyser</h3>
+      <p class="agent-desc">Accepts product images and returns structured descriptions, attributes, and quality flags — combining vision and language for automated catalogue enrichment.</p>
       <div class="agent-tags">
-        <span class="tag fintech">FinTech</span>
-        <span class="tag">Chain-of-Thought</span>
-        <span class="tag">Explainability</span>
-        <span class="tag">Risk</span>
+        <span class="tag retail">Retail</span>
+        <span class="tag">Vision / Multimodal</span>
+        <span class="tag">Image-to-Text</span>
+        <span class="tag">Structured Output</span>
       </div>
     </div>
 
     <div class="agent-card">
       <span class="agent-status status-soon">Coming Soon</span>
       <p class="agent-num">Agent 07</p>
-      <h3 class="agent-name">Retail AI Feature PRD Agent</h3>
-      <p class="agent-desc">Takes a feature idea and produces a full PRD — problem statement, user stories, acceptance criteria, success metrics, and risks.</p>
+      <h3 class="agent-name">Agentic Order Management Bot</h3>
+      <p class="agent-desc">Multi-step agentic workflow managing order lookup, status updates, and escalation — with tool use and state management across a full customer service loop.</p>
       <div class="agent-tags">
-        <span class="tag saas">Retail SaaS</span>
-        <span class="tag">Structured Output</span>
-        <span class="tag">PM Deliverable</span>
+        <span class="tag retail">Retail</span>
+        <span class="tag">Agentic Workflow</span>
+        <span class="tag">Tool Use</span>
+        <span class="tag">State Management</span>
       </div>
     </div>
 
-    <div class="agent-card">
-      <span class="agent-status status-soon">Coming Soon</span>
+    <div class="agent-card high-signal built">
+      <span class="agent-status status-high">High Signal</span>
       <p class="agent-num">Agent 08</p>
-      <h3 class="agent-name">Retail Personalisation Agent</h3>
-      <p class="agent-desc">Reasons over a customer's purchase and browsing history to generate personalised product recommendations with an explanation for each pick.</p>
+      <h3 class="agent-name">AI Decision Approval Workflow Agent</h3>
+      <p class="agent-desc">Defines when AI can auto-approve, auto-route, or auto-generate vs. when human review is required — with confidence scoring, governance thresholds, and escalation logic.</p>
       <div class="agent-tags">
-        <span class="tag retail">Retail</span>
-        <span class="tag">Personalisation</span>
-        <span class="tag">In-Context Learning</span>
+        <span class="tag high">HITL Design</span>
+        <span class="tag high">Governance</span>
+        <span class="tag high">Confidence Scoring</span>
+        <span class="tag high">Escalation</span>
       </div>
     </div>
 
     <div class="agent-card">
       <span class="agent-status status-soon">Coming Soon</span>
       <p class="agent-num">Agent 09</p>
-      <h3 class="agent-name">Fintech Onboarding Agent</h3>
-      <p class="agent-desc">Multi-step agent that walks new customers through KYC questions, validates answers, flags inconsistencies, and produces an onboarding summary.</p>
+      <h3 class="agent-name">Structured Data Extractor</h3>
+      <p class="agent-desc">Parses unstructured documents — PDFs, emails, forms — and outputs validated JSON conforming to a defined schema, with field-level confidence scores.</p>
       <div class="agent-tags">
-        <span class="tag fintech">FinTech</span>
-        <span class="tag">Multi-Step</span>
-        <span class="tag">Memory</span>
-        <span class="tag">Validation</span>
+        <span class="tag">Document Parsing</span>
+        <span class="tag">JSON Output</span>
+        <span class="tag">Schema Enforcement</span>
       </div>
     </div>
 
-    <div class="agent-card">
-      <span class="agent-status status-soon">Coming Soon</span>
+    <div class="agent-card high-signal built">
+      <span class="agent-status status-high">High Signal</span>
       <p class="agent-num">Agent 10</p>
-      <h3 class="agent-name">Retail Campaign Orchestrator</h3>
-      <p class="agent-desc">Breaks a campaign brief into sub-agents — one researches trends, one writes copy, one checks brand compliance — then synthesises the final output.</p>
+      <h3 class="agent-name">Prompt Injection Red Team Agent</h3>
+      <p class="agent-desc">Adversarially tests LLM systems for prompt injection vulnerabilities — identifying attack vectors, testing guardrail robustness, and suggesting mitigations.</p>
       <div class="agent-tags">
-        <span class="tag saas">Retail SaaS</span>
-        <span class="tag">Orchestration</span>
-        <span class="tag">Sub-Agents</span>
-        <span class="tag">MCP</span>
+        <span class="tag high">AI Security</span>
+        <span class="tag high">Adversarial Testing</span>
+        <span class="tag high">Safety Evaluation</span>
       </div>
     </div>
 
     <div class="agent-card">
       <span class="agent-status status-soon">Coming Soon</span>
       <p class="agent-num">Agent 11</p>
-      <h3 class="agent-name">Multimodal UX Critic Agent</h3>
-      <p class="agent-desc">Upload a screenshot of any retail app — the agent analyses the UX, scores the checkout flow, and writes a prioritised improvement brief as a PM would.</p>
+      <h3 class="agent-name">Personalised Product Recommender</h3>
+      <p class="agent-desc">Recommends products based on customer profile, purchase history, and browsing context — with conditional reasoning and explainable justification for each recommendation.</p>
       <div class="agent-tags">
         <span class="tag retail">Retail</span>
-        <span class="tag">Multimodal</span>
-        <span class="tag">Vision Model</span>
-        <span class="tag">UX Analysis</span>
+        <span class="tag">Personalisation</span>
+        <span class="tag">Recommendations</span>
+        <span class="tag">Explainability</span>
       </div>
     </div>
 
-  </div>
+    <div class="agent-card">
+      <span class="agent-status status-soon">Coming Soon</span>
+      <p class="agent-num">Agent 12</p>
+      <h3 class="agent-name">AI Product PRD Generator</h3>
+      <p class="agent-desc">Transforms a brief product idea into a structured PRD — including problem statement, user stories, acceptance criteria, and success metrics — using AI to scaffold product thinking.</p>
+      <div class="agent-tags">
+        <span class="tag saas">Meta-AI</span>
+        <span class="tag">PRD</span>
+        <span class="tag">Product Design</span>
+      </div>
+    </div>
+
+    <div class="agent-card high-signal built">
+      <span class="agent-status status-high">High Signal</span>
+      <p class="agent-num">Agent 13</p>
+      <h3 class="agent-name">Customer Review Intelligence Agent</h3>
+      <p class="agent-desc">Classifies sentiment, clusters themes, and ranks issues by frequency across raw customer reviews — outputting a prioritised product insight report with business-ready findings.</p>
+      <div class="agent-tags">
+        <span class="tag high">Sentiment Analysis</span>
+        <span class="tag high">Theme Clustering</span>
+        <span class="tag high">Insight Report</span>
+        <span class="tag retail">Retail</span>
+      </div>
+    </div>
+
+    <div class="agent-card high-signal built">
+      <span class="agent-status status-high">High Signal</span>
+      <p class="agent-num">Agent 14</p>
+      <h3 class="agent-name">AI Use Case ROI Estimator</h3>
+      <p class="agent-desc">Takes an AI use case description and outputs estimated efficiency gain, implementation complexity, risk level, and recommended next steps — translating AI capability into business language.</p>
+      <div class="agent-tags">
+        <span class="tag high">ROI Estimation</span>
+        <span class="tag high">Business Value</span>
+        <span class="tag high">Effort/Impact Scoring</span>
+      </div>
+    </div>
+
 </section>
 
 <!-- SKILLS -->
@@ -955,7 +996,7 @@
     <div class="exp-pillar">
       <div class="exp-pillar-icon">🤖</div>
       <div class="exp-pillar-title">Applied AI &amp; GenAI Product</div>
-      <p class="exp-pillar-body">Hands-on experience designing and deploying <strong>production AI agents</strong> including grounded FAQ bots, RAG pipelines, multi-step orchestrators, and multimodal agents. Deep fluency in system prompt design, guardrails, context window management, tool use, and evaluation frameworks. Currently building a portfolio of 11 agents across Retail and FinTech domains.</p>
+      <p class="exp-pillar-body">Hands-on experience designing and deploying <strong>production AI agents</strong> including grounded FAQ bots, RAG pipelines, multi-step orchestrators, and multimodal agents. Deep fluency in system prompt design, guardrails, context window management, tool use, and evaluation frameworks. Currently building a portfolio of 14 agents across Retail and FinTech domains.</p>
     </div>
     <div class="exp-pillar">
       <div class="exp-pillar-icon">🛍️</div>
@@ -1012,7 +1053,7 @@
     <h2>Ready to Lead<br><em style="color:var(--accent-light)">What's Next in AI Product</em></h2>
     <p>If you're building something ambitious at the intersection of AI and commerce — and you need a product leader who can ship agents, define strategy, and drive measurable outcomes — let's talk.</p>
     <div class="contact-btns">
-      <a href="mailto:vikramyeldandi@gmail.com" class="contact-btn-primary">
+      <a href="/cdn-cgi/l/email-protection#42342b2930232f3b272e26232c262b02252f232b2e6c212d2f" class="contact-btn-primary">
         <svg viewBox="0 0 24 24"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg>
         Email Me
       </a>
@@ -1026,4 +1067,4 @@
 </section>
 
 <footer>
-  <p>© 2026 Vikram Yeldandi · AI Product Leader · Denver, CO · <a href="mailto:vikramyeldandi@gmail.com" style="color:var(--accent);text-decoration:none;">vikramyeldandi@gmail.com</a>
+  <p>© 2026 Vikram Yeldandi · AI Product Leader · Denver, CO · <a href="/cdn-cgi/l/email-protection#2e5847455c4f43574b424a4f404a476e4943
