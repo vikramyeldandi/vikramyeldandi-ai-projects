@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent 04 — Guardrailed FinTech Support Agent · Case Study</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a1628;
+    --navy-mid: #112240;
+    --accent: #4a90d9;
+    --accent-light: #64b5f6;
+    --green: #1d9e75;
+    --green-light: #5dcaa5;
+    --gold: #c9a84c;
+    --white: #ffffff;
+    --text-muted: #8899aa;
+    --border: rgba(255,255,255,0.08);
+    --card-bg: rgba(255,255,255,0.04);
+    --red: #f87171;
+    --red-pale: rgba(239,68,68,0.1);
+    --red-border: rgba(239,68,68,0.25);
+    --orange: #c9a84c;
+    --orange-pale: rgba(201,168,76,0.1);
+    --orange-border: rgba(201,168,76,0.25);
+    --blue-pale: rgba(74,144,217,0.1);
+    --blue-border: rgba(74,144,217,0.25);
+    --purple-pale: rgba(139,92,246,0.1);
+    --purple-border: rgba(139,92,246,0.25);
+  }
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { font-family:'DM Sans',sans-serif; background:var(--navy); color:var(--white); line-height:1.6; overflow-x:hidden; }
+
+  nav { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; justify-content:space-between; align-items:center; padding:18px 48px; background:rgba(10,22,40,0.9); backdrop-filter:blur(12px); border-bottom:0.5px solid var(--border); }
+  .nav-logo { font-family:'DM Serif Display',serif; font-size:17px; color:var(--white); }
+  .nav-logo span { color:var(--accent); }
+  .nav-actions { display:flex; gap:12px; align-items:center; }
+  .nav-btn { display:flex; align-items:center; gap:6px; padding:8px 16px; border-radius:4px; font-size:12px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; text-decoration:none; transition:all .2s; }
+  .nav-btn.outline { border:0.5px solid var(--border); color:var(--text-muted); }
+  .nav-btn.outline:hover { border-color:var(--accent); color:var(--white); }
+  .nav-btn.primary { background:var(--green); color:#fff; }
+  .nav-btn.primary:hover { background:var(--green-light); }
+  .nav-btn svg { width:13px; height:13px; fill:currentColor; }
+
+  .hero { padding:140px 48px 80px; max-width:900px; margin:0 auto; position:relative; }
+  .hero::before { content:''; position:fixed; top:0; left:0; right:0; bottom:0; background:radial-gradient(ellipse 60% 50% at 70% 20%, rgba(74,144,217,0.07) 0%, transparent 60%); pointer-events:none; z-index:0; }
+  .breadcrumb { display:flex; align-items:center; gap:8px; font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--text-muted); margin-bottom:24px; position:relative; z-index:1; }
+  .breadcrumb span { color:var(--accent-light); }
+  .breadcrumb::before { content:''; display:inline-block; width:24px; height:1px; background:var(--accent); }
+  .hero-meta { display:flex; align-items:center; gap:10px; margin-bottom:20px; position:relative; z-index:1; }
+  .badge { font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; padding:4px 10px; border-radius:3px; }
+  .badge.live { background:rgba(29,158,117,0.15); color:var(--green-light); border:0.5px solid rgba(29,158,117,0.3); }
+  .badge.fintech { background:rgba(74,144,217,0.1); color:var(--accent-light); border:0.5px solid rgba(74,144,217,0.2); }
+  .badge.guardrail { background:rgba(239,68,68,0.1); color:var(--red); border:0.5px solid rgba(239,68,68,0.25); }
+  .hero h1 { font-family:'DM Serif Display',serif; font-size:clamp(36px,5vw,58px); line-height:1.1; margin-bottom:20px; position:relative; z-index:1; }
+  .hero h1 em { font-style:italic; color:var(--accent-light); }
+  .hero-desc { font-size:16px; line-height:1.8; color:rgba(255,255,255,0.6); max-width:640px; margin-bottom:40px; position:relative; z-index:1; }
+
+  .content { max-width:900px; margin:0 auto; padding:0 48px 100px; }
+  .divider { height:0.5px; background:var(--border); margin:56px 0; }
+  .section-eyebrow { font-size:10px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--accent-light); margin-bottom:12px; display:flex; align-items:center; gap:10px; }
+  .section-eyebrow::before { content:''; display:inline-block; width:20px; height:1px; background:var(--accent); }
+  h2 { font-family:'DM Serif Display',serif; font-size:32px; color:var(--white); margin-bottom:20px; line-height:1.2; }
+  h3 { font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--accent-light); margin-bottom:12px; }
+  p { font-size:15px; line-height:1.85; color:rgba(255,255,255,0.65); margin-bottom:16px; }
+  p:last-child { margin-bottom:0; }
+  p strong { color:var(--white); font-weight:500; }
+
+  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:24px; }
+  .info-card { background:var(--card-bg); border:0.5px solid var(--border); border-radius:8px; padding:24px; }
+  .info-card.accent-left { border-left:2px solid var(--green); }
+  .info-card.accent-left-blue { border-left:2px solid var(--accent); }
+  .info-card.accent-left-red { border-left:2px solid var(--red); }
+
+  /* Guardrail cards */
+  .guardrail-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:24px; }
+  .gr-card { background:var(--card-bg); border:0.5px solid var(--border); border-radius:8px; padding:20px; }
+  .gr-card.fraud { border-left:3px solid var(--red); }
+  .gr-card.advice { border-left:3px solid var(--orange); }
+  .gr-card.competitor { border-left:3px solid var(--accent-light); }
+  .gr-card.offtopic { border-left:3px solid var(--text-muted); }
+  .gr-card.injection { border-left:3px solid #a78bfa; }
+  .gr-card.distress { border-left:3px solid var(--green-light); }
+  .gr-label { font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; margin-bottom:8px; display:inline-flex; align-items:center; gap:6px; padding:3px 8px; border-radius:4px; }
+  .gr-label.fraud { color:var(--red); background:var(--red-pale); border:0.5px solid var(--red-border); }
+  .gr-label.advice { color:var(--orange); background:var(--orange-pale); border:0.5px solid var(--orange-border); }
+  .gr-label.competitor { color:var(--accent-light); background:var(--blue-pale); border:0.5px solid var(--blue-border); }
+  .gr-label.offtopic { color:var(--text-muted); background:var(--card-bg); border:0.5px solid var(--border); }
+  .gr-label.injection { color:#a78bfa; background:var(--purple-pale); border:0.5px solid var(--purple-border); }
+  .gr-label.distress { color:var(--green-light); background:rgba(29,158,117,0.1); border:0.5px solid rgba(29,158,117,0.25); }
+  .gr-title { font-size:13px; font-weight:600; color:var(--white); margin-bottom:6px; }
+  .gr-desc { font-size:12px; color:var(--text-muted); line-height:1.6; margin:0; }
+
+  /* Priority flow */
+  .priority-list { display:flex; flex-direction:column; gap:0; margin-top:24px; }
+  .priority-item { display:grid; grid-template-columns:36px 1fr; gap:14px; align-items:start; }
+  .priority-num { width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'DM Mono',monospace; font-size:11px; font-weight:700; flex-shrink:0; margin-top:2px; }
+  .priority-num.p1 { background:var(--red-pale); color:var(--red); border:0.5px solid var(--red-border); }
+  .priority-num.p2 { background:rgba(29,158,117,0.1); color:var(--green-light); border:0.5px solid rgba(29,158,117,0.25); }
+  .priority-num.p3 { background:var(--purple-pale); color:#a78bfa; border:0.5px solid var(--purple-border); }
+  .priority-num.p4 { background:var(--orange-pale); color:var(--orange); border:0.5px solid var(--orange-border); }
+  .priority-num.p5 { background:var(--blue-pale); color:var(--accent-light); border:0.5px solid var(--blue-border); }
+  .priority-num.p6 { background:var(--card-bg); color:var(--text-muted); border:0.5px solid var(--border); }
+  .priority-content { padding-bottom:20px; border-left:0.5px solid var(--border); padding-left:20px; margin-left:-4px; }
+  .priority-item:last-child .priority-content { border-left:none; padding-bottom:0; }
+  .priority-title { font-size:14px; font-weight:600; color:var(--white); margin-bottom:4px; }
+  .priority-desc { font-size:12.5px; color:var(--text-muted); line-height:1.65; margin:0; }
+
+  /* Code block */
+  .code-block { background:#060e1a; border:0.5px solid var(--border); border-radius:8px; padding:24px; margin:24px 0; overflow-x:auto; position:relative; }
+  .code-label { position:absolute; top:12px; right:14px; font-size:10px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--text-muted); }
+  .code-block pre { font-family:'DM Mono',monospace; font-size:12.5px; line-height:1.7; color:rgba(255,255,255,0.75); white-space:pre-wrap; }
+  .cm { color:#5c7a6e; } .cv { color:var(--green-light); } .cs { color:#e8a87c; } .ck { color:var(--accent-light); }
+
+  /* Concept grid */
+  .concept-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:24px; }
+  .concept-card { background:var(--card-bg); border:0.5px solid var(--border); border-radius:8px; padding:20px; transition:border-color .2s; }
+  .concept-card:hover { border-color:rgba(74,144,217,0.35); }
+  .concept-icon { font-size:20px; margin-bottom:10px; }
+  .concept-name { font-size:13px; font-weight:600; color:var(--white); margin-bottom:6px; }
+  .concept-desc { font-size:11.5px; line-height:1.6; color:var(--text-muted); margin:0; }
+
+  /* Lessons */
+  .lesson-list { display:flex; flex-direction:column; gap:12px; margin-top:24px; }
+  .lesson { display:grid; grid-template-columns:28px 1fr; gap:14px; align-items:start; }
+  .lesson-num { width:28px; height:28px; background:rgba(74,144,217,0.1); border:0.5px solid rgba(74,144,217,0.25); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:var(--accent-light); flex-shrink:0; margin-top:2px; }
+  .lesson-text { font-size:14px; line-height:1.75; color:rgba(255,255,255,0.7); margin:0; }
+  .lesson-text strong { color:var(--white); font-weight:500; }
+
+  /* CTA */
+  .cta-bar { background:var(--navy-mid); border:0.5px solid var(--border); border-radius:10px; padding:36px 40px; display:flex; align-items:center; justify-content:space-between; gap:24px; margin-top:56px; }
+  .cta-bar h3 { font-family:'DM Serif Display',serif; font-size:22px; font-weight:400; color:var(--white); margin-bottom:6px; letter-spacing:0; text-transform:none; }
+  .cta-bar p { font-size:13px; color:var(--text-muted); margin:0; }
+  .cta-actions { display:flex; gap:10px; flex-shrink:0; }
+  .cta-btn { padding:12px 24px; border-radius:4px; font-size:12px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; text-decoration:none; transition:all .2s; white-space:nowrap; }
+  .cta-btn.green { background:var(--green); color:#fff; }
+  .cta-btn.green:hover { background:var(--green-light); }
+  .cta-btn.ghost { border:0.5px solid var(--border); color:var(--text-muted); }
+  .cta-btn.ghost:hover { border-color:var(--accent); color:var(--white); }
+
+  @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+  .hero .breadcrumb { animation:fadeUp .5s ease both; }
+  .hero .hero-meta { animation:fadeUp .5s ease .1s both; }
+  .hero h1 { animation:fadeUp .5s ease .15s both; }
+  .hero .hero-desc { animation:fadeUp .5s ease .2s both; }
+
+  @media(max-width:768px) {
+    nav { padding:16px 20px; }
+    .hero { padding:120px 20px 60px; }
+    .content { padding:0 20px 80px; }
+    .two-col, .guardrail-grid { grid-template-columns:1fr; }
+    .concept-grid { grid-template-columns:1fr 1fr; }
+    .cta-bar { flex-direction:column; }
+  }
+  @media(max-width:480px) { .concept-grid { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Vikram <span>Yeldandi</span></div>
+  <div class="nav-actions">
+    <a href="index.html" class="nav-btn outline">
+      <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      Portfolio
+    </a>
+    <a href="agent04_chat.html" target="_blank" class="nav-btn primary">
+      <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+      Try the Agent
+    </a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="breadcrumb">Applied AI Portfolio <span>&middot;</span> Agent 04 of 12</div>
+  <div class="hero-meta">
+    <span class="badge live">&#x25CF; Live</span>
+    <span class="badge fintech">FinTech</span>
+    <span class="badge guardrail">6 Guardrails</span>
+  </div>
+  <h1>Guardrailed FinTech<br><em>Support Agent</em></h1>
+  <p class="hero-desc">A production-grade customer support bot for Finsera, a fictional UK digital banking platform. The agent answers account questions from a verified knowledge base — and demonstrates six active guardrails that block financial advice, competitor mentions, prompt injection, and escalate fraud immediately.</p>
+</div>
+
+<div class="content">
+
+  <div class="section-eyebrow">01 &mdash; Problem &amp; Objective</div>
+  <h2>Why guardrails matter more than capabilities</h2>
+  <p>Most AI demos show what an agent <em>can</em> do. In FinTech, the more important question is what it <strong>should not do</strong>. A support bot that gives investment advice, discusses competitors, or fails to escalate a fraud report is not just unhelpful — it creates regulatory, legal, and reputational risk.</p>
+  <p>The objective was to build a support agent that is genuinely useful for account queries, but equally rigorous about what it refuses — with every refusal visible, labelled, and explainable to a compliance team or product reviewer.</p>
+
+  <div class="two-col">
+    <div class="info-card accent-left-red">
+      <h3>The Risk</h3>
+      <p>An unguardrailed support bot in FinTech can inadvertently give regulated financial advice, fail to escalate fraud, or be manipulated via prompt injection — each carrying serious regulatory consequences under FCA rules.</p>
+    </div>
+    <div class="info-card accent-left-blue">
+      <h3>The Objective</h3>
+      <p>A grounded support agent with six active guardrails — each with a distinct trigger pattern, a scripted response, and a visible UI indicator — so every refusal is auditable, not invisible.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-eyebrow">02 &mdash; The Six Guardrails</div>
+  <h2>What the agent blocks and why</h2>
+  <p>Each guardrail targets a specific failure mode. The UI makes them visible — when a guardrail fires, the response bubble changes colour and shows a labelled tag so a hiring manager, compliance reviewer, or product stakeholder can see exactly which rule triggered.</p>
+
+  <div class="guardrail-grid">
+    <div class="gr-card fraud">
+      <div class="gr-label fraud">&#x1F6A8; Fraud Escalation</div>
+      <div class="gr-title">Highest priority — immediate human handoff</div>
+      <p class="gr-desc">Detects any mention of unauthorised transactions, account compromise, scams, or suspicious contact. Immediately directs to freeze card and call the 24/7 fraud line. Does not attempt to resolve in chat.</p>
+    </div>
+    <div class="gr-card advice">
+      <div class="gr-label advice">&#x1F4BC; Financial Advice Refusal</div>
+      <div class="gr-title">FCA compliance — no regulated advice</div>
+      <p class="gr-desc">Blocks any request for investment recommendations, savings decisions, or market opinions. Redirects to a qualified financial adviser. Required under FCA regulations for non-advised services.</p>
+    </div>
+    <div class="gr-card competitor">
+      <div class="gr-label competitor">&#x1F512; Competitor Block</div>
+      <div class="gr-title">Brand protection — no competitor commentary</div>
+      <p class="gr-desc">Detects mentions of Monzo, Revolut, Starling, Wise, and major UK banks. Refuses to compare or comment. Redirects to Finsera features. Protects against both commercial and reputational risk.</p>
+    </div>
+    <div class="gr-card offtopic">
+      <div class="gr-label offtopic">&#x1F642; Off-Topic Refusal</div>
+      <div class="gr-title">Scope enforcement — stays on task</div>
+      <p class="gr-desc">Politely declines any query unrelated to Finsera banking and payments. Prevents scope creep and keeps the agent focused on its designated support function.</p>
+    </div>
+    <div class="gr-card injection">
+      <div class="gr-label injection">&#x1F6E1;&#xFE0F; Prompt Injection Detection</div>
+      <div class="gr-title">Security — resists manipulation</div>
+      <p class="gr-desc">Detects attempts to override instructions, reveal the system prompt, or change the agent's identity. Responds with a security notice and refuses to comply. Critical for trust in a regulated context.</p>
+    </div>
+    <div class="gr-card distress">
+      <div class="gr-label distress">&#x1F499; Distress &amp; Vulnerability</div>
+      <div class="gr-title">FCA Consumer Duty — vulnerable customer support</div>
+      <p class="gr-desc">Detects customer distress or self-harm signals. Responds with empathy and provides Samaritans contact details. Required under FCA Consumer Duty regulations for fair treatment of vulnerable customers.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-eyebrow">03 &mdash; Guardrail Priority Order</div>
+  <h2>When multiple guardrails could fire</h2>
+  <p>The system prompt defines an explicit priority order. When a message could trigger multiple guardrails simultaneously — for example, a distressed customer mentioning fraud — the agent follows this hierarchy:</p>
+
+  <div class="priority-list">
+    <div class="priority-item">
+      <div class="priority-num p1">1</div>
+      <div class="priority-content">
+        <div class="priority-title">Fraud &amp; Security Escalation</div>
+        <p class="priority-desc">Always fires first. No other guardrail overrides a fraud signal. Immediate human handoff every time.</p>
+      </div>
+    </div>
+    <div class="priority-item">
+      <div class="priority-num p2">2</div>
+      <div class="priority-content">
+        <div class="priority-title">Distress &amp; Vulnerability</div>
+        <p class="priority-desc">Second priority. A customer in crisis gets a human-centred response before any account query is addressed.</p>
+      </div>
+    </div>
+    <div class="priority-item">
+      <div class="priority-num p3">3</div>
+      <div class="priority-content">
+        <div class="priority-title">Prompt Injection Detection</div>
+        <p class="priority-desc">Third. Manipulation attempts are blocked before the agent processes any content from the message.</p>
+      </div>
+    </div>
+    <div class="priority-item">
+      <div class="priority-num p4">4</div>
+      <div class="priority-content">
+        <div class="priority-title">Financial Advice Refusal</div>
+        <p class="priority-desc">Advice requests are refused cleanly with a redirect to a qualified adviser.</p>
+      </div>
+    </div>
+    <div class="priority-item">
+      <div class="priority-num p5">5</div>
+      <div class="priority-content">
+        <div class="priority-title">Competitor Block</div>
+        <p class="priority-desc">Competitor mentions redirected back to Finsera without commentary or comparison.</p>
+      </div>
+    </div>
+    <div class="priority-item">
+      <div class="priority-num p6">6</div>
+      <div class="priority-content">
+        <div class="priority-title">Off-Topic Refusal</div>
+        <p class="priority-desc">Everything else outside scope is politely declined and redirected.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-eyebrow">04 &mdash; System Prompt Design</div>
+  <h2>How the guardrails are engineered</h2>
+  <p>Each guardrail is implemented as a named rule in the system prompt with three components: a trigger definition (what to detect), a required response format (what to say), and a machine-readable tag (what the UI renders). The tag pattern <code style="font-family:'DM Mono',monospace;font-size:13px;color:var(--accent-light);background:var(--card-bg);padding:2px 6px;border-radius:3px">[GUARDRAIL:TYPE]</code> is parsed by the front end to apply the correct visual treatment.</p>
+
+  <div class="code-block">
+    <span class="code-label">System Prompt Structure</span>
+    <pre><span class="cm">// Each guardrail follows this pattern:</span>
+
+<span class="ck">GUARDRAIL 1 — FRAUD ESCALATION (HIGHEST PRIORITY)</span>
+<span class="cv">Triggers:</span> "unauthorised transaction", "been scammed",
+          "account hacked", "suspicious call from Finsera"...
+
+<span class="cv">Required response format:</span>
+<span class="cs">"[GUARDRAIL:FRAUD] 🚨 This sounds like an urgent security issue..."</span>
+
+<span class="cm">// UI parses [GUARDRAIL:FRAUD] → applies red bubble + fraud label
+// Priority order enforced — fraud always fires before any other rule
+// Scripted response — no paraphrasing allowed</span></pre>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-eyebrow">05 &mdash; Concepts Demonstrated</div>
+  <h2>What this agent teaches</h2>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="concept-icon">&#x1F6E1;&#xFE0F;</div>
+      <div class="concept-name">Guardrail Design</div>
+      <p class="concept-desc">Six production-grade guardrails with explicit triggers, scripted responses, and priority ordering — the same pattern used in enterprise AI deployments in regulated industries.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-icon">&#x1F6A8;</div>
+      <div class="concept-name">Escalation Logic</div>
+      <p class="concept-desc">Fraud detection triggers an immediate human handoff with specific instructions — not a generic "contact support" message. The escalation path is defined, tested, and visible.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-icon">&#x1F4CB;</div>
+      <div class="concept-name">Grounded Responses</div>
+      <p class="concept-desc">All answers come from the Finsera knowledge base embedded in the system prompt. The agent cannot speculate, guess, or draw on general banking knowledge.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-icon">&#x1F50D;</div>
+      <div class="concept-name">Prompt Injection Defence</div>
+      <p class="concept-desc">Detects and blocks attempts to override instructions, reveal internal configuration, or manipulate the agent's identity — a critical security requirement for any production AI system.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-icon">&#x2696;&#xFE0F;</div>
+      <div class="concept-name">FCA &amp; Consumer Duty</div>
+      <p class="concept-desc">Guardrails map directly to FCA regulatory requirements — no regulated advice, fair treatment of vulnerable customers, fraud escalation. Compliance is baked into the agent design, not bolted on.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-icon">&#x1F4CA;</div>
+      <div class="concept-name">Auditable AI</div>
+      <p class="concept-desc">Every guardrail trigger is labelled and colour-coded in the UI. A compliance officer, product reviewer, or hiring manager can see exactly which rule fired and why — no black box.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-eyebrow">06 &mdash; Lessons Learned</div>
+  <h2>What I would do differently</h2>
+
+  <div class="lesson-list">
+    <div class="lesson">
+      <div class="lesson-num">1</div>
+      <p class="lesson-text"><strong>Guardrail triggers need to be exhaustive, not illustrative.</strong> The initial fraud trigger list was too narrow. Real customers describe fraud in dozens of ways — "someone used my card," "a transaction I don't recognise," "I think I've been hacked." In production, trigger lists need to be built from real support ticket data, not intuition.</p>
+    </div>
+    <div class="lesson">
+      <div class="lesson-num">2</div>
+      <p class="lesson-text"><strong>Scripted escalation responses must be non-negotiable.</strong> Allowing the model to paraphrase a fraud escalation response is a liability. The exact wording — especially the fraud line number and the instruction not to make further transactions — must be reproduced verbatim every time. Scripted responses remove model discretion where it could cause harm.</p>
+    </div>
+    <div class="lesson">
+      <div class="lesson-num">3</div>
+      <p class="lesson-text"><strong>Priority ordering is a product decision, not a technical one.</strong> Deciding that fraud beats distress, and distress beats injection, is a deliberate choice about what matters most to the business and the customer. In production, this priority order should be reviewed by legal, compliance, and customer experience teams — not just engineering.</p>
+    </div>
+    <div class="lesson">
+      <div class="lesson-num">4</div>
+      <p class="lesson-text"><strong>Visible guardrails build trust with regulators.</strong> Making guardrail triggers visible in the UI is not just a demo feature — it's a compliance asset. If a regulator asks "how do you ensure your AI doesn't give investment advice?", being able to show a logged, labelled, colour-coded refusal in every session is far more compelling than describing a prompt rule.</p>
+    </div>
+    <div class="lesson">
+      <div class="lesson-num">5</div>
+      <p class="lesson-text"><strong>Prompt injection is underestimated in enterprise AI.</strong> Most teams focus on what the agent can do — almost none think about what a malicious user can force it to do. In FinTech especially, where an injected instruction could expose account data or suppress a fraud alert, prompt injection defence is not optional. It belongs in the design brief, not the security review.</p>
+    </div>
+  </div>
+
+  <div class="cta-bar">
+    <div>
+      <h3>Try the guardrails yourself</h3>
+      <p>Ask about fraud, request financial advice, mention a competitor, or try a prompt injection — watch each guardrail fire in real time.</p>
+    </div>
+    <div class="cta-actions">
+      <a href="index.html" class="cta-btn ghost">&larr; Portfolio</a>
+      <a href="agent04_chat.html" target="_blank" class="cta-btn green">Launch Agent 04 &rarr;</a>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
