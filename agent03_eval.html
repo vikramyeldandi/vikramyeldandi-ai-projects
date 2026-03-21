@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luminary Home — RAG Quality Eval · Agent 03</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f14;
+    --surface: #13161e;
+    --surface-2: #1a1e2a;
+    --border: rgba(255,255,255,0.07);
+    --border-bright: rgba(255,255,255,0.14);
+    --text: #e8eaf0;
+    --text-muted: #6b7280;
+    --text-dim: #9ca3af;
+    --accent: #6366f1;
+    --accent-light: #a5b4fc;
+    --accent-pale: rgba(99,102,241,0.1);
+    --green: #10b981;
+    --green-pale: rgba(16,185,129,0.1);
+    --yellow: #f59e0b;
+    --yellow-pale: rgba(245,158,11,0.1);
+    --red: #ef4444;
+    --red-pale: rgba(239,68,68,0.1);
+    --pass: #10b981;
+    --warn: #f59e0b;
+    --fail: #ef4444;
+  }
+
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body {
+    font-family:'DM Sans',sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
+    display:flex; flex-direction:column;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background:var(--surface);
+    border-bottom:1px solid var(--border);
+    padding:14px 28px;
+    display:flex; align-items:center; justify-content:space-between;
+    position:sticky; top:0; z-index:100;
+  }
+  .header-left { display:flex; align-items:center; gap:14px; }
+  .logo {
+    width:36px; height:36px; border-radius:8px;
+    background:linear-gradient(135deg,var(--accent),#8b5cf6);
+    display:flex; align-items:center; justify-content:center;
+    font-size:13px; font-weight:700; color:#fff;
+    font-family:'DM Mono',monospace;
+  }
+  .header-title { font-size:14px; font-weight:600; color:var(--text); }
+  .header-sub { font-size:11px; color:var(--text-muted); margin-top:1px; letter-spacing:.04em; }
+  .header-right { display:flex; align-items:center; gap:10px; }
+  .badge-eval {
+    font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+    padding:4px 12px; border-radius:20px;
+    background:var(--accent-pale); color:var(--accent-light);
+    border:1px solid rgba(99,102,241,0.25);
+  }
+
+  /* ── MAIN LAYOUT ── */
+  .main {
+    flex:1; display:grid;
+    grid-template-columns:320px 1fr;
+    gap:0;
+    max-width:1200px; margin:0 auto; width:100%;
+    padding:24px 20px; gap:20px;
+    align-items:start;
+  }
+
+  /* ── LEFT PANEL ── */
+  .left-panel { display:flex; flex-direction:column; gap:14px; }
+
+  .panel {
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:18px;
+  }
+  .panel-label {
+    font-size:9px; font-weight:700; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--text-muted); margin-bottom:14px;
+    padding-bottom:10px; border-bottom:1px solid var(--border);
+  }
+
+  /* About */
+  .about-text { font-size:12.5px; color:var(--text-dim); line-height:1.65; }
+  .about-text + .about-text { margin-top:8px; }
+  .about-text strong { color:var(--text); font-weight:500; }
+
+  /* Stats grid */
+  .stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .stat-box {
+    background:var(--surface-2); border:1px solid var(--border);
+    border-radius:8px; padding:12px;
+    text-align:center;
+  }
+  .stat-val {
+    font-family:'DM Serif Display',serif;
+    font-size:24px; color:var(--text); line-height:1;
+    margin-bottom:4px;
+  }
+  .stat-val.green { color:var(--green); }
+  .stat-val.yellow { color:var(--yellow); }
+  .stat-val.red { color:var(--red); }
+  .stat-val.accent { color:var(--accent-light); }
+  .stat-label { font-size:10px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--text-muted); }
+
+  /* Score ring */
+  .score-display {
+    display:flex; flex-direction:column; align-items:center;
+    padding:16px 0 8px;
+  }
+  .score-ring {
+    width:100px; height:100px; border-radius:50%;
+    border:6px solid var(--border);
+    display:flex; align-items:center; justify-content:center;
+    position:relative; margin-bottom:12px;
+  }
+  .score-ring-fill {
+    position:absolute; inset:-6px;
+    border-radius:50%;
+    border:6px solid transparent;
+  }
+  .score-number {
+    font-family:'DM Serif Display',serif;
+    font-size:28px; color:var(--text); line-height:1;
+  }
+  .score-label { font-size:11px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--text-muted); }
+
+  /* Breakdown bars */
+  .breakdown { display:flex; flex-direction:column; gap:10px; }
+  .breakdown-row { display:flex; flex-direction:column; gap:4px; }
+  .breakdown-header { display:flex; justify-content:space-between; align-items:center; }
+  .breakdown-name { font-size:11px; font-weight:600; color:var(--text-dim); }
+  .breakdown-score { font-size:11px; font-weight:700; color:var(--text); font-family:'DM Mono',monospace; }
+  .bar-track { height:4px; background:var(--surface-2); border-radius:2px; overflow:hidden; }
+  .bar-fill { height:100%; border-radius:2px; transition:width 1s ease; }
+
+  /* Run button */
+  .run-btn {
+    width:100%; padding:14px;
+    background:var(--accent); border:none; border-radius:10px;
+    color:#fff; font-size:13px; font-weight:600; font-family:inherit;
+    cursor:pointer; transition:background .15s, transform .1s;
+    display:flex; align-items:center; justify-content:center; gap:8px;
+    letter-spacing:.02em;
+  }
+  .run-btn:hover { background:#4f46e5; }
+  .run-btn:active { transform:scale(.98); }
+  .run-btn:disabled { background:var(--surface-2); color:var(--text-muted); cursor:not-allowed; }
+  .run-btn svg { width:15px; height:15px; fill:currentColor; }
+
+  /* Progress bar */
+  .progress-wrap { display:none; }
+  .progress-wrap.visible { display:block; }
+  .progress-label { display:flex; justify-content:space-between; font-size:11px; color:var(--text-muted); margin-bottom:6px; }
+  .progress-track { height:6px; background:var(--surface-2); border-radius:3px; overflow:hidden; }
+  .progress-fill {
+    height:100%; border-radius:3px;
+    background:linear-gradient(90deg,var(--accent),var(--accent-light));
+    transition:width .3s ease;
+    width:0%;
+  }
+
+  /* Category pills */
+  .category-filters { display:flex; flex-wrap:wrap; gap:6px; }
+  .cat-pill {
+    font-size:10px; font-weight:600; letter-spacing:.05em; text-transform:uppercase;
+    padding:4px 10px; border-radius:20px;
+    background:var(--surface-2); border:1px solid var(--border);
+    color:var(--text-muted); cursor:pointer; transition:all .15s;
+  }
+  .cat-pill.active, .cat-pill:hover {
+    background:var(--accent-pale); border-color:rgba(99,102,241,0.3);
+    color:var(--accent-light);
+  }
+
+  /* ── RIGHT PANEL ── */
+  .right-panel { display:flex; flex-direction:column; gap:14px; }
+
+  /* Empty state */
+  .empty-state {
+    background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    padding:64px 32px; text-align:center;
+  }
+  .empty-icon { font-size:40px; margin-bottom:16px; opacity:.5; }
+  .empty-title { font-family:'DM Serif Display',serif; font-size:22px; color:var(--text); margin-bottom:8px; }
+  .empty-desc { font-size:13px; color:var(--text-muted); line-height:1.6; max-width:360px; margin:0 auto; }
+
+  /* Results table header */
+  .results-header {
+    background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    padding:16px 20px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .results-title { font-size:14px; font-weight:600; color:var(--text); }
+  .results-meta { font-size:12px; color:var(--text-muted); }
+  .export-btn {
+    padding:7px 14px; border-radius:7px;
+    background:var(--surface-2); border:1px solid var(--border);
+    color:var(--text-dim); font-size:11px; font-weight:600; letter-spacing:.05em; text-transform:uppercase;
+    cursor:pointer; transition:all .15s; font-family:inherit;
+  }
+  .export-btn:hover { border-color:var(--accent); color:var(--accent-light); }
+
+  /* Result cards */
+  .result-card {
+    background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    overflow:hidden; transition:border-color .15s;
+  }
+  .result-card:hover { border-color:var(--border-bright); }
+
+  .result-header {
+    padding:14px 18px;
+    display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
+    cursor:pointer;
+    border-bottom:1px solid transparent;
+    transition:border-color .15s;
+  }
+  .result-card.expanded .result-header { border-bottom-color:var(--border); }
+
+  .result-left { display:flex; align-items:flex-start; gap:12px; flex:1; }
+  .result-id {
+    font-family:'DM Mono',monospace; font-size:10px; font-weight:500;
+    color:var(--text-muted); padding:3px 8px; background:var(--surface-2);
+    border-radius:4px; white-space:nowrap; margin-top:2px;
+  }
+  .result-question { font-size:13px; font-weight:500; color:var(--text); line-height:1.5; }
+  .result-category { font-size:11px; color:var(--text-muted); margin-top:3px; }
+
+  .result-scores { display:flex; align-items:center; gap:8px; flex-shrink:0; }
+  .score-chip {
+    font-family:'DM Mono',monospace; font-size:11px; font-weight:700;
+    padding:4px 10px; border-radius:6px;
+    white-space:nowrap;
+  }
+  .score-chip.pass { background:var(--green-pale); color:var(--green); }
+  .score-chip.warn { background:var(--yellow-pale); color:var(--yellow); }
+  .score-chip.fail { background:var(--red-pale); color:var(--red); }
+  .verdict-icon { font-size:18px; }
+
+  /* Expanded body */
+  .result-body { padding:16px 18px; display:none; }
+  .result-card.expanded .result-body { display:block; }
+
+  .result-section { margin-bottom:14px; }
+  .result-section:last-child { margin-bottom:0; }
+  .result-section-label {
+    font-size:9px; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--text-muted); margin-bottom:6px;
+  }
+  .result-text {
+    font-size:12.5px; color:var(--text-dim); line-height:1.65;
+    background:var(--surface-2); border:1px solid var(--border);
+    border-radius:7px; padding:10px 13px;
+  }
+  .result-text.answer { color:var(--text); }
+  .result-text.expected { border-left:2px solid var(--green); }
+  .result-text.actual { border-left:2px solid var(--accent); }
+
+  /* Score breakdown in card */
+  .card-scores { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+  .card-score-item {
+    background:var(--surface-2); border:1px solid var(--border);
+    border-radius:8px; padding:10px 12px; text-align:center;
+  }
+  .card-score-dim { font-size:9px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--text-muted); margin-bottom:4px; }
+  .card-score-val { font-family:'DM Serif Display',serif; font-size:22px; }
+  .card-score-val.s5 { color:var(--green); }
+  .card-score-val.s4 { color:#34d399; }
+  .card-score-val.s3 { color:var(--yellow); }
+  .card-score-val.s2 { color:#f97316; }
+  .card-score-val.s1 { color:var(--red); }
+
+  /* Reasoning */
+  .reasoning-text {
+    font-size:12px; color:var(--text-dim); line-height:1.7;
+    font-style:italic; padding:10px 13px;
+    background:var(--surface-2); border:1px solid var(--border);
+    border-left:2px solid var(--accent); border-radius:0 7px 7px 0;
+  }
+
+  /* Spinner */
+  .spinner {
+    width:14px; height:14px; border:2px solid rgba(255,255,255,0.2);
+    border-top-color:#fff; border-radius:50%;
+    animation:spin .7s linear infinite;
+  }
+  @keyframes spin { to { transform:rotate(360deg); } }
+
+  @media(max-width:800px){
+    .main { grid-template-columns:1fr; padding:12px; }
+    .stats-grid { grid-template-columns:repeat(4,1fr); }
+    .card-scores { grid-template-columns:repeat(3,1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <div class="logo">E</div>
+    <div>
+      <div class="header-title">RAG Quality Eval — Agent 03</div>
+      <div class="header-sub">LLM-as-Judge · Luminary Home · Powered by Claude</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <span class="badge-eval">Eval Pipeline</span>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- LEFT PANEL -->
+  <div class="left-panel">
+
+    <div class="panel">
+      <p class="panel-label">About this agent</p>
+      <p class="about-text">Runs <strong>20 test questions</strong> against Agent 02's RAG pipeline. For each question, Claude acts as an impartial judge — scoring the response on <strong>Accuracy, Completeness, and Grounding</strong> (each 1–5).</p>
+      <p class="about-text" style="margin-top:8px;">This mirrors how production AI teams run <strong>automated evals</strong> to detect regressions before they reach users.</p>
+    </div>
+
+    <!-- Overall Score -->
+    <div class="panel">
+      <p class="panel-label">Overall Score</p>
+      <div class="score-display" id="scoreDisplay">
+        <div class="score-ring" id="scoreRing">
+          <span class="score-number" id="scoreNumber">—</span>
+        </div>
+        <div class="score-label" id="scoreLabel">Awaiting eval run</div>
+      </div>
+      <div class="breakdown" id="breakdown" style="margin-top:12px;">
+        <div class="breakdown-row">
+          <div class="breakdown-header">
+            <span class="breakdown-name">Accuracy</span>
+            <span class="breakdown-score" id="accScore">—</span>
+          </div>
+          <div class="bar-track"><div class="bar-fill" id="accBar" style="width:0%;background:#10b981;"></div></div>
+        </div>
+        <div class="breakdown-row">
+          <div class="breakdown-header">
+            <span class="breakdown-name">Completeness</span>
+            <span class="breakdown-score" id="compScore">—</span>
+          </div>
+          <div class="bar-track"><div class="bar-fill" id="compBar" style="width:0%;background:#6366f1;"></div></div>
+        </div>
+        <div class="breakdown-row">
+          <div class="breakdown-header">
+            <span class="breakdown-name">Grounding</span>
+            <span class="breakdown-score" id="groundScore">—</span>
+          </div>
+          <div class="bar-track"><div class="bar-fill" id="groundBar" style="width:0%;background:#f59e0b;"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="panel">
+      <p class="panel-label">Results</p>
+      <div class="stats-grid">
+        <div class="stat-box">
+          <div class="stat-val" id="statTotal">0</div>
+          <div class="stat-label">Total</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-val green" id="statPass">0</div>
+          <div class="stat-label">Pass</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-val yellow" id="statWarn">0</div>
+          <div class="stat-label">Partial</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-val red" id="statFail">0</div>
+          <div class="stat-label">Fail</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Progress -->
+    <div class="panel">
+      <p class="panel-label">Run Eval</p>
+      <div class="progress-wrap" id="progressWrap">
+        <div class="progress-label">
+          <span id="progressText">Starting...</span>
+          <span id="progressPct">0%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div style="margin-top:8px;font-size:11px;color:var(--text-muted)" id="currentQuestion"></div>
+      </div>
+      <button class="run-btn" id="runBtn" onclick="runEval()">
+        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        Run Full Eval (20 Questions)
+      </button>
+    </div>
+
+    <!-- Filter -->
+    <div class="panel">
+      <p class="panel-label">Filter by Category</p>
+      <div class="category-filters" id="catFilters">
+        <span class="cat-pill active" onclick="filterCategory('all', this)">All</span>
+        <span class="cat-pill" onclick="filterCategory('Specific Lookup', this)">Specific</span>
+        <span class="cat-pill" onclick="filterCategory('Category Browsing', this)">Browsing</span>
+        <span class="cat-pill" onclick="filterCategory('Cross-Category', this)">Cross-Cat</span>
+        <span class="cat-pill" onclick="filterCategory('Care & Maintenance', this)">Care</span>
+        <span class="cat-pill" onclick="filterCategory('Edge Case', this)">Edge</span>
+        <span class="cat-pill" onclick="filterCategory('Comparison', this)">Compare</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="right-panel" id="rightPanel">
+    <div class="empty-state" id="emptyState">
+      <div class="empty-icon">🧪</div>
+      <div class="empty-title">Ready to Evaluate</div>
+      <p class="empty-desc">Click "Run Full Eval" to test Agent 02 against 20 benchmark questions. Claude will judge each response on Accuracy, Completeness, and Grounding.</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ── CONFIG ────────────────────────────────────────────────────────────────
+const WORKER_URL = 'https://luminary-proxy.vikramyeldandi.workers.dev/';
+// ─────────────────────────────────────────────────────────────────────────
+
+const EVAL_DATASET = [
+  { id:"E001", category:"Specific Lookup", question:"What is the price of the Amber & Sandalwood Pillar Candle?", expected:"The Amber & Sandalwood Pillar Candle (SKU: CND-001) is priced at £28.00.", expected_skus:["CND-001"], difficulty:"easy" },
+  { id:"E002", category:"Specific Lookup", question:"What materials is the Moroccan Berber Rug made from?", expected:"The Moroccan Berber Rug (SKU: RUG-002) is made from 100% pure new wool.", expected_skus:["RUG-002"], difficulty:"easy" },
+  { id:"E003", category:"Specific Lookup", question:"How long does the Oud & Rose Luxury Candle burn for?", expected:"The Oud & Rose Luxury Candle (SKU: CND-007) has a burn time of 70 hours.", expected_skus:["CND-007"], difficulty:"easy" },
+  { id:"E004", category:"Specific Lookup", question:"What sizes does the Stackable Linen Storage Boxes set come in?", expected:"Small 20cm³, Medium 25cm³, and Large 30cm³.", expected_skus:["STG-003"], difficulty:"easy" },
+  { id:"E005", category:"Specific Lookup", question:"Is the Silk Pillowcase set currently in stock?", expected:"The Silk Pillowcase set (SKU: BED-010) is currently Low Stock.", expected_skus:["BED-010"], difficulty:"easy" },
+  { id:"E006", category:"Category Browsing", question:"What bedding options do you have for hot sleepers?", expected:"The Bamboo Duvet (BED-007) is temperature-regulating. The Organic Cotton Flat Sheet (BED-004) percale weave is cool and crisp.", expected_skus:["BED-007","BED-004"], difficulty:"medium" },
+  { id:"E007", category:"Category Browsing", question:"What outdoor lighting options do you sell?", expected:"Solar Garden String Lights (OUT-004) and the Outdoor Lantern (OUT-002).", expected_skus:["OUT-004","OUT-002"], difficulty:"medium" },
+  { id:"E008", category:"Category Browsing", question:"Do you have any candles suitable for a kitchen?", expected:"Yes, the Lemon Verbena & Basil Candle (CND-006) neutralises cooking odours.", expected_skus:["CND-006"], difficulty:"medium" },
+  { id:"E009", category:"Category Browsing", question:"What wall décor options do you have under £50?", expected:"Brass Wall Hooks set (WDC-005) at £36 and Pressed Flower Frame (WDC-007) at £44.", expected_skus:["WDC-005","WDC-007"], difficulty:"medium" },
+  { id:"E010", category:"Cross-Category", question:"What sustainable or eco-friendly products do you sell?", expected:"Recycled Cotton Throw (CTH-005), Beeswax Food Wraps (KIT-006), Bamboo Desk Organiser (STG-004), Seagrass Basket (STG-001).", expected_skus:["CTH-005","KIT-006","STG-004"], difficulty:"hard" },
+  { id:"E011", category:"Cross-Category", question:"I'm looking for a gift under £40 for someone who loves fragrance.", expected:"Reed Diffuser Bergamot & Neroli (FRG-001) at £36, or Wax Melts Orchard Collection (FRG-004) at £18.", expected_skus:["FRG-001","FRG-004"], difficulty:"medium" },
+  { id:"E012", category:"Cross-Category", question:"What products would you recommend for a relaxing bedroom?", expected:"Lavender Candle (CND-004), Weighted Blanket (BED-003), Ceramic Bedside Lamp (LGT-005).", expected_skus:["CND-004","BED-003","LGT-005"], difficulty:"hard" },
+  { id:"E013", category:"Care & Maintenance", question:"How do I care for the Moroccan Berber Rug?", expected:"Professional clean recommended. Vacuum without beater bar. Rotate annually.", expected_skus:["RUG-002"], difficulty:"easy" },
+  { id:"E014", category:"Care & Maintenance", question:"Can I machine wash the Chunky Knit Throw?", expected:"No — it's dry clean only. Made from 100% merino wool.", expected_skus:["CTH-001"], difficulty:"easy" },
+  { id:"E015", category:"Care & Maintenance", question:"How do I maintain the Acacia Wood Cheese Board?", expected:"Hand wash only, dry immediately, oil monthly with food-grade mineral oil.", expected_skus:["KIT-003"], difficulty:"easy" },
+  { id:"E016", category:"Edge Case", question:"Do you sell sofas or armchairs?", expected:"Luminary Home does not carry sofas or armchairs.", expected_skus:[], difficulty:"edge" },
+  { id:"E017", category:"Edge Case", question:"Do you have any electric heated blankets?", expected:"Luminary Home does not stock electric heated blankets.", expected_skus:[], difficulty:"edge" },
+  { id:"E018", category:"Comparison", question:"What is the difference between the Jute Area Rug and the Sheepskin Rug?", expected:"Jute rug (RUG-001) is 200×300cm at £185. Sheepskin (RUG-004) is ~60×90cm at £95, softer and smaller.", expected_skus:["RUG-001","RUG-004"], difficulty:"hard" },
+  { id:"E019", category:"Comparison", question:"What is the most expensive candle you sell and what makes it special?", expected:"Oud & Rose Luxury Candle (CND-007) at £48 — 70-hour burn, ceramic vessel, Middle Eastern oud and Turkish rose.", expected_skus:["CND-007"], difficulty:"hard" },
+  { id:"E020", category:"Specific Lookup", question:"What colours does the Velvet Cushion Cover come in?", expected:"Midnight Blue, Emerald, Blush, and Terracotta.", expected_skus:["CTH-002"], difficulty:"easy" }
+];
+
+const JUDGE_SYSTEM = `You are an expert AI evaluator assessing the quality of a RAG (Retrieval-Augmented Generation) system for a homeware retailer called Luminary Home.
+
+You will be given:
+1. A customer question
+2. The expected correct answer (ground truth)
+3. The actual answer produced by the RAG agent
+
+Score the actual answer on THREE dimensions, each from 1 to 5:
+
+ACCURACY (1-5): Does the answer contain correct factual information? Are product names, SKUs, prices, and details correct?
+- 5: All facts are correct
+- 4: Minor inaccuracies that don't mislead
+- 3: Some correct, some wrong
+- 2: Mostly incorrect
+- 1: Completely wrong or hallucinated
+
+COMPLETENESS (1-5): Does the answer address all parts of the question with sufficient detail?
+- 5: Fully addresses the question with all key details
+- 4: Addresses main point, minor details missing
+- 3: Partially addresses question
+- 2: Significant gaps
+- 1: Does not address the question
+
+GROUNDING (1-5): Is the answer based on the retrieved product data, or does it contain hallucinated/invented information?
+- 5: Fully grounded, no invented content
+- 4: Mostly grounded, trivial additions
+- 3: Mix of grounded and invented
+- 2: Significant hallucinations
+- 1: Mostly hallucinated
+
+Respond ONLY with valid JSON in this exact format:
+{
+  "accuracy": <number 1-5>,
+  "completeness": <number 1-5>,
+  "grounding": <number 1-5>,
+  "reasoning": "<one sentence explaining your scores>",
+  "verdict": "<PASS|PARTIAL|FAIL>"
+}
+
+PASS = average score >= 4.0
+PARTIAL = average score >= 2.5
+FAIL = average score < 2.5`;
+
+let allResults = [];
+let isRunning = false;
+
+// ── CALL AGENT 02 (embed → retrieve → generate) ──────────────────────────
+async function callAgent02(question) {
+  // Step 1: Embed
+  const embedRes = await fetch(WORKER_URL, {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ action:'embed', query:question })
+  });
+  const embedData = await embedRes.json();
+  if (!embedData.data?.[0]) throw new Error('Embed failed');
+  const embedding = embedData.data[0].embedding;
+
+  // Step 2: Retrieve
+  const retrieveRes = await fetch(WORKER_URL, {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ action:'retrieve', embedding })
+  });
+  const retrieveData = await retrieveRes.json();
+  if (!retrieveData.matches) throw new Error('Retrieve failed');
+  const products = retrieveData.matches.map(m => m.metadata);
+
+  // Step 3: Generate with Claude
+  const context = products.map((p,i) => `[Product ${i+1}]\n${p.text}`).join('\n\n');
+  const userMessage = `Customer question: ${question}\n\nRetrieved products:\n${context}`;
+
+  const chatRes = await fetch(WORKER_URL, {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({
+      model:'claude-sonnet-4-20250514',
+      max_tokens:400,
+      system:`You are the Luminary Home Product Knowledge Base assistant. Answer customer questions using ONLY the retrieved product information provided. Be specific — mention product names, SKUs, and prices. If products don't match, say so honestly. Keep answers to 2-3 sentences.`,
+      messages:[{ role:'user', content:userMessage }]
+    })
+  });
+  const chatData = await chatRes.json();
+  return chatData.content?.[0]?.text || 'No response';
+}
+
+// ── JUDGE THE RESPONSE ────────────────────────────────────────────────────
+async function judgeResponse(question, expected, actual) {
+  const prompt = `Customer question: "${question}"
+
+Expected answer (ground truth):
+"${expected}"
+
+Actual answer from RAG agent:
+"${actual}"
+
+Score this response.`;
+
+  const res = await fetch(WORKER_URL, {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({
+      model:'claude-sonnet-4-20250514',
+      max_tokens:300,
+      system: JUDGE_SYSTEM,
+      messages:[{ role:'user', content:prompt }]
+    })
+  });
+  const data = await res.json();
+  const text = data.content?.[0]?.text || '{}';
+  try {
+    const clean = text.replace(/```json|```/g,'').trim();
+    return JSON.parse(clean);
+  } catch(e) {
+    return { accuracy:3, completeness:3, grounding:3, reasoning:'Parse error', verdict:'PARTIAL' };
+  }
+}
+
+// ── MAIN EVAL RUNNER ──────────────────────────────────────────────────────
+async function runEval() {
+  if (isRunning) return;
+  isRunning = true;
+  allResults = [];
+
+  const btn = document.getElementById('runBtn');
+  const progressWrap = document.getElementById('progressWrap');
+  const progressFill = document.getElementById('progressFill');
+  const progressText = document.getElementById('progressText');
+  const progressPct  = document.getElementById('progressPct');
+  const currentQ     = document.getElementById('currentQuestion');
+  const emptyState   = document.getElementById('emptyState');
+
+  btn.disabled = true;
+  btn.innerHTML = `<div class="spinner"></div> Running Eval...`;
+  progressWrap.classList.add('visible');
+  emptyState.style.display = 'none';
+
+  // Clear results
+  const rightPanel = document.getElementById('rightPanel');
+  rightPanel.innerHTML = '';
+
+  // Add results header
+  const header = document.createElement('div');
+  header.className = 'results-header';
+  header.id = 'resultsHeader';
+  header.innerHTML = `
+    <div>
+      <div class="results-title">Eval Results</div>
+      <div class="results-meta" id="resultsMeta">Running...</div>
+    </div>
+    <button class="export-btn" onclick="exportResults()">↓ Export JSON</button>`;
+  rightPanel.appendChild(header);
+
+  let pass = 0, partial = 0, fail = 0;
+  let totalAcc = 0, totalComp = 0, totalGround = 0;
+
+  for (let i = 0; i < EVAL_DATASET.length; i++) {
+    const q = EVAL_DATASET[i];
+    const pct = Math.round(((i) / EVAL_DATASET.length) * 100);
+
+    progressFill.style.width = pct + '%';
+    progressPct.textContent = pct + '%';
+    progressText.textContent = `Question ${i+1} of ${EVAL_DATASET.length}`;
+    currentQ.textContent = `"${q.question.substring(0,60)}..."`;
+
+    let agentAnswer = '';
+    let scores = {};
+
+    try {
+      agentAnswer = await callAgent02(q.question);
+      scores = await judgeResponse(q.question, q.expected, agentAnswer);
+    } catch(e) {
+      agentAnswer = 'Error: ' + e.message;
+      scores = { accuracy:1, completeness:1, grounding:1, reasoning:'API error', verdict:'FAIL' };
+    }
+
+    const avg = ((scores.accuracy + scores.completeness + scores.grounding) / 3).toFixed(1);
+    const verdict = scores.verdict || (avg >= 4 ? 'PASS' : avg >= 2.5 ? 'PARTIAL' : 'FAIL');
+
+    if (verdict === 'PASS') pass++;
+    else if (verdict === 'PARTIAL') partial++;
+    else fail++;
+
+    totalAcc    += scores.accuracy;
+    totalComp   += scores.completeness;
+    totalGround += scores.grounding;
+
+    const result = { ...q, agentAnswer, scores, avg, verdict };
+    allResults.push(result);
+
+    // Update stats
+    document.getElementById('statTotal').textContent = i + 1;
+    document.getElementById('statPass').textContent  = pass;
+    document.getElementById('statWarn').textContent  = partial;
+    document.getElementById('statFail').textContent  = fail;
+
+    // Update score bars
+    const n = i + 1;
+    const avgAcc    = (totalAcc / n).toFixed(1);
+    const avgComp   = (totalComp / n).toFixed(1);
+    const avgGround = (totalGround / n).toFixed(1);
+    const overall   = ((totalAcc + totalComp + totalGround) / (n * 3) * 100).toFixed(0);
+
+    document.getElementById('accScore').textContent   = avgAcc + '/5';
+    document.getElementById('compScore').textContent  = avgComp + '/5';
+    document.getElementById('groundScore').textContent = avgGround + '/5';
+    document.getElementById('accBar').style.width    = (avgAcc / 5 * 100) + '%';
+    document.getElementById('compBar').style.width   = (avgComp / 5 * 100) + '%';
+    document.getElementById('groundBar').style.width = (avgGround / 5 * 100) + '%';
+    document.getElementById('scoreNumber').textContent = overall + '%';
+
+    const scoreColor = overall >= 80 ? 'var(--green)' : overall >= 60 ? 'var(--yellow)' : 'var(--red)';
+    document.getElementById('scoreNumber').style.color = scoreColor;
+    document.getElementById('scoreRing').style.borderColor = scoreColor;
+    document.getElementById('scoreLabel').textContent = overall >= 80 ? 'Strong Performance' : overall >= 60 ? 'Needs Improvement' : 'Critical Issues';
+
+    // Render result card
+    renderResultCard(result, rightPanel);
+
+    // Small delay to show progress visually
+    await new Promise(r => setTimeout(r, 200));
+  }
+
+  // Done
+  progressFill.style.width = '100%';
+  progressPct.textContent  = '100%';
+  progressText.textContent = 'Eval complete';
+  currentQ.textContent     = `${pass} passed · ${partial} partial · ${fail} failed`;
+
+  document.getElementById('resultsMeta').textContent = `${EVAL_DATASET.length} questions · ${pass} pass · ${partial} partial · ${fail} fail`;
+
+  btn.disabled = false;
+  btn.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg> Re-run Eval`;
+  isRunning = false;
+}
+
+function renderResultCard(result, container) {
+  const verdictIcon = result.verdict === 'PASS' ? '✅' : result.verdict === 'PARTIAL' ? '⚠️' : '❌';
+  const chipClass   = result.verdict === 'PASS' ? 'pass' : result.verdict === 'PARTIAL' ? 'warn' : 'fail';
+
+  const scoreClass = (s) => s >= 5 ? 's5' : s >= 4 ? 's4' : s >= 3 ? 's3' : s >= 2 ? 's2' : 's1';
+
+  const card = document.createElement('div');
+  card.className = 'result-card';
+  card.id = `card-${result.id}`;
+  card.setAttribute('data-category', result.category);
+
+  card.innerHTML = `
+    <div class="result-header" onclick="toggleCard('${result.id}')">
+      <div class="result-left">
+        <span class="result-id">${result.id}</span>
+        <div>
+          <div class="result-question">${escHtml(result.question)}</div>
+          <div class="result-category">${result.category} · ${result.difficulty}</div>
+        </div>
+      </div>
+      <div class="result-scores">
+        <span class="score-chip ${chipClass}">${result.avg}/5.0</span>
+        <span class="verdict-icon">${verdictIcon}</span>
+      </div>
+    </div>
+    <div class="result-body">
+      <div class="result-section">
+        <div class="result-section-label">Agent 02 Answer</div>
+        <div class="result-text actual answer">${escHtml(result.agentAnswer)}</div>
+      </div>
+      <div class="result-section">
+        <div class="result-section-label">Expected Answer</div>
+        <div class="result-text expected">${escHtml(result.expected)}</div>
+      </div>
+      <div class="result-section">
+        <div class="result-section-label">Judge Scores</div>
+        <div class="card-scores">
+          <div class="card-score-item">
+            <div class="card-score-dim">Accuracy</div>
+            <div class="card-score-val ${scoreClass(result.scores.accuracy)}">${result.scores.accuracy}</div>
+          </div>
+          <div class="card-score-item">
+            <div class="card-score-dim">Completeness</div>
+            <div class="card-score-val ${scoreClass(result.scores.completeness)}">${result.scores.completeness}</div>
+          </div>
+          <div class="card-score-item">
+            <div class="card-score-dim">Grounding</div>
+            <div class="card-score-val ${scoreClass(result.scores.grounding)}">${result.scores.grounding}</div>
+          </div>
+        </div>
+      </div>
+      <div class="result-section">
+        <div class="result-section-label">Judge Reasoning</div>
+        <div class="reasoning-text">${escHtml(result.scores.reasoning)}</div>
+      </div>
+    </div>`;
+
+  container.appendChild(card);
+}
+
+function toggleCard(id) {
+  const card = document.getElementById(`card-${id}`);
+  card.classList.toggle('expanded');
+}
+
+function filterCategory(cat, el) {
+  document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.result-card').forEach(card => {
+    if (cat === 'all' || card.getAttribute('data-category') === cat) {
+      card.style.display = '';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+
+function exportResults() {
+  if (!allResults.length) return;
+  const blob = new Blob([JSON.stringify({ results:allResults, exportedAt:new Date().toISOString() }, null, 2)], { type:'application/json' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href     = url;
+  a.download = `luminary-eval-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function escHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
+</body>
+</html>
