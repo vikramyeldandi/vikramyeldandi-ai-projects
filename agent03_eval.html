@@ -326,70 +326,6 @@
   <div class="left-panel">
 
     <div class="panel">
-      <p class="panel-label">About this agent</p>
-      <p class="about-text">Runs <strong>20 test questions</strong> against Agent 02's RAG pipeline. For each question, Claude acts as an impartial judge — scoring the response on <strong>Accuracy, Completeness, and Grounding</strong> (each 1–5).</p>
-      <p class="about-text" style="margin-top:8px;">This mirrors how production AI teams run <strong>automated evals</strong> to detect regressions before they reach users.</p>
-    </div>
-
-    <!-- Overall Score -->
-    <div class="panel">
-      <p class="panel-label">Overall Score</p>
-      <div class="score-display" id="scoreDisplay">
-        <div class="score-ring" id="scoreRing">
-          <span class="score-number" id="scoreNumber">—</span>
-        </div>
-        <div class="score-label" id="scoreLabel">Awaiting eval run</div>
-      </div>
-      <div class="breakdown" id="breakdown" style="margin-top:12px;">
-        <div class="breakdown-row">
-          <div class="breakdown-header">
-            <span class="breakdown-name">Accuracy</span>
-            <span class="breakdown-score" id="accScore">—</span>
-          </div>
-          <div class="bar-track"><div class="bar-fill" id="accBar" style="width:0%;background:#10b981;"></div></div>
-        </div>
-        <div class="breakdown-row">
-          <div class="breakdown-header">
-            <span class="breakdown-name">Completeness</span>
-            <span class="breakdown-score" id="compScore">—</span>
-          </div>
-          <div class="bar-track"><div class="bar-fill" id="compBar" style="width:0%;background:#6366f1;"></div></div>
-        </div>
-        <div class="breakdown-row">
-          <div class="breakdown-header">
-            <span class="breakdown-name">Grounding</span>
-            <span class="breakdown-score" id="groundScore">—</span>
-          </div>
-          <div class="bar-track"><div class="bar-fill" id="groundBar" style="width:0%;background:#f59e0b;"></div></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Stats -->
-    <div class="panel">
-      <p class="panel-label">Results</p>
-      <div class="stats-grid">
-        <div class="stat-box">
-          <div class="stat-val" id="statTotal">0</div>
-          <div class="stat-label">Total</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-val green" id="statPass">0</div>
-          <div class="stat-label">Pass</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-val yellow" id="statWarn">0</div>
-          <div class="stat-label">Partial</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-val red" id="statFail">0</div>
-          <div class="stat-label">Fail</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Progress -->
-    <div class="panel">
       <p class="panel-label">Run Eval</p>
       <div class="progress-wrap" id="progressWrap">
         <div class="progress-label">
@@ -793,3 +729,69 @@ function escHtml(str) {
 </script>
 </body>
 </html>
+
+    <div class="panel">
+      <p class="panel-label">About this agent</p>
+      <p class="about-text">Runs <strong>20 test questions</strong> against Agent 02's RAG pipeline. For each question, Claude acts as an impartial judge — scoring the response on <strong>Accuracy, Completeness, and Grounding</strong> (each 1–5).</p>
+      <p class="about-text" style="margin-top:8px;">This mirrors how production AI teams run <strong>automated evals</strong> to detect regressions before they reach users.</p>
+    </div>
+
+    <!-- Overall Score -->
+    <div class="panel">
+      <p class="panel-label">Overall Score</p>
+      <div class="score-display" id="scoreDisplay">
+        <div class="score-ring" id="scoreRing">
+          <span class="score-number" id="scoreNumber">—</span>
+        </div>
+        <div class="score-label" id="scoreLabel">Awaiting eval run</div>
+      </div>
+      <div class="breakdown" id="breakdown" style="margin-top:12px;">
+        <div class="breakdown-row">
+          <div class="breakdown-header">
+            <span class="breakdown-name">Accuracy</span>
+            <span class="breakdown-score" id="accScore">—</span>
+          </div>
+          <div class="bar-track"><div class="bar-fill" id="accBar" style="width:0%;background:#10b981;"></div></div>
+        </div>
+        <div class="breakdown-row">
+          <div class="breakdown-header">
+            <span class="breakdown-name">Completeness</span>
+            <span class="breakdown-score" id="compScore">—</span>
+          </div>
+          <div class="bar-track"><div class="bar-fill" id="compBar" style="width:0%;background:#6366f1;"></div></div>
+        </div>
+        <div class="breakdown-row">
+          <div class="breakdown-header">
+            <span class="breakdown-name">Grounding</span>
+            <span class="breakdown-score" id="groundScore">—</span>
+          </div>
+          <div class="bar-track"><div class="bar-fill" id="groundBar" style="width:0%;background:#f59e0b;"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="panel">
+      <p class="panel-label">Results</p>
+      <div class="stats-grid">
+        <div class="stat-box">
+          <div class="stat-val" id="statTotal">0</div>
+          <div class="stat-label">Total</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-val green" id="statPass">0</div>
+          <div class="stat-label">Pass</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-val yellow" id="statWarn">0</div>
+          <div class="stat-label">Partial</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-val red" id="statFail">0</div>
+          <div class="stat-label">Fail</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Progress -->
+>
