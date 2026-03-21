@@ -315,14 +315,10 @@
     <p class="quick-labels">Try these retailers</p>
     <div class="quick-tags">
       <span class="quick-tag" onclick="setRetailer('Zara')">Zara</span>
-      <span class="quick-tag" onclick="setRetailer('H&M')">H&amp;M</span>
-      <span class="quick-tag" onclick="setRetailer('Uniqlo')">Uniqlo</span>
       <span class="quick-tag" onclick="setRetailer('Nike')">Nike</span>
-      <span class="quick-tag" onclick="setRetailer('Target')">Target</span>
-      <span class="quick-tag" onclick="setRetailer('Nordstrom')">Nordstrom</span>
-      <span class="quick-tag" onclick="setRetailer('Gap')">Gap</span>
       <span class="quick-tag" onclick="setRetailer('Lululemon')">Lululemon</span>
     </div>
+    <p style="font-size:11px;color:var(--muted);margin-top:16px;">&#x23F1; Allow 60 seconds between briefs to avoid rate limits.</p>
   </div>
 
   <!-- PROGRESS CARD -->
@@ -483,6 +479,16 @@ async function generateBrief() {
 
     // Extract text from response (handle tool use blocks)
     var brief = '';
+
+    // Check for API errors
+    if (data.type === 'error') {
+      var errMsg = data.error && data.error.message ? data.error.message : 'Unknown error';
+      if (errMsg.indexOf('rate_limit') !== -1) {
+        throw new Error('Rate limit reached — please wait 60 seconds and try again.');
+      }
+      throw new Error('API error: ' + errMsg.substring(0, 100));
+    }
+
     if (data.content && Array.isArray(data.content)) {
       data.content.forEach(function(block) {
         if (block.type === 'text' && block.text) {
