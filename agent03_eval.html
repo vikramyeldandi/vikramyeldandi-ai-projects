@@ -7,25 +7,25 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0d0f14;
-    --surface: #13161e;
-    --surface-2: #1a1e2a;
-    --border: rgba(255,255,255,0.07);
-    --border-bright: rgba(255,255,255,0.14);
-    --text: #e8eaf0;
-    --text-muted: #6b7280;
-    --text-dim: #9ca3af;
-    --accent: #6366f1;
-    --accent-light: #a5b4fc;
-    --accent-pale: rgba(99,102,241,0.1);
-    --green: #10b981;
-    --green-pale: rgba(16,185,129,0.1);
-    --yellow: #f59e0b;
-    --yellow-pale: rgba(245,158,11,0.1);
+    --bg: #0a1628;
+    --surface: #112240;
+    --surface-2: #1d3461;
+    --border: rgba(255,255,255,0.08);
+    --border-bright: rgba(255,255,255,0.15);
+    --text: #ffffff;
+    --text-muted: #8899aa;
+    --text-dim: #8899aa;
+    --accent: #4a90d9;
+    --accent-light: #64b5f6;
+    --accent-pale: rgba(74,144,217,0.1);
+    --green: #5dcaa5;
+    --green-pale: rgba(29,158,117,0.1);
+    --yellow: #c9a84c;
+    --yellow-pale: rgba(201,168,76,0.1);
     --red: #ef4444;
     --red-pale: rgba(239,68,68,0.1);
-    --pass: #10b981;
-    --warn: #f59e0b;
+    --pass: #5dcaa5;
+    --warn: #c9a84c;
     --fail: #ef4444;
   }
 
@@ -50,7 +50,7 @@
   .header-left { display:flex; align-items:center; gap:14px; }
   .logo {
     width:36px; height:36px; border-radius:8px;
-    background:linear-gradient(135deg,var(--accent),#8b5cf6);
+    background:linear-gradient(135deg,#4a90d9,#1d9e75);
     display:flex; align-items:center; justify-content:center;
     font-size:13px; font-weight:700; color:#fff;
     font-family:'DM Mono',monospace;
@@ -61,8 +61,8 @@
   .badge-eval {
     font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
     padding:4px 12px; border-radius:20px;
-    background:var(--accent-pale); color:var(--accent-light);
-    border:1px solid rgba(99,102,241,0.25);
+    background:rgba(74,144,217,0.1); color:var(--accent-light);
+    border:1px solid rgba(74,144,217,0.25);
   }
 
   /* ── MAIN LAYOUT ── */
@@ -147,13 +147,13 @@
   /* Run button */
   .run-btn {
     width:100%; padding:14px;
-    background:var(--accent); border:none; border-radius:10px;
+    background:#1d9e75; border:none; border-radius:10px;
     color:#fff; font-size:13px; font-weight:600; font-family:inherit;
     cursor:pointer; transition:background .15s, transform .1s;
     display:flex; align-items:center; justify-content:center; gap:8px;
     letter-spacing:.02em;
   }
-  .run-btn:hover { background:#4f46e5; }
+  .run-btn:hover { background:#5dcaa5; }
   .run-btn:active { transform:scale(.98); }
   .run-btn:disabled { background:var(--surface-2); color:var(--text-muted); cursor:not-allowed; }
   .run-btn svg { width:15px; height:15px; fill:currentColor; }
@@ -165,7 +165,7 @@
   .progress-track { height:6px; background:var(--surface-2); border-radius:3px; overflow:hidden; }
   .progress-fill {
     height:100%; border-radius:3px;
-    background:linear-gradient(90deg,var(--accent),var(--accent-light));
+    background:linear-gradient(90deg,#4a90d9,#64b5f6);
     transition:width .3s ease;
     width:0%;
   }
