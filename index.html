@@ -236,7 +236,9 @@
   .agents-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: 1fr;
     gap: 16px;
+    align-items: stretch;
   }
   .agent-card {
     background: var(--card-bg);
@@ -714,7 +716,7 @@
   </div>
   <div class="agents-grid">
 
-    <a href="agent01_case_study.html" target="_blank" style="text-decoration:none;color:inherit;">
+    <a href="agent01_case_study.html" target="_blank" style="text-decoration:none;color:inherit;display:contents;">
     <div class="agent-card built" style="cursor:pointer;">
       <span class="agent-status status-live">Live</span>
       <p class="agent-num">Agent 01</p>
@@ -730,7 +732,7 @@
     </div>
     </a>
 
-    <a href="agent02_case_study.html" target="_blank" style="text-decoration:none;color:inherit;">
+    <a href="agent02_case_study.html" target="_blank" style="text-decoration:none;color:inherit;display:contents;">
     <div class="agent-card built" style="cursor:pointer;">
       <span class="agent-status status-live">Live</span>
       <p class="agent-num">Agent 02</p>
@@ -746,7 +748,7 @@
     </div>
     </a>
 
-    <a href="agent03_case_study.html" target="_blank" style="text-decoration:none;color:inherit;">
+    <a href="agent03_case_study.html" target="_blank" style="text-decoration:none;color:inherit;display:contents;">
     <div class="agent-card built" style="cursor:pointer;">
       <span class="agent-status status-live">Live</span>
       <p class="agent-num">Agent 03</p>
