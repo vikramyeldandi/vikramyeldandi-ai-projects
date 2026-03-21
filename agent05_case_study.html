@@ -3,338 +3,792 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Agent 05 — Retail Competitive Intelligence Agent · Case Study</title>
+<title>Agent 05 — Promotional Copy Generator · Case Study</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --navy:#0a1628;--navy-mid:#112240;--accent:#4a90d9;--accent-light:#64b5f6;
-    --green:#1d9e75;--green-light:#5dcaa5;--gold:#c9a84c;--white:#ffffff;
-    --text-muted:#8899aa;--border:rgba(255,255,255,0.08);--card-bg:rgba(255,255,255,0.04);
+    --navy: #0a1628;
+    --navy-mid: #112240;
+    --navy-light: #1d3461;
+    --accent: #4a90d9;
+    --accent-light: #64b5f6;
+    --gold: #c9a84c;
+    --white: #ffffff;
+    --off-white: #f0f4f8;
+    --text-muted: #8899aa;
+    --border: rgba(255,255,255,0.08);
+    --card-bg: rgba(255,255,255,0.04);
   }
-  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--white);line-height:1.6;overflow-x:hidden}
-  nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:18px 48px;background:rgba(10,22,40,0.9);backdrop-filter:blur(12px);border-bottom:0.5px solid var(--border)}
-  .nav-logo{font-family:'DM Serif Display',serif;font-size:17px;color:var(--white)}
-  .nav-logo span{color:var(--accent)}
-  .nav-actions{display:flex;gap:12px;align-items:center}
-  .nav-btn{display:flex;align-items:center;gap:6px;padding:8px 16px;border-radius:4px;font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;transition:all .2s}
-  .nav-btn.outline{border:0.5px solid var(--border);color:var(--text-muted)}
-  .nav-btn.outline:hover{border-color:var(--accent);color:var(--white)}
-  .nav-btn.primary{background:var(--green);color:#fff}
-  .nav-btn.primary:hover{background:var(--green-light)}
-  .nav-btn svg{width:13px;height:13px;fill:currentColor}
-  .hero{padding:140px 48px 80px;max-width:900px;margin:0 auto;position:relative}
-  .hero::before{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse 60% 50% at 70% 20%,rgba(74,144,217,0.07) 0%,transparent 60%);pointer-events:none;z-index:0}
-  .breadcrumb{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:24px;position:relative;z-index:1}
-  .breadcrumb span{color:var(--accent-light)}
-  .breadcrumb::before{content:'';display:inline-block;width:24px;height:1px;background:var(--accent)}
-  .hero-meta{display:flex;align-items:center;gap:10px;margin-bottom:20px;position:relative;z-index:1}
-  .badge{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:3px}
-  .badge.live{background:rgba(29,158,117,0.15);color:var(--green-light);border:0.5px solid rgba(29,158,117,0.3)}
-  .badge.retail{background:rgba(74,144,217,0.1);color:var(--accent-light);border:0.5px solid rgba(74,144,217,0.2)}
-  .badge.search{background:rgba(201,168,76,0.1);color:var(--gold);border:0.5px solid rgba(201,168,76,0.2)}
-  .hero h1{font-family:'DM Serif Display',serif;font-size:clamp(36px,5vw,58px);line-height:1.1;margin-bottom:20px;position:relative;z-index:1}
-  .hero h1 em{font-style:italic;color:var(--accent-light)}
-  .hero-desc{font-size:16px;line-height:1.8;color:rgba(255,255,255,0.6);max-width:640px;margin-bottom:40px;position:relative;z-index:1}
-  .content{max-width:900px;margin:0 auto;padding:0 48px 100px}
-  .divider{height:0.5px;background:var(--border);margin:56px 0}
-  .section-eyebrow{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-light);margin-bottom:12px;display:flex;align-items:center;gap:10px}
-  .section-eyebrow::before{content:'';display:inline-block;width:20px;height:1px;background:var(--accent)}
-  h2{font-family:'DM Serif Display',serif;font-size:32px;color:var(--white);margin-bottom:20px;line-height:1.2}
-  h3{font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-light);margin-bottom:12px}
-  p{font-size:15px;line-height:1.85;color:rgba(255,255,255,0.65);margin-bottom:16px}
-  p:last-child{margin-bottom:0}
-  p strong{color:var(--white);font-weight:500}
-  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px}
-  .info-card{background:var(--card-bg);border:0.5px solid var(--border);border-radius:8px;padding:24px}
-  .info-card.accent-left{border-left:2px solid var(--green)}
-  .info-card.accent-left-blue{border-left:2px solid var(--accent)}
-  .info-card.accent-left-gold{border-left:2px solid var(--gold)}
 
-  /* Pipeline steps */
-  .pipeline{display:flex;flex-direction:column;gap:0;margin-top:24px}
-  .pipe-step{display:grid;grid-template-columns:40px 1fr;gap:16px;align-items:start}
-  .pipe-num{width:36px;height:36px;border-radius:50%;background:var(--card-bg);border:0.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:12px;font-weight:700;color:var(--accent-light);flex-shrink:0;margin-top:2px}
-  .pipe-content{padding-bottom:24px;border-left:0.5px solid var(--border);padding-left:20px;margin-left:-4px}
-  .pipe-step:last-child .pipe-content{border-left:none;padding-bottom:0}
-  .pipe-title{font-size:14px;font-weight:600;color:var(--white);margin-bottom:4px}
-  .pipe-desc{font-size:13px;color:var(--text-muted);line-height:1.65;margin:0}
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
 
-  /* Brief sections grid */
-  .brief-sections{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:24px}
-  .brief-sec{background:var(--card-bg);border:0.5px solid var(--border);border-radius:8px;padding:16px 18px}
-  .brief-sec-icon{font-size:18px;margin-bottom:8px}
-  .brief-sec-name{font-size:12px;font-weight:600;color:var(--white);margin-bottom:4px}
-  .brief-sec-desc{font-size:11.5px;color:var(--text-muted);line-height:1.55;margin:0}
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--navy);
+    color: var(--white);
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; justify-content:space-between; align-items:center;
+    padding: 20px 48px;
+    background: rgba(10,22,40,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 0.5px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px; color: var(--white);
+    letter-spacing:.01em;
+  }
+  .nav-logo span { color: var(--accent); }
+  .nav-links { display:flex; gap:24px; align-items:center; }
+  .nav-links a {
+    font-size:13px; font-weight:500;
+    letter-spacing:.04em; text-transform:uppercase;
+    color: var(--text-muted); text-decoration:none;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-links .btn-try {
+    background: var(--accent);
+    color: var(--white);
+    padding: 8px 18px;
+    border-radius: 4px;
+    font-size:12px; font-weight:600;
+    letter-spacing:.05em;
+    transition: background .2s;
+  }
+  .nav-links .btn-try:hover { background: var(--accent-light); color: var(--white); }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 120px 48px 72px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .hero-eyebrow {
+    font-size: 11px; font-weight:600;
+    letter-spacing:.14em; text-transform:uppercase;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .hero-eyebrow::before {
+    content:''; display:inline-block;
+    width:28px; height:0.5px;
+    background: var(--text-muted);
+  }
+  .hero-tags {
+    display:flex; gap:8px; flex-wrap:wrap;
+    margin-bottom: 24px;
+  }
+  .hero-tag {
+    font-size:10px; font-weight:700;
+    letter-spacing:.1em; text-transform:uppercase;
+    padding: 4px 10px; border-radius:3px;
+  }
+  .tag-live {
+    background:rgba(29,158,117,0.15);
+    color:#5dcaa5;
+    border:0.5px solid rgba(29,158,117,0.3);
+    display:flex; align-items:center; gap:6px;
+  }
+  .tag-live::before {
+    content:'';
+    width:5px; height:5px; border-radius:50%;
+    background:#5dcaa5;
+    animation: pulse 2s ease infinite;
+  }
+  @keyframes pulse {
+    0%,100%{opacity:1;transform:scale(1)}
+    50%{opacity:.4;transform:scale(.75)}
+  }
+  .tag-domain {
+    background:rgba(201,168,76,0.1);
+    color:var(--gold);
+    border:0.5px solid rgba(201,168,76,0.25);
+  }
+  .tag-type {
+    background:var(--card-bg);
+    color:var(--text-muted);
+    border:0.5px solid var(--border);
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(36px,5vw,62px);
+    line-height: 1.1;
+    margin-bottom: 20px;
+    color: var(--white);
+  }
+  .hero h1 em { font-style:italic; color:var(--accent-light); }
+  .hero-desc {
+    font-size:16px; line-height:1.75;
+    color:rgba(255,255,255,0.65);
+    max-width:680px;
+    margin-bottom: 48px;
+  }
+
+  /* Stats bar */
+  .stats-bar {
+    display:grid;
+    grid-template-columns: repeat(4,1fr);
+    gap:1px;
+    background:var(--border);
+    border:0.5px solid var(--border);
+    border-radius:8px;
+    overflow:hidden;
+  }
+  .stat {
+    background:var(--navy-mid);
+    padding:24px 20px;
+    text-align:center;
+  }
+  .stat-number {
+    font-family:'DM Serif Display', serif;
+    font-size:32px; color:var(--white);
+    margin-bottom:4px; line-height:1;
+  }
+  .stat-number span { color:var(--accent); }
+  .stat-label {
+    font-size:11px; font-weight:600;
+    letter-spacing:.08em; text-transform:uppercase;
+    color:var(--text-muted);
+  }
+
+  /* ── SECTIONS ── */
+  .section {
+    padding: 80px 48px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .section-full {
+    padding: 80px 48px;
+    background: var(--navy-mid);
+    border-top: 0.5px solid var(--border);
+    border-bottom: 0.5px solid var(--border);
+  }
+  .section-inner { max-width:1100px; margin:0 auto; }
+
+  .section-header {
+    display:flex; align-items:center; gap:16px;
+    margin-bottom: 48px;
+  }
+  .section-num {
+    font-family:'DM Serif Display', serif;
+    font-size:13px; color:var(--accent); opacity:.6;
+    white-space:nowrap;
+  }
+  .section-title {
+    font-family:'DM Serif Display', serif;
+    font-size:34px; color:var(--white);
+  }
+  .section-line { flex:1; height:0.5px; background:var(--border); }
+
+  /* Body text */
+  .body-text {
+    font-size:15px; line-height:1.85;
+    color:rgba(255,255,255,0.65);
+    max-width:820px;
+    margin-bottom:18px;
+  }
+  .body-text strong { color:var(--white); font-weight:500; }
+
+  /* Problem / Objective split */
+  .problem-grid {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+    margin-top:32px;
+  }
+  .problem-card {
+    background:var(--card-bg);
+    border:0.5px solid var(--border);
+    border-radius:8px;
+    padding:24px;
+  }
+  .problem-card h3 {
+    font-family:'DM Serif Display', serif;
+    font-size:18px; color:var(--white);
+    margin-bottom:12px;
+  }
+  .problem-card p {
+    font-size:14px; line-height:1.75;
+    color:rgba(255,255,255,0.6);
+  }
 
   /* Code block */
-  .code-block{background:#060e1a;border:0.5px solid var(--border);border-radius:8px;padding:24px;margin:24px 0;overflow-x:auto;position:relative}
-  .code-label{position:absolute;top:12px;right:14px;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted)}
-  .code-block pre{font-family:'DM Mono',monospace;font-size:12.5px;line-height:1.7;color:rgba(255,255,255,0.75);white-space:pre-wrap}
-  .cm{color:#5c7a6e}.cv{color:var(--green-light)}.cs{color:#e8a87c}.ck{color:var(--accent-light)}
+  .code-label {
+    font-size:10px; font-weight:700;
+    letter-spacing:.1em; text-transform:uppercase;
+    color:var(--text-muted);
+    margin-bottom:10px;
+  }
+  .code-block {
+    background:rgba(0,0,0,0.35);
+    border:0.5px solid rgba(255,255,255,0.1);
+    border-radius:8px;
+    padding:24px;
+    font-family:'DM Mono', monospace;
+    font-size:12px; line-height:1.75;
+    color:rgba(255,255,255,0.7);
+    overflow-x:auto;
+    white-space:pre;
+    margin-bottom:24px;
+  }
+  .code-block .comment { color:rgba(74,144,217,0.7); }
+  .code-block .key { color:var(--accent-light); }
+  .code-block .value { color:#5dcaa5; }
+  .code-block .constraint { color:var(--gold); }
 
-  /* Concept grid */
-  .concept-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:24px}
-  .concept-card{background:var(--card-bg);border:0.5px solid var(--border);border-radius:8px;padding:20px;transition:border-color .2s}
-  .concept-card:hover{border-color:rgba(74,144,217,0.35)}
-  .concept-icon{font-size:20px;margin-bottom:10px}
-  .concept-name{font-size:13px;font-weight:600;color:var(--white);margin-bottom:6px}
-  .concept-desc{font-size:11.5px;line-height:1.6;color:var(--text-muted);margin:0}
+  /* Token budget visual */
+  .token-visual {
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:16px;
+    margin: 32px 0;
+  }
+  .token-card {
+    background:var(--card-bg);
+    border:0.5px solid var(--border);
+    border-radius:8px;
+    padding:20px;
+    text-align:center;
+  }
+  .token-card-num {
+    font-family:'DM Serif Display', serif;
+    font-size:36px; color:var(--white);
+    margin-bottom:4px; line-height:1;
+  }
+  .token-card-num span { color:var(--accent); }
+  .token-card-label {
+    font-size:11px; font-weight:600;
+    letter-spacing:.08em; text-transform:uppercase;
+    color:var(--text-muted);
+    margin-bottom:8px;
+  }
+  .token-card-desc {
+    font-size:12px; line-height:1.6;
+    color:rgba(255,255,255,0.45);
+  }
+  .token-total {
+    background:rgba(74,144,217,0.08);
+    border:0.5px solid rgba(74,144,217,0.25);
+    border-radius:8px;
+    padding:16px 24px;
+    display:flex; align-items:center; justify-content:space-between;
+    margin-top:4px;
+  }
+  .token-total-label {
+    font-size:12px; font-weight:600;
+    letter-spacing:.08em; text-transform:uppercase;
+    color:var(--text-muted);
+  }
+  .token-total-num {
+    font-family:'DM Mono', monospace;
+    font-size:16px; font-weight:500;
+    color:var(--accent-light);
+  }
 
-  /* Lessons */
-  .lesson-list{display:flex;flex-direction:column;gap:12px;margin-top:24px}
-  .lesson{display:grid;grid-template-columns:28px 1fr;gap:14px;align-items:start}
-  .lesson-num{width:28px;height:28px;background:rgba(74,144,217,0.1);border:0.5px solid rgba(74,144,217,0.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--accent-light);flex-shrink:0;margin-top:2px}
-  .lesson-text{font-size:14px;line-height:1.75;color:rgba(255,255,255,0.7);margin:0}
-  .lesson-text strong{color:var(--white);font-weight:500}
+  /* Variant table — edge case style */
+  .variant-table {
+    width:100%;
+    border-collapse:collapse;
+    margin-top:8px;
+  }
+  .variant-table th {
+    font-size:10px; font-weight:700;
+    letter-spacing:.1em; text-transform:uppercase;
+    color:var(--text-muted);
+    padding:10px 16px;
+    text-align:left;
+    border-bottom:0.5px solid var(--border);
+  }
+  .variant-table td {
+    padding:16px;
+    font-size:13px; line-height:1.6;
+    vertical-align:top;
+    border-bottom:0.5px solid rgba(255,255,255,0.04);
+  }
+  .variant-table tr:last-child td { border-bottom:none; }
+  .variant-table tr:hover td { background:rgba(255,255,255,0.02); }
+  .variant-id {
+    font-family:'DM Mono', monospace;
+    font-size:11px; font-weight:500;
+    letter-spacing:.08em;
+    color:var(--accent);
+    white-space:nowrap;
+  }
+  .variant-tone {
+    font-size:11px; font-weight:600;
+    letter-spacing:.06em; text-transform:uppercase;
+    color:var(--gold);
+    white-space:nowrap;
+  }
+  .variant-tagline {
+    font-family:'DM Serif Display', serif;
+    font-size:14px; font-style:italic;
+    color:var(--white);
+  }
+  .variant-desc {
+    font-size:12px; color:var(--text-muted);
+    margin-top:3px;
+  }
 
-  /* CTA */
-  .cta-bar{background:var(--navy-mid);border:0.5px solid var(--border);border-radius:10px;padding:36px 40px;display:flex;align-items:center;justify-content:space-between;gap:24px;margin-top:56px}
-  .cta-bar h3{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--white);margin-bottom:6px;letter-spacing:0;text-transform:none}
-  .cta-bar p{font-size:13px;color:var(--text-muted);margin:0}
-  .cta-actions{display:flex;gap:10px;flex-shrink:0}
-  .cta-btn{padding:12px 24px;border-radius:4px;font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;transition:all .2s;white-space:nowrap}
-  .cta-btn.green{background:var(--green);color:#fff}
-  .cta-btn.green:hover{background:var(--green-light)}
-  .cta-btn.ghost{border:0.5px solid var(--border);color:var(--text-muted)}
-  .cta-btn.ghost:hover{border-color:var(--accent);color:var(--white)}
+  /* Schema field table */
+  .schema-table {
+    width:100%;
+    border-collapse:collapse;
+    margin: 24px 0;
+  }
+  .schema-table th {
+    font-size:10px; font-weight:700;
+    letter-spacing:.1em; text-transform:uppercase;
+    color:var(--text-muted);
+    padding:10px 16px;
+    text-align:left;
+    border-bottom:0.5px solid var(--border);
+    background:rgba(0,0,0,0.15);
+  }
+  .schema-table td {
+    padding:14px 16px;
+    font-size:13px; line-height:1.55;
+    border-bottom:0.5px solid rgba(255,255,255,0.04);
+    color:rgba(255,255,255,0.75);
+    vertical-align:top;
+  }
+  .schema-table tr:last-child td { border-bottom:none; }
+  .schema-field {
+    font-family:'DM Mono', monospace;
+    font-size:12px; color:var(--accent-light);
+  }
+  .schema-limit {
+    font-family:'DM Mono', monospace;
+    font-size:11px; color:var(--gold);
+  }
 
-  @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-  .hero .breadcrumb{animation:fadeUp .5s ease both}
-  .hero .hero-meta{animation:fadeUp .5s ease .1s both}
-  .hero h1{animation:fadeUp .5s ease .15s both}
-  .hero .hero-desc{animation:fadeUp .5s ease .2s both}
-  @media(max-width:768px){nav{padding:16px 20px}.hero{padding:120px 20px 60px}.content{padding:0 20px 80px}.two-col,.brief-sections{grid-template-columns:1fr}.concept-grid{grid-template-columns:1fr 1fr}.cta-bar{flex-direction:column}}
-  @media(max-width:480px){.concept-grid{grid-template-columns:1fr}}
+  /* Concepts grid */
+  .concepts-grid {
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:16px;
+  }
+  .concept-card {
+    background:var(--card-bg);
+    border:0.5px solid var(--border);
+    border-radius:8px;
+    padding:24px;
+    transition:border-color .2s;
+  }
+  .concept-card:hover { border-color:rgba(74,144,217,0.3); }
+  .concept-icon {
+    font-size:20px; margin-bottom:12px;
+  }
+  .concept-title {
+    font-family:'DM Serif Display', serif;
+    font-size:17px; color:var(--white);
+    margin-bottom:10px; line-height:1.25;
+  }
+  .concept-body {
+    font-size:13px; line-height:1.75;
+    color:var(--text-muted);
+  }
+  .concept-body strong { color:rgba(255,255,255,0.8); font-weight:500; }
+
+  /* Lessons learned */
+  .lessons-list {
+    display:flex; flex-direction:column; gap:20px;
+    max-width:820px;
+  }
+  .lesson {
+    display:grid;
+    grid-template-columns:32px 1fr;
+    gap:16px;
+    align-items:start;
+  }
+  .lesson-num {
+    font-family:'DM Serif Display', serif;
+    font-size:22px; color:var(--accent);
+    opacity:.5; line-height:1.2;
+  }
+  .lesson-text {
+    font-size:15px; line-height:1.8;
+    color:rgba(255,255,255,0.65);
+  }
+  .lesson-text strong { color:var(--white); font-weight:500; }
+
+  /* CTA footer */
+  .case-footer {
+    padding: 64px 48px;
+    max-width:1100px;
+    margin:0 auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border-top:0.5px solid var(--border);
+    flex-wrap:wrap;
+    gap:20px;
+  }
+  .case-footer p {
+    font-size:14px; color:var(--text-muted);
+  }
+  .footer-ctas { display:flex; gap:14px; }
+  .btn-primary {
+    background:var(--accent);
+    color:var(--white);
+    padding:12px 24px;
+    border-radius:4px;
+    font-size:13px; font-weight:600;
+    letter-spacing:.04em; text-transform:uppercase;
+    text-decoration:none;
+    transition:background .2s, transform .15s;
+  }
+  .btn-primary:hover { background:var(--accent-light); transform:translateY(-1px); }
+  .btn-outline {
+    border:1px solid rgba(255,255,255,0.2);
+    color:var(--white);
+    padding:12px 24px;
+    border-radius:4px;
+    font-size:13px; font-weight:500;
+    letter-spacing:.04em; text-transform:uppercase;
+    text-decoration:none;
+    transition:border-color .2s, transform .15s;
+  }
+  .btn-outline:hover { border-color:var(--accent); transform:translateY(-1px); }
+
+  @keyframes fadeUp {
+    from{opacity:0;transform:translateY(20px)}
+    to{opacity:1;transform:translateY(0)}
+  }
+  .hero-eyebrow { animation:fadeUp .5s ease both; }
+  .hero-tags     { animation:fadeUp .5s ease .08s both; }
+  .hero h1       { animation:fadeUp .5s ease .14s both; }
+  .hero-desc     { animation:fadeUp .5s ease .2s both; }
+  .stats-bar     { animation:fadeUp .5s ease .26s both; }
+
+  @media(max-width:900px){
+    nav { padding:16px 24px; }
+    .nav-links a:not(.btn-try) { display:none; }
+    .hero { padding:100px 24px 56px; }
+    .section { padding:56px 24px; }
+    .section-full { padding:56px 24px; }
+    .stats-bar { grid-template-columns:1fr 1fr; }
+    .problem-grid { grid-template-columns:1fr; }
+    .token-visual { grid-template-columns:1fr; }
+    .concepts-grid { grid-template-columns:1fr 1fr; }
+    .case-footer { padding:40px 24px; }
+  }
+  @media(max-width:560px){
+    .concepts-grid { grid-template-columns:1fr; }
+    .stats-bar { grid-template-columns:1fr 1fr; }
+  }
 </style>
 </head>
 <body>
 
+<!-- NAV -->
 <nav>
   <div class="nav-logo">Vikram <span>Yeldandi</span></div>
-  <div class="nav-actions">
-    <a href="index.html" class="nav-btn outline">
-      <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
-      Portfolio
-    </a>
-    <a href="agent05_ci.html" target="_blank" class="nav-btn primary">
-      <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-      Try the Agent
-    </a>
+  <div class="nav-links">
+    <a href="index.html">Portfolio</a>
+    <a href="agent05.html" class="btn-try">Try the Agent</a>
   </div>
 </nav>
 
-<div class="hero">
-  <div class="breadcrumb">Applied AI Portfolio <span>&middot;</span> Agent 05 of 12</div>
-  <div class="hero-meta">
-    <span class="badge live">&#x25CF; Live</span>
-    <span class="badge retail">Retail</span>
-    <span class="badge search">Web Search + Tool Use</span>
+<!-- HERO -->
+<section class="hero">
+  <p class="hero-eyebrow">Applied AI Portfolio · Agent 05 of 14</p>
+  <div class="hero-tags">
+    <span class="hero-tag tag-live">Live</span>
+    <span class="hero-tag tag-domain">Apparel · Retail</span>
+    <span class="hero-tag tag-type">Copy Generator</span>
   </div>
-  <h1>Retail Competitive<br><em>Intelligence Agent</em></h1>
-  <p class="hero-desc">An AI analyst that researches any retailer on demand — running 6 targeted web searches, synthesising live results, and producing a structured competitive brief with executive summary, financials, SWOT, strategic signals, watch list, and cited sources.</p>
+  <h1>Promotional<br><em>Copy Generator</em></h1>
+  <p class="hero-desc">A structured output agent for Meridian Athletic — a fictional outdoor apparel brand. Built to generate three distinct A/B/C promotional copy variants from product inputs, with hard token limits and a single API call.</p>
+
+  <div class="stats-bar">
+    <div class="stat">
+      <div class="stat-number">3</div>
+      <div class="stat-label">Copy Variants</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number"><span>~</span>240</div>
+      <div class="stat-label">System Prompt Tokens</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">1</div>
+      <div class="stat-label">API Call</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number"><span>&lt;</span>800</div>
+      <div class="stat-label">Max Output Tokens</div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 01 — Problem & Objective -->
+<div class="section-full">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-num">01 —</span>
+      <h2 class="section-title">Problem &amp; Objective</h2>
+      <div class="section-line"></div>
+    </div>
+    <p class="body-text">Marketing and merchandising teams at apparel brands write dozens of copy variants every week — product descriptions, email subject lines, promotional headlines. The work is repetitive, brand-sensitive, and bottlenecked by the availability of copywriters. A generic AI prompt produces inconsistent output: wrong tone, uncapped length, no A/B structure.</p>
+    <p class="body-text">The objective was to build an agent that produces <strong>three production-ready copy variants</strong> in a single call — each with a fixed structure, enforced word limits, and a distinct tone register — so marketing teams can A/B test without a copywriter in the loop.</p>
+
+    <div class="problem-grid">
+      <div class="problem-card">
+        <h3>The Problem</h3>
+        <p>Unstructured AI copy prompts return inconsistent length, tone, and format. Teams can't A/B test outputs that don't conform to a schema, and there's no way to guarantee brand voice without prompt engineering discipline.</p>
+      </div>
+      <div class="problem-card">
+        <h3>The Objective</h3>
+        <p>An agent that accepts product inputs and returns three structured copy variants — tagline, headline, body, CTA — each under hard word limits, in three distinct tone registers, parseable as JSON with no post-processing.</p>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div class="content">
-
-  <div class="section-eyebrow">01 &mdash; Problem &amp; Objective</div>
-  <h2>Automating the work of a retail analyst</h2>
-  <p>In a buying, strategy, or merchandising team, competitive intelligence is gathered manually — a researcher spends hours searching news, earnings releases, trade press, and analyst reports before synthesising findings into a brief. That brief reaches stakeholders days later, often stale by the time it's read.</p>
-  <p>The objective was to build an agent that compresses that research cycle from hours to minutes — running multiple targeted searches, grounding every claim in a source, and producing a consistently structured brief that a strategy team could act on immediately.</p>
-
-  <div class="two-col">
-    <div class="info-card accent-left">
-      <h3>The Problem</h3>
-      <p>Manual CI research is slow, inconsistent in structure, and often outdated by the time it reaches decision-makers. Teams rely on whoever has time to search, not whoever knows what to look for.</p>
-    </div>
-    <div class="info-card accent-left-blue">
-      <h3>The Objective</h3>
-      <p>An on-demand CI agent that runs 6 targeted searches, synthesises live results into a structured brief, and cites every claim — producing analyst-grade output in under 60 seconds.</p>
-    </div>
+<!-- SECTION 02 — System Prompt & Token Design -->
+<section class="section">
+  <div class="section-header">
+    <span class="section-num">02 —</span>
+    <h2 class="section-title">System Prompt &amp; Token Design</h2>
+    <div class="section-line"></div>
   </div>
 
-  <div class="divider"></div>
+  <p class="body-text">The system prompt is the entire product. At <strong>~240 tokens</strong>, it enforces output schema, caps every field at hard word limits, assigns a distinct tone register to each variant, and mandates clean JSON with no preamble. This is deliberate PM craft: maximum output reliability from minimum token spend.</p>
+  <p class="body-text">Every constraint in the prompt is a product decision — not a technical one. Word limits exist because real marketing channels (push notifications, email subject lines) have character caps. Tone separation exists so teams can test emotional vs. performance messaging. JSON-only output exists so the UI can parse without regex.</p>
 
-  <div class="section-eyebrow">02 &mdash; How It Works</div>
-  <h2>Multi-query retrieval and synthesis pipeline</h2>
-  <p>The key design decision was <strong>not to rely on a single search</strong>. A single query like "Zara news" returns only the most recent headlines. Real CI requires targeted retrieval across different dimensions — financial performance, strategy, product moves, challenges, and leadership signals — each needing a different query.</p>
+  <div class="code-label">System Prompt Structure</div>
+  <div class="code-block"><span class="comment">// Identity & Role</span>
+<span class="key">You are a senior copywriter for a premium outdoor apparel brand.</span>
+<span class="key">Generate exactly 3 distinct promotional copy variants (A, B, C).</span>
 
-  <div class="pipeline">
-    <div class="pipe-step">
-      <div class="pipe-num">1</div>
-      <div class="pipe-content">
-        <div class="pipe-title">User inputs retailer name</div>
-        <p class="pipe-desc">Any retailer — global or regional, public or private, fashion or home or grocery. No constraints on market or size.</p>
-      </div>
+<span class="comment">// Output Rules</span>
+<span class="constraint">- Return ONLY valid JSON, no preamble or explanation</span>
+<span class="constraint">- Each variant must have exactly 4 fields: tagline, headline, body, cta</span>
+
+<span class="comment">// Field Constraints (hard limits)</span>
+<span class="value">- tagline:  ≤8 words  — bold and memorable</span>
+<span class="value">- headline: ≤12 words — benefit-driven</span>
+<span class="value">- body:     ≤30 words — aspirational, feature-specific</span>
+<span class="value">- cta:      ≤5 words  — action-oriented</span>
+
+<span class="comment">// Tone Registers (A/B/C)</span>
+<span class="key">- Variant A: emotional / storytelling tone</span>
+<span class="key">- Variant B: performance / technical tone</span>
+<span class="key">- Variant C: urgency / value tone</span>
+
+<span class="comment">// Return Format</span>
+<span class="value">{"variants":[{"id":"A","tagline":"...","headline":"...","body":"...","cta":"..."},
+             {"id":"B",...},{"id":"C",...}]}</span></div>
+
+  <p class="body-text">The user message adds product name, key features, target audience, and price point — typically <strong>~50–80 tokens</strong>. Total call budget sits around 1,100 tokens, well under the threshold where cost or latency becomes a concern.</p>
+
+  <div class="token-visual">
+    <div class="token-card">
+      <div class="token-card-label">System Prompt</div>
+      <div class="token-card-num"><span>~</span>240</div>
+      <div class="token-card-desc">Schema, constraints, tone rules, JSON format instruction</div>
     </div>
-    <div class="pipe-step">
-      <div class="pipe-num">2</div>
-      <div class="pipe-content">
-        <div class="pipe-title">6 targeted web searches run in sequence</div>
-        <p class="pipe-desc">Recent news &rarr; financial results &rarr; strategy &amp; expansion &rarr; product &amp; innovation &rarr; challenges &amp; headwinds &rarr; leadership &amp; brand. Each query targets a different intelligence dimension.</p>
-      </div>
+    <div class="token-card">
+      <div class="token-card-label">User Input</div>
+      <div class="token-card-num"><span>~</span>60</div>
+      <div class="token-card-desc">Product name, features, audience, price point</div>
     </div>
-    <div class="pipe-step">
-      <div class="pipe-num">3</div>
-      <div class="pipe-content">
-        <div class="pipe-title">Claude synthesises across all results</div>
-        <p class="pipe-desc">All search results are passed to the model with a strict system prompt. The model synthesises, reconciles conflicting sources, and structures the output. No claim is allowed without a source.</p>
-      </div>
-    </div>
-    <div class="pipe-step">
-      <div class="pipe-num">4</div>
-      <div class="pipe-content">
-        <div class="pipe-title">Structured brief rendered in the UI</div>
-        <p class="pipe-desc">The brief renders as a formatted document with 7 sections. Sources are cited inline. The brief can be copied as markdown for sharing in Slack, Notion, or email.</p>
-      </div>
+    <div class="token-card">
+      <div class="token-card-label">Max Output</div>
+      <div class="token-card-num"><span>&lt;</span>800</div>
+      <div class="token-card-desc">3 variants × 4 fields × hard word limits</div>
     </div>
   </div>
-
-  <div class="divider"></div>
-
-  <div class="section-eyebrow">03 &mdash; Brief Structure</div>
-  <h2>7 sections — the same template every time</h2>
-  <p>Consistency of structure is as important as quality of content. A brief that looks different every time creates cognitive load for the reader. The system prompt enforces the exact same 7-section template regardless of which retailer is searched.</p>
-
-  <div class="brief-sections">
-    <div class="brief-sec">
-      <div class="brief-sec-icon">&#x1F50D;</div>
-      <div class="brief-sec-name">Executive Summary</div>
-      <p class="brief-sec-desc">2-3 sentences on current strategic position and the single most important thing happening to this business right now.</p>
-    </div>
-    <div class="brief-sec">
-      <div class="brief-sec-icon">&#x1F4F0;</div>
-      <div class="brief-sec-name">Recent Developments</div>
-      <p class="brief-sec-desc">4-6 significant news items from the last 90 days, each with date, event, and why it matters — with source URLs.</p>
-    </div>
-    <div class="brief-sec">
-      <div class="brief-sec-icon">&#x1F4B0;</div>
-      <div class="brief-sec-name">Financials &amp; Performance</div>
-      <p class="brief-sec-desc">Revenue, trend, key markets, profitability. Figures always include reporting period. Private companies flagged as "not publicly disclosed."</p>
-    </div>
-    <div class="brief-sec">
-      <div class="brief-sec-icon">&#x26A1;</div>
-      <div class="brief-sec-name">SWOT Analysis</div>
-      <p class="brief-sec-desc">3-4 specific, evidence-based points per quadrant. Not generic retail observations — grounded in what this retailer is actually doing.</p>
-    </div>
-    <div class="brief-sec">
-      <div class="brief-sec-icon">&#x1F4E1;</div>
-      <div class="brief-sec-name">Strategic Signals</div>
-      <p class="brief-sec-desc">3-5 signals showing what the retailer is visibly prioritising, each with a sourced implication for competitors or the market.</p>
-    </div>
-    <div class="brief-sec">
-      <div class="brief-sec-icon">&#x1F441;&#xFE0F;</div>
-      <div class="brief-sec-name">Watch List</div>
-      <p class="brief-sec-desc">2-3 forward-looking items that could materially change this retailer's position in the next 6-12 months.</p>
-    </div>
+  <div class="token-total">
+    <span class="token-total-label">Total budget per call</span>
+    <span class="token-total-num">~1,100 tokens</span>
   </div>
+</section>
 
-  <div class="divider"></div>
+<!-- SECTION 03 — Structured Output & Variant Logic -->
+<div class="section-full">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-num">03 —</span>
+      <h2 class="section-title">Structured Output &amp; Variant Logic</h2>
+      <div class="section-line"></div>
+    </div>
 
-  <div class="section-eyebrow">04 &mdash; System Prompt Design</div>
-  <h2>Enforcing analyst-grade output quality</h2>
-  <p>The system prompt does the work that a research brief template would do in a real team. It defines the search strategy, the output schema, and a set of quality rules that prevent the model from fabricating, speculating, or producing vague output.</p>
+    <p class="body-text">Each variant targets a different buyer psychology. Variant A builds emotional connection — useful for brand awareness campaigns. Variant B leads with technical performance — useful for product detail pages and search ads. Variant C creates urgency — useful for promotions and retargeting. The same product input produces three channel-ready outputs in one call.</p>
 
-  <div class="code-block">
-    <span class="code-label">Quality Rules (excerpt)</span>
-    <pre><span class="cm">// Grounding rules — no fabrication</span>
-<span class="cv">Every claim must be grounded in a search result.</span>
-<span class="cv">Never fabricate data. If a figure is not verifiable,</span>
-<span class="cv">say "not publicly disclosed."</span>
+    <table class="variant-table">
+      <thead>
+        <tr>
+          <th>Variant</th>
+          <th>Tone Register</th>
+          <th>Sample Output — Meridian Alpine Shell</th>
+          <th>Best Used For</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="variant-id">A</span></td>
+          <td><span class="variant-tone">Emotional</span></td>
+          <td>
+            <div class="variant-tagline">"The mountain doesn't wait."</div>
+            <div class="variant-desc">Headline: Built for those who move before the weather decides. Body: Lightweight, waterproof, and ready when you are — the Alpine Shell packs to your palm and performs at the summit.</div>
+          </td>
+          <td style="font-size:12px;color:var(--text-muted);">Brand awareness, lifestyle campaigns, social</td>
+        </tr>
+        <tr>
+          <td><span class="variant-id">B</span></td>
+          <td><span class="variant-tone">Performance</span></td>
+          <td>
+            <div class="variant-tagline">"20K waterproof. Zero compromise."</div>
+            <div class="variant-desc">Headline: 20K-rated waterproof shell in recycled nylon, under 300g. Body: Pit vents regulate temperature on the ascent. Packable shell deploys in seconds. Engineered for unpredictable alpine conditions.</div>
+          </td>
+          <td style="font-size:12px;color:var(--text-muted);">PDPs, search ads, gear review placements</td>
+        </tr>
+        <tr>
+          <td><span class="variant-id">C</span></td>
+          <td><span class="variant-tone">Urgency</span></td>
+          <td>
+            <div class="variant-tagline">"Season-ready. Limited stock."</div>
+            <div class="variant-desc">Headline: Premium alpine protection — now at the price that moves fast. Body: The Alpine Shell is back for the season. Waterproof, packable, sustainable. Sizes selling fast — don't get caught in the open.</div>
+          </td>
+          <td style="font-size:12px;color:var(--text-muted);">Promotions, retargeting, email campaigns</td>
+        </tr>
+      </tbody>
+    </table>
 
-<span class="cm">// Citation rules</span>
-<span class="cv">Financial figures: always include the reporting period</span>
-<span class="cv">(e.g. "FY2024", "Q3 2025").</span>
-<span class="cv">If conflicting information exists across sources,</span>
-<span class="cv">note the discrepancy.</span>
+    <p class="body-text" style="margin-top:28px;">The output schema is enforced entirely through prompt — no function calling, no tool use, no post-processing pipeline. JSON is parsed directly in the UI. If the model returns well-formed JSON (which it does consistently with a clear schema instruction), the UI renders immediately.</p>
 
-<span class="cm">// Specificity rules</span>
-<span class="cv">SWOT must be specific to this retailer —</span>
-<span class="cv">not generic retail observations.</span>
-<span class="cv">Strategic Signals must be backed by at least</span>
-<span class="cv">one recent source each.</span>
-<span class="cv">Watch List must be forward-looking,</span>
-<span class="cv">not restatements of current news.</span></pre>
+    <div class="code-label" style="margin-top:28px;">Output Field Schema</div>
+    <table class="schema-table">
+      <thead>
+        <tr>
+          <th>Field</th>
+          <th>Word Limit</th>
+          <th>Purpose</th>
+          <th>Channel Fit</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="schema-field">tagline</span></td>
+          <td><span class="schema-limit">≤ 8 words</span></td>
+          <td>Brand-level hook, emotionally resonant</td>
+          <td>Social, OOH, campaign hero</td>
+        </tr>
+        <tr>
+          <td><span class="schema-field">headline</span></td>
+          <td><span class="schema-limit">≤ 12 words</span></td>
+          <td>Benefit-led, scannable, SEO-friendly</td>
+          <td>Email subject, PDP title, search ad</td>
+        </tr>
+        <tr>
+          <td><span class="schema-field">body</span></td>
+          <td><span class="schema-limit">≤ 30 words</span></td>
+          <td>Feature-specific, aspirational, tone-matched</td>
+          <td>Email body, PDP description, ad copy</td>
+        </tr>
+        <tr>
+          <td><span class="schema-field">cta</span></td>
+          <td><span class="schema-limit">≤ 5 words</span></td>
+          <td>Action-oriented, creates momentum</td>
+          <td>Button text, push notification, banner</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
-
-  <div class="divider"></div>
-
-  <div class="section-eyebrow">05 &mdash; Concepts Demonstrated</div>
-  <h2>What this agent teaches</h2>
-
-  <div class="concept-grid">
-    <div class="concept-card">
-      <div class="concept-icon">&#x1F310;</div>
-      <div class="concept-name">Tool Use — Web Search</div>
-      <p class="concept-desc">Claude's native web search tool runs live queries against the web at generation time. Results are current, not cached — the brief reflects what's happening today, not what was in training data.</p>
-    </div>
-    <div class="concept-card">
-      <div class="concept-icon">&#x1F50D;</div>
-      <div class="concept-name">Multi-Query Retrieval</div>
-      <p class="concept-desc">6 targeted searches across different intelligence dimensions — not a single broad query. Each search targets a specific failure mode in CI: missing financials, missing strategy signals, missing challenges.</p>
-    </div>
-    <div class="concept-card">
-      <div class="concept-icon">&#x1F4CB;</div>
-      <div class="concept-name">Structured Output Design</div>
-      <p class="concept-desc">The system prompt enforces a consistent 7-section template. Same structure every time, regardless of retailer. This is a product design decision — consistency reduces cognitive load for the reader.</p>
-    </div>
-    <div class="concept-card">
-      <div class="concept-icon">&#x1F517;</div>
-      <div class="concept-name">Source Grounding</div>
-      <p class="concept-desc">Every claim is cited. The model is instructed to attribute findings to specific sources and flag data gaps when information is not publicly available — no hallucinated facts.</p>
-    </div>
-    <div class="concept-card">
-      <div class="concept-icon">&#x1F4CA;</div>
-      <div class="concept-name">SWOT as a Product Artefact</div>
-      <p class="concept-desc">A SWOT is only valuable if it's specific. The system prompt explicitly prohibits generic retail observations — every point must be grounded in something this retailer is actually doing or facing.</p>
-    </div>
-    <div class="concept-card">
-      <div class="concept-icon">&#x1F4E4;</div>
-      <div class="concept-name">Exportable Output</div>
-      <p class="concept-desc">The brief is copyable as markdown — ready to paste into Slack, Notion, Confluence, or email. A real deliverable, not just a demo output.</p>
-    </div>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="section-eyebrow">06 &mdash; Lessons Learned</div>
-  <h2>What I would do differently</h2>
-
-  <div class="lesson-list">
-    <div class="lesson">
-      <div class="lesson-num">1</div>
-      <p class="lesson-text"><strong>Multi-query retrieval is non-negotiable for quality CI.</strong> A single search returns the most recent headline — not the full picture. The 6-query strategy was the single most important decision in this agent. In production, query design is itself a product discipline — the queries should be reviewed and refined based on which ones consistently return weak results.</p>
-    </div>
-    <div class="lesson">
-      <div class="lesson-num">2</div>
-      <p class="lesson-text"><strong>Private company coverage is a real limitation.</strong> For publicly listed retailers, the brief is strong — earnings, analyst commentary, and press releases provide rich source material. For private companies (Primark, Zara's parent Inditex is public but many regional players are not), the brief has visible data gaps. In production, this would be supplemented with paid data sources like Euromonitor, Mintel, or Companies House filings.</p>
-    </div>
-    <div class="lesson">
-      <div class="lesson-num">3</div>
-      <p class="lesson-text"><strong>The Watch List is the most valuable section — and the hardest to get right.</strong> Executive summary and recent news are largely a retrieval task. The Watch List requires genuine forward-looking synthesis — the model must reason about what is likely to matter in 6-12 months, not just what is currently happening. This is where prompt engineering has the most leverage.</p>
-    </div>
-    <div class="lesson">
-      <div class="lesson-num">4</div>
-      <p class="lesson-text"><strong>Source quality varies significantly.</strong> Web search returns a mix of authoritative sources (Reuters, FT, Bloomberg) and low-quality aggregators. In production, the system prompt should include domain allowlists — prioritise Financial Times, Reuters, Bloomberg, company investor relations pages, and major trade publications over SEO-optimised content farms.</p>
-    </div>
-    <div class="lesson">
-      <div class="lesson-num">5</div>
-      <p class="lesson-text"><strong>This agent should trigger weekly, not on-demand.</strong> The most valuable version of this agent runs automatically every Monday for a watchlist of 10-20 tracked competitors and delivers briefs to a Slack channel or email digest. On-demand is useful for ad hoc research. Scheduled delivery is what makes CI a habit rather than a project.</p>
-    </div>
-  </div>
-
-  <div class="cta-bar">
-    <div>
-      <h3>Try it on any retailer</h3>
-      <p>Enter any retailer — global or regional, fashion or home or grocery. The brief takes about 30-60 seconds to generate.</p>
-    </div>
-    <div class="cta-actions">
-      <a href="index.html" class="cta-btn ghost">&larr; Portfolio</a>
-      <a href="agent05_ci.html" target="_blank" class="cta-btn green">Launch Agent 05 &rarr;</a>
-    </div>
-  </div>
-
 </div>
+
+<!-- SECTION 04 — Concepts Demonstrated -->
+<section class="section">
+  <div class="section-header">
+    <span class="section-num">04 —</span>
+    <h2 class="section-title">Concepts Demonstrated</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="concepts-grid">
+    <div class="concept-card">
+      <div class="concept-icon">✍️</div>
+      <div class="concept-title">System Prompt Engineering</div>
+      <p class="concept-body">Role, schema, field constraints, tone registers, and output format — all encoded in <strong>~240 tokens</strong>. Every word in the system prompt is a product decision that directly affects output quality and consistency.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-icon">📐</div>
+      <div class="concept-title">Structured Output</div>
+      <p class="concept-body">JSON schema enforced through prompt instruction — no function calling required. <strong>4 fields per variant, 3 variants per call</strong>, parseable directly in the UI without regex or post-processing.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-icon">🪙</div>
+      <div class="concept-title">Token Efficiency</div>
+      <p class="concept-body"><strong>~1,100 tokens total</strong> per call. No RAG, no multi-step pipeline, no tool use. Single synchronous call — demonstrating that well-designed prompts deliver production value without architectural complexity.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-icon">🎚️</div>
+      <div class="concept-title">Tone Register Control</div>
+      <p class="concept-body">Three distinct psychological levers — emotional, performance, urgency — generated from a <strong>single product input</strong>. Gives marketing teams channel-ready A/B/C variants without a copywriter in the loop.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-icon">🔌</div>
+      <div class="concept-title">Anthropic API</div>
+      <p class="concept-body">Direct API integration with <strong>system prompt injection, max_tokens cap, and JSON response parsing</strong>. Live token usage displayed post-call to make efficiency visible and auditable.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-icon">⚡</div>
+      <div class="concept-title">PM-First AI Design</div>
+      <p class="concept-body">Every constraint — word limits, tone splits, JSON schema — maps to a <strong>real business requirement</strong>: channel character limits, A/B testing needs, downstream system integration. AI in service of product, not the other way around.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 05 — Lessons Learned -->
+<div class="section-full">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-num">05 —</span>
+      <h2 class="section-title">Lessons Learned</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="lessons-list">
+      <div class="lesson">
+        <div class="lesson-num">1</div>
+        <div class="lesson-text"><strong>Hard word limits work better than soft guidance.</strong> Telling the model "be concise" produces variable length. Specifying "≤8 words" produces consistent, channel-ready output. Constraints are features, not restrictions.</div>
+      </div>
+      <div class="lesson">
+        <div class="lesson-num">2</div>
+        <div class="lesson-text"><strong>Schema in the system prompt eliminates post-processing.</strong> Specifying the exact JSON structure — field names, nesting, array format — means the response parses directly. No regex, no error-prone string manipulation between API and UI.</div>
+      </div>
+      <div class="lesson">
+        <div class="lesson-num">3</div>
+        <div class="lesson-text"><strong>Tone registers need behavioural descriptions, not adjectives.</strong> "Emotional tone" alone is vague. Pairing it with "storytelling, human connection, aspiration" produces consistently distinct output from "performance, technical specs, measurable outcomes."</div>
+      </div>
+      <div class="lesson">
+        <div class="lesson-num">4</div>
+        <div class="lesson-text"><strong>The token counter is a product feature, not a debugging tool.</strong> Displaying system prompt tokens, input tokens, and output tokens in the UI makes AI efficiency legible to non-technical stakeholders. Visibility builds trust and supports governance conversations.</div>
+      </div>
+      <div class="lesson">
+        <div class="lesson-num">5</div>
+        <div class="lesson-text"><strong>API keys must go through a proxy from day one.</strong> Embedding keys in client-side HTML — even with spend limits — exposes them in view-source. A Cloudflare Worker proxy should be the default starting point for any browser-based agent before it goes to production.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER CTAs -->
+<div class="case-footer">
+  <p>Agent 05 · Promotional Copy Generator · Meridian Athletic</p>
+  <div class="footer-ctas">
+    <a href="index.html" class="btn-outline">← Portfolio</a>
+    <a href="agent05.html" class="btn-primary">Launch Agent 05 →</a>
+  </div>
+</div>
+
 </body>
 </html>
