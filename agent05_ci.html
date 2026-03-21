@@ -361,7 +361,7 @@
 <script>
 var WORKER_URL = 'https://luminary-proxy.vikramyeldandi.workers.dev/';
 
-var SYSTEM_PROMPT = 'You are a retail competitive intelligence analyst. Use web search to research the retailer thoroughly before writing. Run multiple searches covering: recent news, financials, strategy, products, challenges, and leadership.\n\nOutput this exact structure:\n\n### COMPETITIVE BRIEF: [RETAILER]\n**Prepared:** [date] | **Category:** [category] | **Markets:** [markets]\n---\n#### EXECUTIVE SUMMARY\n2-3 sentences on strategic position and most important current development.\n---\n#### RECENT DEVELOPMENTS\n4-6 bullet points: - [Date]: [Event] — [Why it matters] [URL]\n---\n#### FINANCIALS & PERFORMANCE\n- Revenue: [figure + period or not publicly disclosed]\n- Trend: [growing/declining/flat]\n- Key markets: [list]\n- Profitability: [status]\n---\n#### SWOT ANALYSIS\n**Strengths** (3 points) **Weaknesses** (3 points) **Opportunities** (3 points) **Threats** (3 points). Each point must be specific to this retailer.\n---\n#### STRATEGIC SIGNALS\n3-4 signals: - Signal: [action] → Implication: [meaning]\n---\n#### WATCH LIST\n2-3 forward-looking items to monitor.\n---\n#### SOURCES\n- [Source] — [Headline] — [URL]\n\nRules: Ground every claim in search results. No fabrication. Cite sources. Include reporting periods for financials. Third person only.';
+var SYSTEM_PROMPT = 'You are a retail competitive intelligence analyst. Search the web for current information about the retailer, then write a brief with these sections: EXECUTIVE SUMMARY, RECENT DEVELOPMENTS, FINANCIALS, SWOT, STRATEGIC SIGNALS, SOURCES. Be specific, cite sources, no fabrication.';
 
 var STEPS = [
   'Searching recent news...',
@@ -456,17 +456,21 @@ async function generateBrief() {
   }, 3500);
 
   try {
+    var controller = new AbortController();
+    var timeout = setTimeout(function() { controller.abort(); }, 55000);
     var res = await fetch(WORKER_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      signal: controller.signal,
       body: JSON.stringify({
         action: 'web_search',
         model: 'claude-sonnet-4-20250514',
-        max_tokens: 4000,
+        max_tokens: 2000,
         system: SYSTEM_PROMPT,
-        messages: [{ role: 'user', content: 'Generate a full competitive intelligence brief for: ' + retailer + '. Search the web thoroughly across multiple queries before writing. Today\'s date is ' + new Date().toLocaleDateString('en-GB', {day:'numeric',month:'long',year:'numeric'}) + '.' }]
+        messages: [{ role: 'user', content: 'Competitive intelligence brief for: ' + retailer + '. Search the web first, then write the brief.' }]
       })
     });
+    clearTimeout(timeout);
 
     var data = await res.json();
     console.log('Worker response status:', res.status);
