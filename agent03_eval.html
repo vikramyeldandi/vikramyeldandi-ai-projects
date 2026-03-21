@@ -248,10 +248,10 @@ async function runEval(){
     var ans='',sc2={};
     try{ans=await callAgent02(q.q);sc2=await judgeResponse(q.q,q.exp,ans);}
     catch(err){ans='Error: '+err.message;sc2={accuracy:1,completeness:1,grounding:1,reasoning:'API error',verdict:'FAIL'};}
-    var avg=((sc2.accuracy+sc2.completeness+sc2.grounding)/3).toFixed(1);
+    var avg=((Number(sc2.accuracy)+Number(sc2.completeness)+Number(sc2.grounding))/3).toFixed(1);
     var v=sc2.verdict||(avg>=4?'PASS':avg>=2.5?'PARTIAL':'FAIL');
     if(v==='PASS')pass++;else if(v==='PARTIAL')partial++;else fail++;
-    tA+=sc2.accuracy;tC+=sc2.completeness;tG+=sc2.grounding;
+    tA+=Number(sc2.accuracy);tC+=Number(sc2.completeness);tG+=Number(sc2.grounding);
     var r=Object.assign({},q,{ans:ans,sc:sc2,avg:avg,v:v});
     results.push(r);
     var n=i+1,ov=Math.round((tA+tC+tG)/(n*3)*100);
