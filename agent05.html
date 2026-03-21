@@ -777,9 +777,14 @@ Generate 3 promotional copy variants.`;
       })
     });
 
-    if (!response.ok) throw new Error('API error ' + response.status);
-
     const data = await response.json();
+    console.log('Worker response:', JSON.stringify(data));
+
+    // Surface any error returned by the Worker or Anthropic
+    if (data.error) throw new Error(data.error + (data.detail ? ': ' + data.detail : ''));
+    if (!response.ok) throw new Error('API error ' + response.status);
+    if (!data.content || !Array.isArray(data.content)) throw new Error('No content in response — check console for full response');
+
     const raw = data.content.map(b => b.text || '').join('');
     const inputUsed = data.usage?.input_tokens || 0;
     const outputUsed = data.usage?.output_tokens || 0;
