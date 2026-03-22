@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent 09 — Structured Data Extractor</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a1628;
+    --surface: #112240;
+    --surface2: #162d4f;
+    --accent: #4a90d9;
+    --accent-dim: rgba(74,144,217,0.15);
+    --accent-mid: rgba(74,144,217,0.3);
+    --text: #e8edf5;
+    --text-muted: #8899b4;
+    --text-dim: #4a6080;
+    --border: rgba(74,144,217,0.18);
+    --border-bright: rgba(74,144,217,0.4);
+    --success: #3dd68c;
+    --success-dim: rgba(61,214,140,0.12);
+    --warn: #f5a623;
+    --warn-dim: rgba(245,166,35,0.12);
+    --danger: #e05c5c;
+    --danger-dim: rgba(224,92,92,0.12);
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    position: sticky;
+    top: 0;
+    background: rgba(10,22,40,0.92);
+    backdrop-filter: blur(12px);
+    z-index: 100;
+  }
+
+  .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .agent-badge {
+    background: var(--accent-dim);
+    border: 1px solid var(--border-bright);
+    color: var(--accent);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    padding: 4px 10px;
+    border-radius: 20px;
+    text-transform: uppercase;
+  }
+
+  .logo-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    color: var(--text);
+  }
+
+  nav {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  nav a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  nav a:hover { color: var(--accent); }
+
+  .nav-cta {
+    background: var(--accent);
+    color: #fff !important;
+    padding: 8px 18px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .nav-cta:hover { opacity: 0.88; }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 72px 2rem 56px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .hero-tag::before {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(36px, 5vw, 52px);
+    line-height: 1.15;
+    color: var(--text);
+    margin-bottom: 20px;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero p {
+    font-size: 17px;
+    color: var(--text-muted);
+    max-width: 580px;
+    line-height: 1.7;
+    margin-bottom: 32px;
+  }
+
+  .hero-meta {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .meta-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .meta-pill span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--success);
+    display: inline-block;
+    box-shadow: 0 0 8px var(--success);
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* ── MAIN LAYOUT ── */
+  .main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem 80px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+
+  @media (max-width: 760px) {
+    .main { grid-template-columns: 1fr; }
+  }
+
+  /* ── PANELS ── */
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .panel-header {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .panel-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .panel-body { padding: 18px; }
+
+  /* ── SCHEMA BUILDER ── */
+  .schema-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 12px;
+    min-height: 40px;
+  }
+
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 100px 28px;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .field-name-input, .type-select {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    padding: 7px 10px;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+
+  .field-name-input:focus, .type-select:focus {
+    border-color: var(--border-bright);
+  }
+
+  .type-select option { background: var(--surface); }
+
+  .remove-btn {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-dim);
+    cursor: pointer;
+    height: 28px;
+    width: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transition: all 0.15s;
+    flex-shrink: 0;
+  }
+  .remove-btn:hover { border-color: var(--danger); color: var(--danger); }
+
+  .add-field-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 4px;
+  }
+
+  .add-field-input {
+    flex: 1;
+    background: var(--bg);
+    border: 1px dashed var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    padding: 7px 10px;
+    outline: none;
+    transition: all 0.2s;
+  }
+  .add-field-input:focus {
+    border-color: var(--accent);
+    border-style: solid;
+    color: var(--text);
+  }
+  .add-field-input::placeholder { color: var(--text-dim); }
+
+  .add-btn {
+    background: var(--accent-dim);
+    border: 1px solid var(--border-bright);
+    border-radius: var(--radius-sm);
+    color: var(--accent);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 7px 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+    white-space: nowrap;
+  }
+  .add-btn:hover { background: var(--accent-mid); }
+
+  .schema-presets {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+  }
+
+  .preset-btn {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    color: var(--text-muted);
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    padding: 4px 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .preset-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── INPUT TEXT AREA ── */
+  .input-textarea {
+    width: 100%;
+    min-height: 200px;
+    resize: vertical;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    line-height: 1.65;
+    padding: 12px 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .input-textarea:focus { border-color: var(--border-bright); }
+  .input-textarea::placeholder { color: var(--text-dim); }
+
+  .input-options {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+
+  .input-sample-btn {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    color: var(--text-muted);
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    padding: 4px 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .input-sample-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── EXTRACT BUTTON ── */
+  .extract-btn {
+    width: 100%;
+    background: var(--accent);
+    border: none;
+    border-radius: var(--radius-sm);
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 13px;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+    margin-top: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .extract-btn:hover { opacity: 0.88; }
+  .extract-btn:active { transform: scale(0.99); }
+  .extract-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+  .extract-btn .spinner {
+    width: 16px; height: 16px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    display: none;
+  }
+  .extract-btn.loading .spinner { display: block; }
+  .extract-btn.loading .btn-label { display: none; }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── OUTPUT PANEL ── */
+  .output-panel {
+    grid-column: 1 / -1;
+  }
+
+  .output-empty {
+    padding: 40px 20px;
+    text-align: center;
+    color: var(--text-dim);
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+  }
+
+  .output-empty::before {
+    content: '{ }';
+    display: block;
+    font-size: 32px;
+    margin-bottom: 12px;
+    color: var(--border-bright);
+  }
+
+  /* ── RESULT TABLE ── */
+  .result-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .confidence-legend {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .conf-dot {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    color: var(--text-muted);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .conf-dot::before {
+    content: '';
+    display: block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+  }
+  .conf-dot.high::before { background: var(--success); }
+  .conf-dot.mid::before { background: var(--warn); }
+  .conf-dot.low::before { background: var(--danger); }
+
+  .result-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+    font-size: 13px;
+  }
+
+  .result-table th {
+    text-align: left;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    font-family: 'DM Mono', monospace;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .result-table td {
+    padding: 11px 12px;
+    border-bottom: 1px solid rgba(74,144,217,0.08);
+    vertical-align: top;
+  }
+  .result-table tr:last-child td { border-bottom: none; }
+
+  .field-cell {
+    font-family: 'DM Mono', monospace;
+    color: var(--accent);
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  .type-cell {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+
+  .value-cell {
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    word-break: break-word;
+  }
+
+  .value-null {
+    color: var(--text-dim);
+    font-style: italic;
+  }
+
+  .conf-bar-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .conf-bar {
+    flex: 1;
+    height: 4px;
+    background: var(--surface2);
+    border-radius: 2px;
+    overflow: hidden;
+    min-width: 60px;
+  }
+
+  .conf-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+
+  .conf-pct {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    min-width: 36px;
+    text-align: right;
+  }
+
+  .conf-high .conf-fill { background: var(--success); }
+  .conf-high .conf-pct { color: var(--success); }
+  .conf-mid .conf-fill { background: var(--warn); }
+  .conf-mid .conf-pct { color: var(--warn); }
+  .conf-low .conf-fill { background: var(--danger); }
+  .conf-low .conf-pct { color: var(--danger); }
+
+  /* ── JSON EXPORT ── */
+  .json-section {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+
+  .json-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .json-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+  }
+
+  .copy-btn {
+    background: var(--accent-dim);
+    border: 1px solid var(--border-bright);
+    border-radius: var(--radius-sm);
+    color: var(--accent);
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    padding: 4px 12px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .copy-btn:hover { background: var(--accent-mid); }
+  .copy-btn.copied { color: var(--success); border-color: var(--success); background: var(--success-dim); }
+
+  .json-block {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 14px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    line-height: 1.7;
+    color: var(--text-muted);
+    white-space: pre;
+    overflow-x: auto;
+    max-height: 280px;
+    overflow-y: auto;
+  }
+
+  .json-key { color: var(--accent); }
+  .json-str { color: #a8d8a8; }
+  .json-num { color: #f0b95a; }
+  .json-bool { color: var(--warn); }
+  .json-null { color: var(--text-dim); }
+
+  /* ── STATS ROW ── */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+
+  .stat-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+  }
+
+  .stat-label {
+    font-size: 10px;
+    font-family: 'DM Mono', monospace;
+    color: var(--text-dim);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .stat-val {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .stat-val.success { color: var(--success); }
+  .stat-val.warn { color: var(--warn); }
+
+  /* ── ERROR STATE ── */
+  .error-box {
+    background: var(--danger-dim);
+    border: 1px solid rgba(224,92,92,0.3);
+    border-radius: var(--radius-sm);
+    padding: 14px;
+    font-size: 13px;
+    color: #f0a0a0;
+    font-family: 'DM Mono', monospace;
+    display: none;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 24px 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--text-dim);
+    font-family: 'DM Mono', monospace;
+  }
+
+  footer a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  footer a:hover { opacity: 0.75; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-area">
+    <span class="agent-badge">Agent 09</span>
+    <span class="logo-title">Structured Data Extractor</span>
+  </div>
+  <nav>
+    <a href="index.html">← Portfolio</a>
+    <a href="agent09_case_study.html">Case Study</a>
+    <a href="#extractor" class="nav-cta">Try It</a>
+  </nav>
+</header>
+
+<div class="hero">
+  <div class="hero-tag">Vikram Yeldandi · AI Agents</div>
+  <h1>Parse anything.<br><em>Structure everything.</em></h1>
+  <p>
+    Drop in emails, forms, contracts, or raw documents. Agent 09 extracts structured JSON conforming to your defined schema — with field-level confidence scores on every value.
+  </p>
+  <div class="hero-meta">
+    <span class="meta-pill"><span></span> Live · Claude claude-sonnet-4-20250514</span>
+    <span class="meta-pill" style="color:var(--text-dim)">800 token output · 300 token system prompt</span>
+    <span class="meta-pill" style="color:var(--text-dim)">1 API call per extraction</span>
+  </div>
+</div>
+
+<div class="main" id="extractor">
+
+  <!-- LEFT: SCHEMA BUILDER -->
+  <div class="panel">
+    <div class="panel-header">
+      <span class="panel-title">Schema Definition</span>
+    </div>
+    <div class="panel-body">
+      <div class="schema-fields" id="schemaFields"></div>
+
+      <div class="add-field-row">
+        <input class="add-field-input" id="newFieldName" placeholder="field_name" autocomplete="off" />
+        <select class="type-select" id="newFieldType" style="width:100px">
+          <option value="string">string</option>
+          <option value="number">number</option>
+          <option value="date">date</option>
+          <option value="boolean">boolean</option>
+          <option value="array">array</option>
+        </select>
+        <button class="add-btn" onclick="addField()">+ Add</button>
+      </div>
+
+      <div class="schema-presets">
+        <button class="preset-btn" onclick="loadPreset('invoice')">Invoice</button>
+        <button class="preset-btn" onclick="loadPreset('contact')">Contact</button>
+        <button class="preset-btn" onclick="loadPreset('job')">Job Listing</button>
+        <button class="preset-btn" onclick="loadPreset('order')">Order</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: INPUT -->
+  <div class="panel">
+    <div class="panel-header">
+      <span class="panel-title">Input Document</span>
+    </div>
+    <div class="panel-body">
+      <textarea class="input-textarea" id="inputText" placeholder="Paste email, form, contract, or any unstructured text here..."></textarea>
+      <div class="input-options">
+        <button class="input-sample-btn" onclick="loadSample('invoice')">Sample invoice</button>
+        <button class="input-sample-btn" onclick="loadSample('contact')">Sample email</button>
+        <button class="input-sample-btn" onclick="loadSample('job')">Sample job post</button>
+      </div>
+      <button class="extract-btn" id="extractBtn" onclick="runExtraction()">
+        <div class="spinner"></div>
+        <span class="btn-label">⚡ Extract Structured Data</span>
+      </button>
+      <div class="error-box" id="errorBox"></div>
+    </div>
+  </div>
+
+  <!-- OUTPUT -->
+  <div class="panel output-panel">
+    <div class="panel-header result-header">
+      <span class="panel-title">Extraction Result</span>
+      <div class="confidence-legend" id="confLegend" style="display:none">
+        <span class="conf-dot high">High ≥ 85%</span>
+        <span class="conf-dot mid">Medium ≥ 60%</span>
+        <span class="conf-dot low">Low &lt; 60%</span>
+      </div>
+    </div>
+    <div class="panel-body" id="outputBody">
+      <div class="output-empty">Run an extraction to see results</div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <span>Agent 09 · Vikram Yeldandi · 2025</span>
+  <a href="agent09_case_study.html">Read the case study →</a>
+</footer>
+
+<script>
+const WORKER_URL = 'https://luminary-proxy.vikramyeldandi.workers.dev/';
+
+let schema = [];
+
+const PRESETS = {
+  invoice: [
+    {name:'vendor_name', type:'string'},
+    {name:'invoice_number', type:'string'},
+    {name:'invoice_date', type:'date'},
+    {name:'due_date', type:'date'},
+    {name:'total_amount', type:'number'},
+    {name:'currency', type:'string'},
+    {name:'line_items', type:'array'},
+  ],
+  contact: [
+    {name:'full_name', type:'string'},
+    {name:'email', type:'string'},
+    {name:'phone', type:'string'},
+    {name:'company', type:'string'},
+    {name:'role', type:'string'},
+    {name:'location', type:'string'},
+  ],
+  job: [
+    {name:'job_title', type:'string'},
+    {name:'company', type:'string'},
+    {name:'location', type:'string'},
+    {name:'salary_range', type:'string'},
+    {name:'employment_type', type:'string'},
+    {name:'required_skills', type:'array'},
+    {name:'experience_years', type:'number'},
+    {name:'remote', type:'boolean'},
+  ],
+  order: [
+    {name:'order_id', type:'string'},
+    {name:'customer_name', type:'string'},
+    {name:'order_date', type:'date'},
+    {name:'items', type:'array'},
+    {name:'subtotal', type:'number'},
+    {name:'shipping_cost', type:'number'},
+    {name:'total', type:'number'},
+    {name:'status', type:'string'},
+  ]
+};
+
+const SAMPLES = {
+  invoice: `From: billing@acmesupplies.com
+To: accounts@yourcompany.com
+Subject: Invoice #INV-2024-0892
+
+Dear Accounts Payable Team,
+
+Please find attached Invoice #INV-2024-0892 dated November 15, 2024.
+
+Vendor: Acme Supplies Inc.
+Invoice Date: November 15, 2024
+Due Date: December 15, 2024
+Currency: USD
+
+Line Items:
+- Office Supplies Bundle (x3): $450.00
+- Ergonomic Desk Chair (x2): $890.00
+- Monitor Stand (x5): $275.00
+
+Subtotal: $1,615.00
+Tax (8.5%): $137.28
+Total Due: $1,752.28
+
+Please remit payment by the due date. Wire transfer details on file.
+
+Best regards,
+Sarah Chen, Billing Department`,
+
+  contact: `Hey,
+
+Just wanted to follow up from the conference last week! Great meeting you at the AI Summit.
+
+My details:
+Marcus Williams
+Senior Product Manager — DataBridge Technologies
+📧 m.williams@databridge.io
+📱 +1 (415) 882-0341
+📍 San Francisco, CA
+
+Let's grab coffee sometime — I think there's a lot we could collaborate on around the ML pipeline tooling space.
+
+Cheers,
+Marcus`,
+
+  job: `🚀 Senior Machine Learning Engineer — Remote Friendly
+
+TechFlow AI is hiring!
+
+We're looking for a Senior ML Engineer to join our growing team. You'll work on our core recommendation engine serving 5M+ users daily.
+
+📍 Location: Austin, TX (or remote US)
+💰 Salary: $180,000 – $230,000 DOE
+📋 Type: Full-time
+
+What you'll need:
+• 5+ years of ML engineering experience
+• Strong Python, PyTorch or TensorFlow
+• Experience deploying models at scale (Kubernetes, Docker)
+• Familiarity with data pipelines (Spark, Airflow)
+• MLOps experience a big plus
+
+Remote: Yes (US only)
+
+Apply at careers.techflow.ai or email recruiting@techflow.ai`
+};
+
+function loadPreset(name) {
+  schema = PRESETS[name].map(f => ({...f}));
+  renderSchema();
+}
+
+function loadSample(name) {
+  document.getElementById('inputText').value = SAMPLES[name] || '';
+}
+
+function renderSchema() {
+  const container = document.getElementById('schemaFields');
+  if (schema.length === 0) {
+    container.innerHTML = '<div style="color:var(--text-dim);font-size:12px;font-family:\'DM Mono\',monospace;padding:4px 0">No fields yet — add one or load a preset.</div>';
+    return;
+  }
+  container.innerHTML = schema.map((f, i) => `
+    <div class="field-row">
+      <input class="field-name-input" value="${f.name}" oninput="schema[${i}].name=this.value" placeholder="field_name"/>
+      <select class="type-select" onchange="schema[${i}].type=this.value">
+        ${['string','number','date','boolean','array'].map(t =>
+          `<option value="${t}"${f.type===t?' selected':''}>${t}</option>`
+        ).join('')}
+      </select>
+      <button class="remove-btn" onclick="removeField(${i})">×</button>
+    </div>
+  `).join('');
+}
+
+function addField() {
+  const name = document.getElementById('newFieldName').value.trim().replace(/\s+/g,'_');
+  const type = document.getElementById('newFieldType').value;
+  if (!name) return;
+  schema.push({name, type});
+  document.getElementById('newFieldName').value = '';
+  renderSchema();
+}
+
+function removeField(i) {
+  schema.splice(i, 1);
+  renderSchema();
+}
+
+document.getElementById('newFieldName').addEventListener('keydown', e => {
+  if (e.key === 'Enter') addField();
+});
+
+function buildSystemPrompt(schema) {
+  const fields = schema.map(f => `"${f.name}" (${f.type})`).join(', ');
+  return `You are a structured data extraction engine. Extract the following fields from user-provided text: ${fields}. Respond ONLY with a JSON object. For each field include "value" (extracted value or null) and "confidence" (0.0-1.0). Format: {"field_name":{"value":...,"confidence":0.95},...}. Be precise. If a field cannot be found set value to null and confidence to 0.`;
+}
+
+async function runExtraction() {
+  const text = document.getElementById('inputText').value.trim();
+  const errorBox = document.getElementById('errorBox');
+  errorBox.style.display = 'none';
+
+  if (!text) { showError('Please paste a document to extract from.'); return; }
+  if (schema.length === 0) { showError('Please define at least one schema field.'); return; }
+
+  const btn = document.getElementById('extractBtn');
+  btn.disabled = true;
+  btn.classList.add('loading');
+
+  try {
+    const response = await fetch(WORKER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 800,
+        system: buildSystemPrompt(schema),
+        messages: [{ role: 'user', content: text }]
+      })
+    });
+
+    if (!response.ok) {
+      const err = await response.text();
+      throw new Error(`API error ${response.status}: ${err}`);
+    }
+
+    const data = await response.json();
+    const raw = data.content?.[0]?.text || '';
+    let parsed;
+    try {
+      const clean = raw.replace(/```json|```/g, '').trim();
+      parsed = JSON.parse(clean);
+    } catch(e) {
+      throw new Error('Could not parse JSON from response. Raw: ' + raw.slice(0, 200));
+    }
+
+    renderOutput(parsed);
+  } catch(e) {
+    showError(e.message);
+  } finally {
+    btn.disabled = false;
+    btn.classList.remove('loading');
+  }
+}
+
+function showError(msg) {
+  const box = document.getElementById('errorBox');
+  box.textContent = '⚠ ' + msg;
+  box.style.display = 'block';
+}
+
+function renderOutput(data) {
+  document.getElementById('confLegend').style.display = 'flex';
+
+  const fields = schema.map(f => {
+    const entry = data[f.name] || {};
+    const val = entry.value !== undefined ? entry.value : null;
+    const conf = typeof entry.confidence === 'number' ? entry.confidence : (val !== null ? 0.7 : 0.0);
+    return { name: f.name, type: f.type, value: val, confidence: conf };
+  });
+
+  const filled = fields.filter(f => f.value !== null).length;
+  const avgConf = fields.length ? (fields.reduce((s,f) => s + f.confidence, 0) / fields.length) : 0;
+  const highConf = fields.filter(f => f.confidence >= 0.85).length;
+
+  const tableRows = fields.map(f => {
+    const pct = Math.round(f.confidence * 100);
+    const cls = f.confidence >= 0.85 ? 'high' : f.confidence >= 0.6 ? 'mid' : 'low';
+    const confClass = `conf-${cls}`;
+    const valDisplay = f.value === null
+      ? '<span class="value-null">null</span>'
+      : `<span>${Array.isArray(f.value) ? JSON.stringify(f.value) : String(f.value)}</span>`;
+
+    return `
+      <tr>
+        <td class="field-cell">${f.name}</td>
+        <td class="type-cell">${f.type}</td>
+        <td class="value-cell">${valDisplay}</td>
+        <td>
+          <div class="conf-bar-wrap ${confClass}">
+            <div class="conf-bar"><div class="conf-fill" style="width:${pct}%"></div></div>
+            <span class="conf-pct">${pct}%</span>
+          </div>
+        </td>
+      </tr>`;
+  }).join('');
+
+  // Build colored JSON
+  const jsonObj = {};
+  fields.forEach(f => { jsonObj[f.name] = f.value; });
+  const jsonStr = JSON.stringify(jsonObj, null, 2);
+  const coloredJson = jsonStr
+    .replace(/(".*?")\s*:/g, '<span class="json-key">$1</span>:')
+    .replace(/:\s*(".*?")/g, ': <span class="json-str">$1</span>')
+    .replace(/:\s*(\d+\.?\d*)/g, ': <span class="json-num">$1</span>')
+    .replace(/:\s*(true|false)/g, ': <span class="json-bool">$1</span>')
+    .replace(/:\s*(null)/g, ': <span class="json-null">$1</span>');
+
+  document.getElementById('outputBody').innerHTML = `
+    <table class="result-table">
+      <thead>
+        <tr>
+          <th style="width:30%">Field</th>
+          <th style="width:12%">Type</th>
+          <th>Value</th>
+          <th style="width:160px">Confidence</th>
+        </tr>
+      </thead>
+      <tbody>${tableRows}</tbody>
+    </table>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-label">Fields Extracted</div>
+        <div class="stat-val ${filled === fields.length ? 'success' : 'warn'}">${filled}/${fields.length}</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Avg Confidence</div>
+        <div class="stat-val ${avgConf >= 0.8 ? 'success' : 'warn'}">${Math.round(avgConf * 100)}%</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">High Confidence</div>
+        <div class="stat-val success">${highConf}</div>
+      </div>
+    </div>
+
+    <div class="json-section">
+      <div class="json-header">
+        <span class="json-label">JSON Output</span>
+        <button class="copy-btn" id="copyBtn" onclick="copyJSON(${JSON.stringify(JSON.stringify(jsonObj))})">Copy JSON</button>
+      </div>
+      <div class="json-block">${coloredJson}</div>
+    </div>
+  `;
+}
+
+function copyJSON(jsonStr) {
+  navigator.clipboard.writeText(jsonStr).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = '✓ Copied';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy JSON'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+// Init with invoice preset
+loadPreset('invoice');
+renderSchema();
+</script>
+</body>
+</html>
