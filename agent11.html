@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent 11 — Personalised Product Recommender</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a1628;
+    --navy-mid: #112240;
+    --navy-light: #1d3461;
+    --accent: #4a90d9;
+    --accent-light: #64b5f6;
+    --gold: #c9a84c;
+    --white: #ffffff;
+    --off-white: #f0f4f8;
+    --text-muted: #8899aa;
+    --border: rgba(255,255,255,0.08);
+    --card-bg: rgba(255,255,255,0.04);
+  }
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { font-family:'DM Sans',sans-serif; background:var(--navy); color:var(--white); overflow-x:hidden; line-height:1.6; }
+
+  nav {
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:20px 48px;
+    background:rgba(10,22,40,0.85); backdrop-filter:blur(12px);
+    border-bottom:0.5px solid var(--border);
+  }
+  .nav-logo { font-family:'DM Serif Display',serif; font-size:18px; color:var(--white); letter-spacing:0.01em; }
+  .nav-logo span { color:var(--accent); }
+  .nav-links { display:flex; gap:32px; list-style:none; }
+  .nav-links a { font-size:13px; font-weight:500; letter-spacing:.04em; color:var(--text-muted); text-decoration:none; text-transform:uppercase; transition:color .2s; }
+  .nav-links a:hover { color:var(--white); }
+
+  .page-wrap { max-width:760px; margin:0 auto; padding:120px 48px 80px; }
+
+  .back-link { display:inline-flex; align-items:center; gap:8px; font-size:13px; color:var(--text-muted); text-decoration:none; margin-bottom:40px; transition:color .2s; }
+  .back-link:hover { color:var(--accent); }
+
+  .agent-eyebrow { font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:12px; }
+  .agent-title { font-family:'DM Serif Display',serif; font-size:clamp(32px,5vw,52px); line-height:1.1; margin-bottom:16px; }
+  .agent-title em { font-style:italic; color:var(--accent-light); }
+  .agent-subtitle { font-size:15px; color:var(--text-muted); margin-bottom:32px; }
+
+  .agent-tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:40px; }
+  .tag { font-size:10px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; padding:3px 8px; border-radius:3px; background:rgba(74,144,217,0.1); border:0.5px solid rgba(74,144,217,0.25); color:var(--accent-light); }
+  .tag.retail { background:rgba(29,158,117,0.1); border-color:rgba(29,158,117,0.3); color:#5dcaa5; }
+
+  /* Chat panel */
+  .chat-panel {
+    background:var(--navy-mid); border:0.5px solid var(--border);
+    border-radius:8px; overflow:hidden; margin-bottom:48px;
+  }
+  .panel-header {
+    display:flex; justify-content:space-between; align-items:center;
+    padding:14px 20px; border-bottom:0.5px solid var(--border);
+    background:rgba(255,255,255,0.02);
+  }
+  .panel-title { font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--text-muted); display:flex; align-items:center; gap:8px; }
+  .panel-dot { width:7px; height:7px; border-radius:50%; background:#5dcaa5; animation:pulse 2.4s ease-in-out infinite; }
+  .panel-meta { font-size:11px; color:var(--text-muted); font-family:'DM Mono',monospace; }
+
+  .presets-bar { display:flex; align-items:center; gap:8px; flex-wrap:wrap; padding:10px 20px; border-bottom:0.5px solid var(--border); background:rgba(0,0,0,0.08); }
+  .presets-label { font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--text-muted); margin-right:4px; }
+  .preset-btn { font-size:10px; font-weight:600; letter-spacing:.04em; text-transform:uppercase; padding:4px 10px; border-radius:3px; cursor:pointer; border:0.5px solid var(--border); background:transparent; color:var(--text-muted); transition:all .2s; }
+  .preset-btn:hover { border-color:rgba(74,144,217,0.4); color:var(--accent); background:rgba(74,144,217,0.08); }
+
+  .chat-area { height:420px; overflow-y:auto; padding:20px; display:flex; flex-direction:column; gap:16px; scroll-behavior:smooth; }
+  .chat-area::-webkit-scrollbar { width:3px; }
+  .chat-area::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
+
+  .msg { display:flex; gap:10px; }
+  .msg.user { flex-direction:row-reverse; }
+  .msg-avatar { width:28px; height:28px; border-radius:4px; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:700; letter-spacing:.04em; flex-shrink:0; }
+  .msg.agent .msg-avatar { background:rgba(74,144,217,0.12); color:var(--accent); border:0.5px solid rgba(74,144,217,0.25); }
+  .msg.user .msg-avatar { background:rgba(255,255,255,0.06); color:var(--text-muted); border:0.5px solid var(--border); }
+  .msg-bubble { max-width:78%; padding:12px 16px; border-radius:6px; font-size:13px; line-height:1.7; }
+  .msg.agent .msg-bubble { background:rgba(255,255,255,0.04); border:0.5px solid var(--border); border-top-left-radius:2px; }
+  .msg.user .msg-bubble { background:rgba(74,144,217,0.1); border:0.5px solid rgba(74,144,217,0.2); border-top-right-radius:2px; }
+  .msg-label { font-size:10px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; margin-bottom:6px; color:var(--text-muted); }
+  .msg.user .msg-label { text-align:right; }
+
+  /* Product cards inside chat */
+  .product-card { background:rgba(74,144,217,0.06); border:0.5px solid rgba(74,144,217,0.2); border-radius:6px; padding:12px 14px; margin-top:10px; }
+  .product-card-tag { font-size:9px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); margin-bottom:5px; }
+  .product-card-name { font-size:13px; font-weight:600; color:var(--white); margin-bottom:5px; }
+  .product-card-desc { font-size:12px; color:var(--text-muted); line-height:1.6; }
+
+  .typing { display:flex; gap:4px; align-items:center; padding:4px 0; }
+  .typing span { width:5px; height:5px; border-radius:50%; background:var(--text-muted); animation:typing 1.2s infinite; }
+  .typing span:nth-child(2) { animation-delay:.2s; }
+  .typing span:nth-child(3) { animation-delay:.4s; }
+  @keyframes typing { 0%,60%,100% { opacity:.3; transform:translateY(0); } 30% { opacity:1; transform:translateY(-3px); } }
+  @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
+
+  .input-row { display:flex; gap:10px; align-items:flex-end; padding:14px 20px; border-top:0.5px solid var(--border); background:rgba(0,0,0,0.1); }
+  .chat-input { flex:1; background:rgba(255,255,255,0.05); border:0.5px solid var(--border); border-radius:4px; color:var(--white); font-family:'DM Sans',sans-serif; font-size:13px; padding:10px 14px; resize:none; outline:none; line-height:1.5; min-height:40px; max-height:100px; transition:border-color .2s; }
+  .chat-input:focus { border-color:rgba(74,144,217,0.4); }
+  .chat-input::placeholder { color:var(--text-muted); }
+  .send-btn { background:var(--accent); color:var(--white); border:none; border-radius:50px; cursor:pointer; padding:10px 20px; font-size:12px; font-weight:600; letter-spacing:.04em; text-transform:uppercase; transition:background .2s,transform .15s; white-space:nowrap; height:40px; display:flex; align-items:center; gap:6px; }
+  .send-btn:hover { background:var(--accent-light); transform:translateY(-1px); }
+  .send-btn:disabled { opacity:.4; cursor:not-allowed; transform:none; }
+
+  .status-bar { display:flex; justify-content:space-between; padding:8px 20px; border-top:0.5px solid var(--border); background:rgba(0,0,0,0.08); }
+  .status-items { display:flex; gap:16px; }
+  .status-item { font-size:10px; color:var(--text-muted); display:flex; align-items:center; gap:5px; letter-spacing:.04em; }
+  .sdot { width:5px; height:5px; border-radius:50%; }
+  .sdot.ok { background:#5dcaa5; }
+
+  /* Info cards */
+  .info-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:48px; }
+  .info-card { background:var(--card-bg); border:0.5px solid var(--border); border-radius:8px; padding:20px; }
+  .info-card-icon { font-size:20px; margin-bottom:10px; }
+  .info-card-title { font-size:14px; font-weight:600; margin-bottom:6px; }
+  .info-card-body { font-size:12px; color:var(--text-muted); line-height:1.65; }
+
+  .view-case { display:inline-flex; align-items:center; gap:8px; font-size:13px; font-weight:600; letter-spacing:.04em; color:var(--accent); text-decoration:none; transition:opacity .2s; }
+  .view-case:hover { opacity:.7; }
+
+  footer { border-top:0.5px solid var(--border); padding:32px 48px; text-align:center; font-size:12px; color:var(--text-muted); }
+  footer a { color:var(--accent); text-decoration:none; }
+
+  @media(max-width:640px) {
+    nav { padding:16px 20px; }
+    .nav-links { gap:20px; }
+    .page-wrap { padding:100px 20px 60px; }
+    .info-grid { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Vikram <span>Yeldandi</span></div>
+  <ul class="nav-links">
+    <li><a href="index.html">← Portfolio</a></li>
+    <li><a href="agent11_case_study.html">Case Study</a></li>
+  </ul>
+</nav>
+
+<div class="page-wrap">
+  <a href="index.html" class="back-link">← Back to Portfolio</a>
+
+  <p class="agent-eyebrow">Agent 11 · Retail · Personalisation</p>
+  <h1 class="agent-title">Personalised <em>Product Recommender</em></h1>
+  <p class="agent-subtitle">Recommends products based on your profile, preferences, and context — with conditional reasoning and explainable justification for every suggestion.</p>
+
+  <div class="agent-tags">
+    <span class="tag retail">Retail</span>
+    <span class="tag">Personalisation</span>
+    <span class="tag">Recommendations</span>
+    <span class="tag">Explainability</span>
+    <span class="tag">Conversational AI</span>
+  </div>
+
+  <!-- Chat Panel -->
+  <div class="chat-panel">
+    <div class="panel-header">
+      <div class="panel-title"><div class="panel-dot"></div>Product Recommender · Active</div>
+      <div class="panel-meta" id="sessionMeta">session: pr-0001</div>
+    </div>
+
+    <div class="presets-bar">
+      <span class="presets-label">Try asking:</span>
+      <button class="preset-btn" onclick="loadPreset('laptop')">Laptop</button>
+      <button class="preset-btn" onclick="loadPreset('gift')">Gift Idea</button>
+      <button class="preset-btn" onclick="loadPreset('running')">Running Gear</button>
+      <button class="preset-btn" onclick="loadPreset('homeoffice')">Home Office</button>
+      <button class="preset-btn" onclick="loadPreset('skincare')">Skincare</button>
+    </div>
+
+    <div class="chat-area" id="chatArea">
+      <div class="msg agent">
+        <div class="msg-avatar">A11</div>
+        <div class="msg-bubble">
+          <div class="msg-label">Product Recommender</div>
+          Hi! I'm your personalised product advisor. Tell me what you're looking for — what it's for, your budget, and any must-haves — and I'll recommend the best options with clear reasoning for each one.
+        </div>
+      </div>
+    </div>
+
+    <div class="input-row">
+      <textarea class="chat-input" id="chatInput" placeholder="Tell me what you're looking for..." rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+      <button class="send-btn" id="sendBtn" onclick="sendMessage()">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
+        Send
+      </button>
+    </div>
+
+    <div class="status-bar">
+      <div class="status-items">
+        <div class="status-item"><div class="sdot ok"></div>Cloudflare Worker</div>
+        <div class="status-item"><div class="sdot ok"></div>Claude API</div>
+        <div class="status-item"><div class="sdot ok"></div><span id="tokenCount">Tokens: 0</span></div>
+      </div>
+      <div class="status-item" id="turnCount">Turn: 0</div>
+    </div>
+  </div>
+
+  <!-- Info cards -->
+  <div class="info-grid">
+    <div class="info-card">
+      <div class="info-card-icon">💬</div>
+      <h3 class="info-card-title">Conversational Profiling</h3>
+      <p class="info-card-body">Builds your preference profile through natural dialogue — no forms, no click history required. Works from the very first message.</p>
+    </div>
+    <div class="info-card">
+      <div class="info-card-icon">🧠</div>
+      <h3 class="info-card-title">Explainable Reasoning</h3>
+      <p class="info-card-body">Every recommendation includes a clear justification tied to what you said — budget, use case, and constraints — not a black-box score.</p>
+    </div>
+    <div class="info-card">
+      <div class="info-card-icon">🎯</div>
+      <h3 class="info-card-title">Any Product Domain</h3>
+      <p class="info-card-body">No hard-coded categories. Ask about tech, fashion, fitness gear, gifts, or anything else — the agent adapts its criteria to the domain.</p>
+    </div>
+  </div>
+
+  <a href="agent11_case_study.html" class="view-case">Read the Case Study →</a>
+</div>
+
+<footer>
+  <p>© 2026 Vikram Yeldandi · <a href="index.html">AI Product Portfolio</a> · Agent 11 of 14</p>
+</footer>
+
+<script>
+  const WORKER_URL = 'https://luminary-proxy.vikramyeldandi.workers.dev/';
+  let conversationHistory = [];
+  let totalTokens = 0;
+  let turnCount = 0;
+  let isLoading = false;
+
+  const SYSTEM_PROMPT = `You are Agent 11 — a warm, concise personal product advisor. Your job is to understand what someone is looking for and recommend 2-3 specific products with clear reasoning.
+
+Conversation flow:
+1. If the user's first message lacks detail, ask ONE focused follow-up question (budget, use case, or key constraint).
+2. Once you have enough context, give 2-3 product recommendations.
+3. For follow-up questions or requests for alternatives, respond naturally and offer new recommendations.
+
+When recommending products, format EACH one exactly like this — use these exact delimiters:
+===PRODUCT===
+NAME: [product name]
+TAG: [short category]
+DESC: [2-3 sentences explaining why it fits based on what they told you]
+===END===
+
+After the products, add one short closing sentence. Be concise. Never explain your process. Just have a natural, helpful conversation.`;
+
+  const PRESETS = {
+    laptop:     'I need a laptop for software development. Budget around £1,200. Needs to be fast and have a good keyboard.',
+    gift:       'Looking for a birthday gift for my dad. He loves cooking and the outdoors. Budget is about £80.',
+    running:    'I want to get into running. Need shoes and maybe a watch. Budget around £250 total.',
+    homeoffice: 'Setting up a home office. Need a monitor and chair. Happy to spend up to £600.',
+    skincare:   'Looking for a simple skincare routine for dry skin. Nothing too complicated, budget around £50.'
+  };
+
+  function loadPreset(key) {
+    const input = document.getElementById('chatInput');
+    input.value = PRESETS[key];
+    autoResize(input);
+    input.focus();
+  }
+
+  function autoResize(el) {
+    el.style.height = 'auto';
+    el.style.height = Math.min(el.scrollHeight, 100) + 'px';
+  }
+
+  function handleKey(e) {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+  }
+
+  function addMessage(role, rawContent) {
+    const area = document.getElementById('chatArea');
+    const div = document.createElement('div');
+    div.className = 'msg ' + role;
+
+    const avatar = document.createElement('div');
+    avatar.className = 'msg-avatar';
+    avatar.textContent = role === 'agent' ? 'A11' : 'YOU';
+
+    const bubble = document.createElement('div');
+    bubble.className = 'msg-bubble';
+
+    const label = document.createElement('div');
+    label.className = 'msg-label';
+    label.textContent = role === 'agent' ? 'Product Recommender' : 'You';
+    bubble.appendChild(label);
+
+    if (role === 'agent' && rawContent.includes('===PRODUCT===')) {
+      // Parse delimiter blocks into product cards
+      const parts = rawContent.split(/(===PRODUCT===[\s\S]*?===END===)/g);
+      parts.forEach(part => {
+        if (part.startsWith('===PRODUCT===')) {
+          const name = (part.match(/NAME:\s*(.+)/) || [])[1] || '';
+          const tag  = (part.match(/TAG:\s*(.+)/)  || [])[1] || '';
+          const desc = (part.match(/DESC:\s*([\s\S]+?)(?=\s*===END===)/) || [])[1] || '';
+          const card = document.createElement('div');
+          card.className = 'product-card';
+          card.innerHTML = `<div class="product-card-tag">${tag.trim()}</div><div class="product-card-name">${name.trim()}</div><div class="product-card-desc">${desc.trim()}</div>`;
+          bubble.appendChild(card);
+        } else if (part.trim()) {
+          const text = document.createElement('div');
+          text.style.marginTop = bubble.children.length > 1 ? '10px' : '0';
+          text.innerHTML = part.trim().replace(/\n/g, '<br>');
+          bubble.appendChild(text);
+        }
+      });
+    } else {
+      const text = document.createElement('div');
+      text.innerHTML = rawContent.replace(/\n/g, '<br>');
+      bubble.appendChild(text);
+    }
+
+    div.appendChild(avatar);
+    div.appendChild(bubble);
+    area.appendChild(div);
+    area.scrollTop = area.scrollHeight;
+  }
+
+  function showTyping() {
+    const area = document.getElementById('chatArea');
+    const div = document.createElement('div');
+    div.className = 'msg agent'; div.id = 'typingMsg';
+    div.innerHTML = '<div class="msg-avatar">A11</div><div class="msg-bubble"><div class="typing"><span></span><span></span><span></span></div></div>';
+    area.appendChild(div);
+    area.scrollTop = area.scrollHeight;
+  }
+
+  function removeTyping() {
+    const t = document.getElementById('typingMsg');
+    if (t) t.remove();
+  }
+
+  async function sendMessage() {
+    if (isLoading) return;
+    const input = document.getElementById('chatInput');
+    const text = input.value.trim();
+    if (!text) return;
+
+    isLoading = true;
+    document.getElementById('sendBtn').disabled = true;
+    input.value = ''; input.style.height = 'auto';
+
+    addMessage('user', text);
+    conversationHistory.push({ role: 'user', content: text });
+    showTyping();
+
+    try {
+      const res = await fetch(WORKER_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 800,
+          system: SYSTEM_PROMPT,
+          messages: conversationHistory
+        })
+      });
+
+      const data = await res.json();
+      removeTyping();
+
+      if (data.content && data.content[0]) {
+        const reply = data.content[0].text;
+        conversationHistory.push({ role: 'assistant', content: reply });
+        totalTokens += (data.usage?.input_tokens || 0) + (data.usage?.output_tokens || 0);
+        turnCount++;
+        document.getElementById('tokenCount').textContent = 'Tokens: ' + totalTokens;
+        document.getElementById('turnCount').textContent = 'Turn: ' + turnCount;
+        addMessage('agent', reply);
+      } else {
+        addMessage('agent', 'Worker error — check Cloudflare Worker configuration.');
+      }
+    } catch (err) {
+      removeTyping();
+      addMessage('agent', 'Connection error: ' + err.message);
+    }
+
+    isLoading = false;
+    document.getElementById('sendBtn').disabled = false;
+  }
+
+  document.getElementById('sessionMeta').textContent = 'session: pr-' + Math.floor(Math.random() * 9000 + 1000);
+</script>
+</body>
+</html>
