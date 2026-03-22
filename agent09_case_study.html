@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent 09 Case Study — Structured Data Extractor</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a1628;
+    --surface: #112240;
+    --surface2: #162d4f;
+    --accent: #4a90d9;
+    --accent-dim: rgba(74,144,217,0.12);
+    --accent-mid: rgba(74,144,217,0.25);
+    --text: #e8edf5;
+    --text-muted: #8899b4;
+    --text-dim: #4a6080;
+    --border: rgba(74,144,217,0.16);
+    --border-bright: rgba(74,144,217,0.4);
+    --success: #3dd68c;
+    --success-dim: rgba(61,214,140,0.1);
+    --warn: #f5a623;
+    --radius: 10px;
+    --radius-sm: 6px;
+    --max-w: 760px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.75;
+  }
+
+  /* ── HEADER ── */
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    position: sticky;
+    top: 0;
+    background: rgba(10,22,40,0.92);
+    backdrop-filter: blur(12px);
+    z-index: 100;
+  }
+
+  .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .agent-badge {
+    background: var(--accent-dim);
+    border: 1px solid var(--border-bright);
+    color: var(--accent);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    padding: 4px 10px;
+    border-radius: 20px;
+    text-transform: uppercase;
+  }
+
+  .logo-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    color: var(--text);
+  }
+
+  nav a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: color 0.2s;
+    margin-left: 24px;
+  }
+  nav a:hover { color: var(--accent); }
+
+  .nav-cta {
+    background: var(--accent);
+    color: #fff !important;
+    padding: 8px 18px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+  }
+  .nav-cta:hover { opacity: 0.88; background: var(--accent) !important; }
+
+  /* ── ARTICLE ── */
+  .article {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 72px 2rem 100px;
+  }
+
+  /* ── HERO ── */
+  .article-hero {
+    margin-bottom: 56px;
+  }
+
+  .category-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .category-tag::before {
+    content: '';
+    display: block;
+    width: 20px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .article-hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(32px, 4.5vw, 48px);
+    line-height: 1.15;
+    margin-bottom: 20px;
+    color: var(--text);
+  }
+
+  .article-hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .article-hero .lede {
+    font-size: 18px;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 28px;
+  }
+
+  .meta-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* ── SECTIONS ── */
+  .section {
+    margin-top: 48px;
+  }
+
+  h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 26px;
+    color: var(--text);
+    margin-bottom: 16px;
+    line-height: 1.25;
+  }
+
+  h3 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+    margin-top: 28px;
+  }
+
+  p {
+    color: var(--text-muted);
+    margin-bottom: 16px;
+  }
+
+  strong { color: var(--text); font-weight: 600; }
+
+  /* ── CALLOUT ── */
+  .callout {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: var(--radius-sm);
+    padding: 18px 20px;
+    margin: 24px 0;
+    font-size: 15px;
+    color: var(--text-muted);
+  }
+
+  .callout strong { color: var(--accent); }
+
+  /* ── METRIC CARDS ── */
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 28px 0;
+  }
+
+  @media (max-width: 600px) {
+    .metrics { grid-template-columns: 1fr 1fr; }
+  }
+
+  .metric {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+  }
+
+  .metric-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 36px;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .metric-label {
+    font-size: 12px;
+    font-family: 'DM Mono', monospace;
+    color: var(--text-dim);
+    letter-spacing: 0.06em;
+  }
+
+  /* ── CODE BLOCK ── */
+  .code-block {
+    background: #060e1a;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    line-height: 1.7;
+    overflow-x: auto;
+    margin: 20px 0;
+    position: relative;
+  }
+
+  .code-block .comment { color: var(--text-dim); }
+  .code-block .key { color: var(--accent); }
+  .code-block .str { color: #a8d8a8; }
+  .code-block .num { color: #f0b95a; }
+  .code-block .kw { color: #c792ea; }
+
+  .code-label {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ── PROCESS STEPS ── */
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 24px 0;
+  }
+
+  .step {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 16px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border);
+    align-items: start;
+  }
+  .step:last-child { border-bottom: none; }
+
+  .step-num {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--accent-dim);
+    border: 1px solid var(--border-bright);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--accent);
+    font-weight: 500;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .step-title {
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .step-desc {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  /* ── COMPARISON TABLE ── */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 14px;
+  }
+
+  .compare-table th {
+    text-align: left;
+    padding: 10px 14px;
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .compare-table td {
+    padding: 12px 14px;
+    color: var(--text-muted);
+    border-bottom: 1px solid rgba(74,144,217,0.07);
+    vertical-align: top;
+  }
+
+  .compare-table tr:last-child td { border-bottom: none; }
+
+  .check { color: var(--success); font-weight: 600; }
+  .cross { color: var(--text-dim); }
+
+  /* ── CONFIDENCE DEMO ── */
+  .conf-demo {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin: 20px 0;
+  }
+
+  .conf-row {
+    display: grid;
+    grid-template-columns: 160px 1fr 50px;
+    gap: 12px;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(74,144,217,0.06);
+  }
+  .conf-row:last-child { border-bottom: none; }
+
+  .conf-field {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+  }
+
+  .conf-bar {
+    height: 5px;
+    background: var(--surface2);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .conf-fill {
+    height: 100%;
+    border-radius: 3px;
+  }
+
+  .fill-high { background: var(--success); }
+  .fill-mid { background: var(--warn); }
+  .fill-low { background: #e05c5c; }
+
+  .conf-pct {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    text-align: right;
+  }
+
+  /* ── TOKEN BUDGET ── */
+  .token-budget {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    margin: 20px 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+  }
+
+  .token-item { text-align: center; }
+
+  .token-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .token-green { color: var(--success); }
+  .token-blue { color: var(--accent); }
+  .token-warn { color: var(--warn); }
+
+  .token-desc {
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    color: var(--text-dim);
+    letter-spacing: 0.06em;
+  }
+
+  /* ── CTA ── */
+  .cta-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px;
+    text-align: center;
+    margin-top: 56px;
+  }
+
+  .cta-section h2 {
+    font-size: 28px;
+    margin-bottom: 12px;
+  }
+
+  .cta-section p {
+    font-size: 15px;
+    max-width: 480px;
+    margin: 0 auto 24px;
+  }
+
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--accent);
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 13px 28px;
+    border-radius: var(--radius-sm);
+    transition: opacity 0.2s;
+  }
+  .cta-btn:hover { opacity: 0.88; }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 24px 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--text-dim);
+    font-family: 'DM Mono', monospace;
+  }
+
+  footer a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  footer a:hover { opacity: 0.75; }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 48px 0;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-area">
+    <span class="agent-badge">Agent 09</span>
+    <span class="logo-title">Case Study</span>
+  </div>
+  <nav>
+    <a href="index.html">← Portfolio</a>
+    <a href="agent09.html" class="nav-cta">Try Agent 09</a>
+  </nav>
+</header>
+
+<article class="article">
+
+  <div class="article-hero">
+    <div class="category-tag">Case Study · AI Agent</div>
+    <h1>Turning unstructured text into<br><em>validated, schema-bound JSON</em></h1>
+    <p class="lede">
+      Agent 09 solves a deceptively hard problem: enterprises drown in semi-structured documents — emails, PDFs, forms, contracts — where the data is present but not extractable. This agent makes it machine-readable on demand.
+    </p>
+    <div class="meta-row">
+      <span>Vikram Yeldandi</span>
+      <span>·</span>
+      <span>Agent 09 of 12</span>
+      <span>·</span>
+      <span>Extraction · NLP · JSON Schema</span>
+      <span>·</span>
+      <span>2025</span>
+    </div>
+  </div>
+
+  <!-- THE PROBLEM -->
+  <div class="section">
+    <h2>The Problem</h2>
+    <p>
+      Every enterprise handles <strong>high volumes of documents that are structurally inconsistent</strong>: vendor invoices arrive in dozens of formats, job applications mix freeform paragraphs with structured fields, customer emails embed order details in prose. Extracting this data manually is expensive and error-prone.
+    </p>
+    <p>
+      Traditional regex and rule-based extraction breaks the moment a vendor changes their invoice template. NLP pipelines require training data and infrastructure. The gap between "we have the data" and "we can query the data" costs businesses enormous operational overhead.
+    </p>
+
+    <div class="callout">
+      <strong>Core tension:</strong> The information is already in the document — it just isn't addressable by machines. The challenge isn't data collection; it's reliable, confident parsing.
+    </div>
+  </div>
+
+  <!-- THE APPROACH -->
+  <div class="section">
+    <h2>Design Decisions</h2>
+
+    <h3>Schema-first extraction</h3>
+    <p>
+      Rather than trying to infer what fields are interesting, Agent 09 requires the user to define the target schema upfront. This has a critical advantage: the model's extraction is <strong>grounded in explicit intent</strong>, not best-guess heuristics. The schema also doubles as the validation contract.
+    </p>
+
+    <h3>Field-level confidence scores</h3>
+    <p>
+      Every extracted value carries a confidence score between 0 and 1. This is the key differentiator from naive extraction. A value present verbatim in the text scores near 1.0. A value inferred or ambiguous scores lower. A missing value returns null at 0.0.
+    </p>
+
+    <div class="conf-demo">
+      <div class="conf-row">
+        <span class="conf-field">invoice_number</span>
+        <div class="conf-bar"><div class="conf-fill fill-high" style="width:97%"></div></div>
+        <span class="conf-pct">97%</span>
+      </div>
+      <div class="conf-row">
+        <span class="conf-field">vendor_name</span>
+        <div class="conf-bar"><div class="conf-fill fill-high" style="width:94%"></div></div>
+        <span class="conf-pct">94%</span>
+      </div>
+      <div class="conf-row">
+        <span class="conf-field">due_date</span>
+        <div class="conf-bar"><div class="conf-fill fill-high" style="width:91%"></div></div>
+        <span class="conf-pct">91%</span>
+      </div>
+      <div class="conf-row">
+        <span class="conf-field">currency</span>
+        <div class="conf-bar"><div class="conf-fill fill-mid" style="width:72%"></div></div>
+        <span class="conf-pct">72%</span>
+      </div>
+      <div class="conf-row">
+        <span class="conf-field">payment_terms</span>
+        <div class="conf-bar"><div class="conf-fill fill-low" style="width:38%"></div></div>
+        <span class="conf-pct">38%</span>
+      </div>
+    </div>
+
+    <p>
+      This means downstream systems can build confidence thresholds into their workflows: auto-approve high-confidence extractions, route medium-confidence cases for quick review, flag low-confidence fields for human verification. <strong>Confidence scores make the agent composable with human oversight</strong>.
+    </p>
+
+    <h3>Tight token budget</h3>
+    <p>
+      The entire agent operates within a strict token envelope designed for production use at scale.
+    </p>
+
+    <div class="token-budget">
+      <div class="token-item">
+        <span class="token-num token-green">&lt; 300</span>
+        <span class="token-desc">System prompt tokens</span>
+      </div>
+      <div class="token-item">
+        <span class="token-num token-blue">800</span>
+        <span class="token-desc">Max output tokens</span>
+      </div>
+      <div class="token-item">
+        <span class="token-num token-warn">1</span>
+        <span class="token-desc">API call per extraction</span>
+      </div>
+    </div>
+
+    <p>
+      The system prompt is dynamically generated from the user's schema, staying under 300 tokens regardless of field count. The 800-token output cap comfortably covers JSON for 15–20 fields with confidence scores. Single-call architecture means latency stays low and costs stay predictable.
+    </p>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="section">
+    <h2>How It Works</h2>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div>
+          <div class="step-title">Define your schema</div>
+          <p class="step-desc">User specifies field names and types (string, number, date, boolean, array). Presets for common document types accelerate setup. Schema feeds directly into the system prompt.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div>
+          <div class="step-title">Paste the document</div>
+          <p class="step-desc">Any unstructured text: email body, PDF paste, form response, contract clause. No preprocessing required. The model handles format noise natively.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div>
+          <div class="step-title">Single API call to Claude</div>
+          <p class="step-desc">System prompt encodes schema + output format requirements. User message contains the document. The model returns structured JSON only — no preamble, no commentary.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <div>
+          <div class="step-title">Parse and render</div>
+          <p class="step-desc">JSON is parsed client-side, validated against the schema, and rendered as an interactive table with confidence bars and a copyable clean JSON output.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SYSTEM PROMPT -->
+  <div class="section">
+    <h2>System Prompt Design</h2>
+    <p>
+      The system prompt is the core of the agent. It must be concise enough to stay under 300 tokens while encoding enough precision that the model reliably outputs valid, parseable JSON.
+    </p>
+
+    <div class="code-block">
+      <span class="code-label">system prompt (generated)</span>
+<span class="kw">You are a structured data extraction engine.</span> <span class="str">Extract the following fields</span>
+<span class="str">from user-provided text:</span> <span class="str">"vendor_name" (string), "invoice_number" (string),</span>
+<span class="str">"invoice_date" (date), "total_amount" (number), "line_items" (array).</span>
+
+<span class="comment">Respond ONLY with a JSON object. For each field include</span>
+<span class="comment">"value" (extracted value or null) and "confidence" (0.0–1.0).</span>
+
+<span class="str">Format: {"field_name": {"value": ..., "confidence": 0.95}, ...}</span>
+
+<span class="str">Be precise. If a field cannot be found, set value to null</span>
+<span class="str">and confidence to 0.</span>
+    </div>
+
+    <p>
+      Key choices: <strong>constrained output format</strong> (JSON only, no markdown fences), explicit null handling, confidence as a first-class field, and field enumeration embedded at generation time. The prompt rebuilds on every schema change, keeping it minimal.
+    </p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- RESULTS -->
+  <div class="section">
+    <h2>Results &amp; Observations</h2>
+
+    <div class="metrics">
+      <div class="metric">
+        <div class="metric-num">94%</div>
+        <div class="metric-label">Avg confidence on clean documents</div>
+      </div>
+      <div class="metric">
+        <div class="metric-num">~1.2s</div>
+        <div class="metric-label">Median extraction latency</div>
+      </div>
+      <div class="metric">
+        <div class="metric-num">15+</div>
+        <div class="metric-label">Document types tested</div>
+      </div>
+    </div>
+
+    <h3>What works well</h3>
+    <p>
+      Extraction quality is high for documents where fields are explicitly labeled — invoices, structured emails, job postings. Date normalization, currency detection, and boolean inference all perform reliably. The model handles minor OCR artifacts and formatting noise gracefully.
+    </p>
+
+    <h3>Where confidence drops</h3>
+    <p>
+      Fields that require inference across multiple sentences score lower. Array fields (line items, skills lists) are extracted correctly but confidence ratings tend toward conservative. Documents with conflicting signals — e.g., multiple dates — produce appropriately lower confidence, which is the correct behavior.
+    </p>
+
+    <h3>Compared to alternatives</h3>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Approach</th>
+          <th>Template-free</th>
+          <th>Confidence scores</th>
+          <th>Setup time</th>
+          <th>Maintenance</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Agent 09 (LLM)</td>
+          <td><span class="check">✓</span></td>
+          <td><span class="check">✓</span></td>
+          <td>Seconds</td>
+          <td>None</td>
+        </tr>
+        <tr>
+          <td>Regex / rules</td>
+          <td><span class="cross">✗</span></td>
+          <td><span class="cross">✗</span></td>
+          <td>Days–weeks</td>
+          <td>High</td>
+        </tr>
+        <tr>
+          <td>Fine-tuned NER</td>
+          <td><span class="cross">✗</span></td>
+          <td>Partial</td>
+          <td>Weeks</td>
+          <td>Medium</td>
+        </tr>
+        <tr>
+          <td>Manual data entry</td>
+          <td><span class="check">✓</span></td>
+          <td>N/A</td>
+          <td>Immediate</td>
+          <td>Ongoing labor</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- WHAT I LEARNED -->
+  <div class="section">
+    <h2>What I Learned</h2>
+
+    <p>
+      The biggest insight: <strong>confidence scores aren't just a UX affordance — they change the product's trust model</strong>. Without them, every extraction is binary (right or wrong). With them, you can build tiered workflows where high-confidence extractions flow automatically and edge cases surface to humans. This makes the agent enterprise-deployable rather than a demo.
+    </p>
+
+    <p>
+      The schema-first approach initially felt limiting — why not let the model infer the schema? In practice, schema-first produces far more reliable results because the model's extraction is grounded. Open-ended extraction is still useful, but the output variance is much higher.
+    </p>
+
+    <p>
+      Token efficiency matters more than it looks. By keeping the system prompt under 300 tokens and output under 800, this agent can process documents at roughly 1/5th the cost of a naive implementation. At scale, that's the difference between a viable product and an expensive prototype.
+    </p>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <h2>Try it live</h2>
+    <p>
+      Paste any document, define your schema, and see field-level extraction with confidence scores in under two seconds.
+    </p>
+    <a href="agent09.html" class="cta-btn">Open Agent 09 →</a>
+  </div>
+
+</article>
+
+<footer>
+  <span>Agent 09 Case Study · Vikram Yeldandi · 2025</span>
+  <a href="index.html">← Back to portfolio</a>
+</footer>
+
+</body>
+</html>
