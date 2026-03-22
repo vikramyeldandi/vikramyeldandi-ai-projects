@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent 13 Case Study — Customer Review Intelligence Agent</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a1628;
+    --navy-mid: #112240;
+    --navy-light: #1d3461;
+    --accent: #4a90d9;
+    --accent-light: #64b5f6;
+    --gold: #c9a84c;
+    --white: #ffffff;
+    --off-white: #f0f4f8;
+    --text-muted: #8899aa;
+    --border: rgba(255,255,255,0.08);
+    --card-bg: rgba(255,255,255,0.04);
+  }
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { font-family:'DM Sans',sans-serif; background:var(--navy); color:var(--white); overflow-x:hidden; line-height:1.6; }
+
+  nav {
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:20px 48px;
+    background:rgba(10,22,40,0.85); backdrop-filter:blur(12px);
+    border-bottom:0.5px solid var(--border);
+  }
+  .nav-logo { font-family:'DM Serif Display',serif; font-size:18px; color:var(--white); letter-spacing:0.01em; }
+  .nav-logo span { color:var(--accent); }
+  .nav-links { display:flex; gap:32px; list-style:none; }
+  .nav-links a { font-size:13px; font-weight:500; letter-spacing:.04em; color:var(--text-muted); text-decoration:none; text-transform:uppercase; transition:color .2s; }
+  .nav-links a:hover { color:var(--white); }
+
+  .page-wrap { max-width:720px; margin:0 auto; padding:120px 48px 80px; }
+
+  .back-link { display:inline-flex; align-items:center; gap:8px; font-size:13px; color:var(--text-muted); text-decoration:none; margin-bottom:40px; transition:color .2s; }
+  .back-link:hover { color:var(--accent); }
+
+  .cs-label { font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:8px; }
+  .cs-agent { font-size:11px; font-weight:500; letter-spacing:.06em; text-transform:uppercase; color:var(--text-muted); margin-bottom:16px; }
+  .cs-title { font-family:'DM Serif Display',serif; font-size:clamp(28px,4.5vw,46px); line-height:1.1; margin-bottom:14px; }
+  .cs-title em { font-style:italic; color:var(--accent-light); }
+  .cs-tagline { font-size:15px; color:var(--text-muted); margin-bottom:32px; max-width:560px; }
+
+  .cs-meta { display:flex; flex-wrap:wrap; gap:24px; margin-bottom:28px; }
+  .cs-meta-item { display:flex; flex-direction:column; gap:4px; }
+  .cs-meta-label { font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--text-muted); }
+  .cs-meta-value { font-size:13px; color:var(--white); font-family:'DM Mono',monospace; }
+
+  .cs-tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:48px; }
+  .tag { font-size:10px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; padding:3px 8px; border-radius:3px; background:rgba(74,144,217,0.1); border:0.5px solid rgba(74,144,217,0.25); color:var(--accent-light); }
+  .tag.retail { background:rgba(29,158,117,0.1); border-color:rgba(29,158,117,0.3); color:#5dcaa5; }
+
+  .cs-divider { border:none; border-top:0.5px solid var(--border); margin:40px 0; }
+
+  .cs-section { margin-bottom:40px; }
+  .cs-section-heading { font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); margin-bottom:16px; }
+  .cs-body { font-size:14px; color:var(--off-white); line-height:1.8; }
+  .cs-body p { margin-bottom:16px; }
+  .cs-body p:last-child { margin-bottom:0; }
+  .cs-body strong { color:var(--white); font-weight:600; }
+
+  .cs-callout { background:var(--card-bg); border:0.5px solid var(--border); border-left:2px solid var(--accent); border-radius:4px; padding:16px 20px; margin:24px 0; font-size:13px; color:var(--text-muted); line-height:1.7; }
+  .cs-callout strong { color:var(--white); }
+
+  .cs-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin:24px 0; }
+  .cs-card { background:var(--card-bg); border:0.5px solid var(--border); border-radius:8px; padding:18px 20px; }
+  .cs-card-label { font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--text-muted); margin-bottom:8px; font-family:'DM Mono',monospace; }
+  .cs-card-content { font-size:13px; color:var(--off-white); line-height:1.65; }
+
+  .token-stat { display:inline-flex; align-items:center; gap:8px; background:rgba(74,144,217,0.08); border:0.5px solid rgba(74,144,217,0.2); border-radius:4px; padding:6px 12px; font-family:'DM Mono',monospace; font-size:12px; color:var(--accent-light); margin:4px 4px 4px 0; }
+
+  .try-agent { display:inline-flex; align-items:center; gap:8px; font-size:13px; font-weight:600; letter-spacing:.04em; color:var(--accent); text-decoration:none; transition:opacity .2s; margin-top:8px; }
+  .try-agent:hover { opacity:.7; }
+
+  footer { border-top:0.5px solid var(--border); padding:32px 48px; text-align:center; font-size:12px; color:var(--text-muted); }
+  footer a { color:var(--accent); text-decoration:none; }
+
+  @media(max-width:640px) {
+    nav { padding:16px 20px; }
+    .nav-links { gap:20px; }
+    .page-wrap { padding:100px 20px 60px; }
+    .cs-grid { grid-template-columns:1fr; }
+    .cs-meta { gap:16px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Vikram <span>Yeldandi</span></div>
+  <ul class="nav-links">
+    <li><a href="index.html">← Portfolio</a></li>
+    <li><a href="agent13.html">Try Agent 13</a></li>
+  </ul>
+</nav>
+
+<div class="page-wrap">
+  <a href="agent13.html" class="back-link">← Back to Agent 13</a>
+
+  <p class="cs-label">Case Study</p>
+  <p class="cs-agent">Agent 13 · Customer Review Intelligence Agent</p>
+  <h1 class="cs-title">From Raw Reviews to <em>Ranked Insights</em><br>in a Single Pass</h1>
+  <p class="cs-tagline">How a three-block output schema and a stateless single-turn architecture transforms unstructured customer feedback into a prioritised product report — every time, without analyst overhead.</p>
+
+  <div class="cs-meta">
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">Model</span>
+      <span class="cs-meta-value">claude-sonnet-4-20250514</span>
+    </div>
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">System Prompt</span>
+      <span class="cs-meta-value">&lt; 300 tokens</span>
+    </div>
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">Max Output</span>
+      <span class="cs-meta-value">800 tokens</span>
+    </div>
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">API Calls</span>
+      <span class="cs-meta-value">1 per batch</span>
+    </div>
+  </div>
+
+  <div class="cs-tags">
+    <span class="tag retail">Retail</span>
+    <span class="tag">Sentiment Analysis</span>
+    <span class="tag">Theme Clustering</span>
+    <span class="tag">Insight Report</span>
+  </div>
+
+  <hr class="cs-divider">
+
+  <!-- Problem -->
+  <div class="cs-section">
+    <p class="cs-section-heading">The Problem</p>
+    <div class="cs-body">
+      <p>Customer reviews are one of the richest and most underused data sources in retail. A product with 200 reviews contains granular, unsolicited feedback on quality, sizing, delivery, and customer service — but extracting actionable signal from that volume requires either an analyst's time or a purpose-built NLP pipeline.</p>
+      <p>Most product teams end up reading reviews manually, eyeballing a star rating, and trusting instinct for prioritisation. The pattern recognition is slow, the clustering is inconsistent, and the business actions are rarely written down in a way that connects cause to consequence. High-signal feedback becomes low-impact noise.</p>
+    </div>
+  </div>
+
+  <hr class="cs-divider">
+
+  <!-- Design Approach -->
+  <div class="cs-section">
+    <p class="cs-section-heading">Design Approach</p>
+    <div class="cs-body">
+      <p>Agent 13 is deliberately stateless — no conversation history, no follow-up turns. Each batch of reviews is a single API call that returns a complete, self-contained insight report. This keeps the architecture simple, the latency low, and the output predictable.</p>
+      <p>The core design decision was to enforce <strong>three output blocks, always</strong>: a sentiment summary, a ranked list of clustered themes, and a set of recommended actions. These map directly to the three questions a product manager actually needs answered — what is the overall mood, where are the recurring patterns, and what should we do about it.</p>
+    </div>
+
+    <div class="cs-callout">
+      <strong>Key design decision:</strong> Theme blocks include a <code>PERCENT</code> field — an integer representing each theme's share of total reviews. This drives the proportional frequency bar rendered in the UI, giving teams an immediate visual read on relative issue weight without needing a data visualisation tool.
+    </div>
+
+    <div class="cs-body">
+      <p>The input is a textarea rather than a single-line field — a deliberate departure from Agent 11's pattern. Review batches are multi-line by nature, and the UX should reflect that. The send button is labelled "Analyse" rather than "Send" to signal that this is an analysis task, not a conversation.</p>
+    </div>
+  </div>
+
+  <hr class="cs-divider">
+
+  <!-- System Prompt Architecture -->
+  <div class="cs-section">
+    <p class="cs-section-heading">System Prompt Architecture</p>
+    <div class="cs-body">
+      <p>The system prompt defines three delimiter blocks — <code>===SUMMARY===</code>, <code>===THEME===</code>, and <code>===ACTIONS===</code> — each with explicit named fields. The frontend parses each block independently and renders them as distinct UI components: sentiment pills, frequency-bar theme cards, and a gold-accented action panel.</p>
+    </div>
+
+    <div class="cs-grid">
+      <div class="cs-card">
+        <p class="cs-card-label">Summary Block</p>
+        <p class="cs-card-content">POSITIVE / NEGATIVE / MIXED counts plus a HEADLINE — one sentence that captures the dominant signal across the full batch. This gives stakeholders a one-glance read before diving into themes.</p>
+      </div>
+      <div class="cs-card">
+        <p class="cs-card-label">Theme Block</p>
+        <p class="cs-card-content">Repeated 3–5 times, ranked by frequency. Each theme carries a NAME, FREQUENCY (human-readable), PERCENT (integer for the UI bar), SENTIMENT, and a FINDING capped at 40 words — enough to explain without burying the point.</p>
+      </div>
+      <div class="cs-card">
+        <p class="cs-card-label">Actions Block</p>
+        <p class="cs-card-content">2–3 bullet-point actions written in business language. The prompt instructs each action to start with a verb, name the theme it addresses, and state the expected impact — preventing vague recommendations like "improve quality."</p>
+      </div>
+      <div class="cs-card">
+        <p class="cs-card-label">Theme Deduplication Rule</p>
+        <p class="cs-card-content">An explicit prompt rule prevents semantic duplicates — "Delivery Speed" and "Shipping" cannot both appear as themes. Without this constraint, the model produces overlapping clusters that inflate theme count and dilute signal.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="cs-divider">
+
+  <!-- What I Learned -->
+  <div class="cs-section">
+    <p class="cs-section-heading">What I Learned</p>
+    <div class="cs-body">
+      <p><strong>Batch input changes the UX contract.</strong> When input is long-form rather than conversational, the interface needs to reflect that — the textarea, the "Analyse" button label, and the user message preview (showing a review count rather than raw text) all reinforce that this is a structured analysis task, not a chat.</p>
+      <p><strong>Frequency bars are earned, not free.</strong> The proportional bar visualisation requires the model to output a numeric PERCENT field in addition to the human-readable FREQUENCY string. This is a deliberate split — one field for display logic, one for humans — and it has to be specified explicitly in the system prompt or the model conflates them.</p>
+      <p><strong>The deduplication rule is load-bearing.</strong> Without it, the model consistently produces near-duplicate themes in testing — particularly around quality, durability, and materials, or delivery, shipping, and fulfilment. A single explicit constraint in the prompt eliminates the problem entirely.</p>
+      <p><strong>Stateless is a feature here.</strong> Unlike a conversational agent, review analysis doesn't benefit from multi-turn context. Each batch is independent. Keeping it stateless reduces complexity, improves latency, and makes the output more predictable — every run is a clean slate.</p>
+    </div>
+  </div>
+
+  <hr class="cs-divider">
+
+  <!-- Token Profile -->
+  <div class="cs-section">
+    <p class="cs-section-heading">Typical Token Profile</p>
+    <div class="cs-body">
+      <p>A batch of 10–12 reviews analysed in a single call typically produces:</p>
+    </div>
+    <div style="margin-top:12px;">
+      <span class="token-stat">System: ~280 tokens</span>
+      <span class="token-stat">User input: 300–600 tokens</span>
+      <span class="token-stat">Output: 550–780 tokens</span>
+      <span class="token-stat">Total: ~1,100–1,660 tokens / run</span>
+    </div>
+  </div>
+
+  <hr class="cs-divider">
+
+  <a href="agent13.html" class="try-agent">Try Agent 13 →</a>
+</div>
+
+<footer>
+  <p>© 2026 Vikram Yeldandi · <a href="index.html">AI Product Portfolio</a> · Agent 13 of 14</p>
+</footer>
+
+</body>
+</html>
