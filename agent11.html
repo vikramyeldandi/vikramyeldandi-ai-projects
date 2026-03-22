@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agent 11 — Personalised Product Recommender</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a1628;
+      --surface: #112240;
+      --surface-2: #162d52;
+      --accent: #4a90d9;
+      --accent-dim: rgba(74,144,217,0.12);
+      --accent-border: rgba(74,144,217,0.3);
+      --text: #e8edf5;
+      --text-muted: #7a8fa8;
+      --text-dim: #4a5f77;
+      --border: rgba(255,255,255,0.07);
+      --tag-bg: rgba(74,144,217,0.1);
+      --tag-text: #4a90d9;
+      --live-bg: rgba(52,211,153,0.1);
+      --live-dot: #34d399;
+      --live-text: #34d399;
+      --font-serif: 'DM Serif Display', serif;
+      --font-sans: 'DM Sans', sans-serif;
+      --font-mono: 'DM Mono', monospace;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    /* ── Card ── */
+    .agent-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 420px;
+      overflow: hidden;
+      transition: border-color 0.2s, transform 0.2s;
+      position: relative;
+    }
+    .agent-card:hover {
+      border-color: var(--accent-border);
+      transform: translateY(-2px);
+    }
+
+    .card-anchor {
+      display: contents;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .card-header {
+      padding: 1.5rem 1.5rem 0;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .card-number {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-dim);
+      letter-spacing: 0.08em;
+    }
+
+    .status-live {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--live-bg);
+      color: var(--live-text);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      padding: 3px 9px;
+      border-radius: 20px;
+      border: 1px solid rgba(52,211,153,0.2);
+    }
+    .status-live::before {
+      content: '';
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--live-dot);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .card-body {
+      padding: 1.25rem 1.5rem 1.5rem;
+    }
+
+    .card-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: var(--accent-dim);
+      border: 1px solid var(--accent-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+    .card-icon svg {
+      width: 22px;
+      height: 22px;
+      stroke: var(--accent);
+    }
+
+    .card-title {
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      line-height: 1.25;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+    }
+
+    .card-desc {
+      font-size: 13.5px;
+      line-height: 1.65;
+      color: var(--text-muted);
+      margin-bottom: 1.25rem;
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 1.5rem;
+    }
+    .card-tag {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      letter-spacing: 0.04em;
+      background: var(--tag-bg);
+      color: var(--tag-text);
+      padding: 3px 10px;
+      border-radius: 20px;
+      border: 1px solid rgba(74,144,217,0.15);
+    }
+
+    .card-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 0 -1.5rem 1.25rem;
+    }
+
+    .card-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-family: var(--font-mono);
+      letter-spacing: 0.06em;
+      color: var(--accent);
+      text-decoration: none;
+      transition: gap 0.15s;
+    }
+    .card-link:hover { gap: 9px; }
+    .card-link svg {
+      width: 12px;
+      height: 12px;
+      stroke: var(--accent);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="agent-card">
+    <a href="agent11_case_study.html" class="card-anchor" aria-label="View Agent 11 case study">
+
+      <div class="card-header">
+        <span class="card-number">agent_11</span>
+        <span class="status-live">LIVE</span>
+      </div>
+
+      <div class="card-body">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+            <path d="M9 10h6M12 7v6"/>
+          </svg>
+        </div>
+
+        <h2 class="card-title">Personalised Product Recommender</h2>
+        <p class="card-desc">
+          Recommends products based on customer profile, purchase history, and browsing context — with conditional reasoning and explainable justification for each recommendation.
+        </p>
+
+        <div class="card-tags">
+          <span class="card-tag">Retail</span>
+          <span class="card-tag">Personalisation</span>
+          <span class="card-tag">Recommendations</span>
+          <span class="card-tag">Explainability</span>
+        </div>
+
+        <div class="card-divider"></div>
+
+        <a href="agent11_case_study.html" class="card-link">
+          VIEW CASE STUDY
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+
+    </a>
+  </div>
+
+</body>
+</html>
