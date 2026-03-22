@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent 07 — Case Study | Vikram Yeldandi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a1628;
+    --surface: #112240;
+    --surface2: #162b50;
+    --surface3: #1c3461;
+    --accent: #4a90d9;
+    --accent-dim: #2d5f99;
+    --accent-glow: rgba(74,144,217,0.15);
+    --accent-glow2: rgba(74,144,217,0.08);
+    --text: #e8edf5;
+    --text-secondary: #8a9bb5;
+    --text-muted: #4a607a;
+    --border: rgba(74,144,217,0.15);
+    --border-subtle: rgba(74,144,217,0.08);
+    --success: #2dd4a0;
+    --warning: #f5a623;
+    --error: #e05c6a;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    line-height: 1.7;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: -20%;
+    right: -10%;
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(ellipse, rgba(74,144,217,0.06) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 48px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(10,22,40,0.85);
+    backdrop-filter: blur(12px);
+  }
+
+  .nav-brand {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    align-items: center;
+  }
+
+  .nav-link {
+    font-size: 13px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-link:hover { color: var(--accent); }
+
+  .nav-cta {
+    padding: 8px 18px;
+    background: var(--accent);
+    color: white;
+    border-radius: 8px;
+    font-size: 13px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.2s;
+  }
+  .nav-cta:hover { background: #5a9fe8; }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 80px 48px 60px;
+  }
+
+  .agent-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--accent-glow2);
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    margin-bottom: 24px;
+  }
+
+  .agent-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(36px, 5vw, 52px);
+    font-weight: 400;
+    line-height: 1.15;
+    color: var(--text);
+    margin-bottom: 20px;
+    letter-spacing: -0.5px;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--text-secondary);
+  }
+
+  .hero-desc {
+    font-size: 17px;
+    color: var(--text-secondary);
+    max-width: 560px;
+    margin-bottom: 36px;
+    line-height: 1.75;
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .meta-label {
+    font-size: 10px;
+    font-family: 'DM Mono', monospace;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .meta-value {
+    font-size: 14px;
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  /* DIVIDER */
+  .divider {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 48px;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  /* SECTION */
+  .section {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 56px 48px;
+  }
+
+  .section + .section {
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .section-label {
+    font-size: 10px;
+    font-family: 'DM Mono', monospace;
+    color: var(--text-muted);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border-subtle);
+  }
+
+  h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 16px;
+    letter-spacing: -0.3px;
+  }
+
+  p {
+    font-size: 15px;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+    line-height: 1.8;
+  }
+
+  p:last-child { margin-bottom: 0; }
+
+  /* ARCHITECTURE DIAGRAM */
+  .arch-diagram {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    margin: 28px 0;
+    overflow-x: auto;
+  }
+
+  .arch-flow {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    min-width: 540px;
+  }
+
+  .arch-node {
+    flex: 1;
+    text-align: center;
+  }
+
+  .arch-box {
+    display: inline-block;
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    min-width: 100px;
+  }
+
+  .arch-box-label {
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+
+  .arch-box-desc {
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
+
+  .arch-box.highlight {
+    border-color: var(--accent-dim);
+    background: var(--accent-glow);
+  }
+
+  .arch-arrow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 8px;
+    gap: 2px;
+    flex-shrink: 0;
+  }
+
+  .arch-arrow-line {
+    width: 24px;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .arch-arrow-label {
+    font-size: 9px;
+    font-family: 'DM Mono', monospace;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  /* TOKEN TABLE */
+  .token-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin: 20px 0;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .token-table th {
+    text-align: left;
+    padding: 10px 14px;
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    border-bottom: 1px solid var(--border);
+    font-weight: 500;
+  }
+
+  .token-table td {
+    padding: 11px 14px;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border-subtle);
+    font-size: 12px;
+  }
+
+  .token-table tr:last-child td { border-bottom: none; }
+  .token-table tr:hover td { background: var(--accent-glow2); }
+
+  .td-accent { color: var(--accent); }
+  .td-success { color: var(--success); }
+  .td-warning { color: var(--warning); }
+
+  /* DECISION CALLOUT */
+  .callout {
+    padding: 20px 22px;
+    border-radius: 12px;
+    border-left: 3px solid var(--accent);
+    background: var(--accent-glow2);
+    margin: 20px 0;
+  }
+
+  .callout-label {
+    font-size: 10px;
+    font-family: 'DM Mono', monospace;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  .callout p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin: 0;
+    line-height: 1.7;
+  }
+
+  .callout.warn {
+    border-left-color: var(--warning);
+    background: rgba(245,166,35,0.06);
+  }
+
+  .callout.warn .callout-label { color: var(--warning); }
+
+  /* CAPABILITIES GRID */
+  .caps-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+
+  .cap-card {
+    padding: 16px 18px;
+    border-radius: 10px;
+    border: 1px solid var(--border-subtle);
+    background: var(--surface);
+  }
+
+  .cap-icon {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+
+  .cap-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .cap-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  /* TECH STACK */
+  .stack-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 16px 0;
+  }
+
+  .stack-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 1px solid var(--border-subtle);
+    background: var(--surface);
+  }
+
+  .stack-pill {
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    color: var(--accent);
+    background: var(--accent-glow2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 3px 10px;
+    white-space: nowrap;
+    min-width: 90px;
+    text-align: center;
+  }
+
+  .stack-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  /* FOOTER */
+  footer {
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid var(--border-subtle);
+    padding: 32px 48px;
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .footer-left {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 20px;
+  }
+
+  .footer-link {
+    font-size: 13px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-link:hover { color: var(--accent); }
+
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://vikramyeldandi.github.io/vikramyeldandi-ai-projects/" class="nav-brand">Vikram Yeldandi</a>
+  <div class="nav-links">
+    <a href="https://vikramyeldandi.github.io/vikramyeldandi-ai-projects/" class="nav-link">← All Agents</a>
+    <a href="agent07.html" class="nav-cta">Try Agent 07 →</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="agent-tag">
+    <div class="agent-dot"></div>
+    AGENT 07 · CASE STUDY
+  </div>
+  <h1>Agentic Order Management<br><em>for Caden Electronics</em></h1>
+  <p class="hero-desc">A two-call agentic pipeline that extracts intent, queries a mock order database, and returns contextual support responses — with a live reasoning trace visible to the user.</p>
+  <div class="hero-meta">
+    <div class="meta-item">
+      <span class="meta-label">Brand</span>
+      <span class="meta-value">Caden Electronics</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Model</span>
+      <span class="meta-value">Claude Sonnet 4</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Pattern</span>
+      <span class="meta-value">Hybrid 2-call agentic</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Token budget</span>
+      <span class="meta-value">~430 tokens / turn</span>
+    </div>
+  </div>
+</div>
+
+<!-- OVERVIEW -->
+<div class="section">
+  <div class="section-label">Overview</div>
+  <h2>The Problem</h2>
+  <p>Standard chatbot support agents handle order queries with a single prompt that embeds the entire database into the system prompt. This works at small scale — but burns 400–600 tokens on every request, including those that don't need order data at all (greetings, general questions, policy queries).</p>
+  <p>Agent 07 explores a leaner alternative: a two-stage pipeline where the first call is cheap and structural (intent extraction), JavaScript handles the zero-cost data lookup, and only the second call gets contextual data injected — keeping total tokens per turn well under 500 even with a full order record in scope.</p>
+</div>
+
+<!-- ARCHITECTURE -->
+<div class="section">
+  <div class="section-label">Architecture</div>
+  <h2>Two-Call Hybrid Pipeline</h2>
+  <p>Each user message travels through three stages. Only the first and third involve the LLM — the middle stage is pure JavaScript execution at zero token cost.</p>
+
+  <div class="arch-diagram">
+    <div class="arch-flow">
+      <div class="arch-node">
+        <div class="arch-box highlight">
+          <div class="arch-box-label">CALL 1</div>
+          <div class="arch-box-desc">Intent extractor<br>~150 sys tokens<br>~80 max output</div>
+        </div>
+      </div>
+      <div class="arch-arrow">
+        <div class="arch-arrow-line"></div>
+        <div class="arch-arrow-label">JSON intent</div>
+      </div>
+      <div class="arch-node">
+        <div class="arch-box">
+          <div class="arch-box-label">JS LOOKUP</div>
+          <div class="arch-box-desc">Mock DB query<br>0 tokens<br>instant</div>
+        </div>
+      </div>
+      <div class="arch-arrow">
+        <div class="arch-arrow-line"></div>
+        <div class="arch-arrow-label">order record</div>
+      </div>
+      <div class="arch-node">
+        <div class="arch-box highlight">
+          <div class="arch-box-label">CALL 2</div>
+          <div class="arch-box-desc">Support response<br>~150 sys + ~100 ctx<br>800 max output</div>
+        </div>
+      </div>
+      <div class="arch-arrow">
+        <div class="arch-arrow-line"></div>
+        <div class="arch-arrow-label">answer</div>
+      </div>
+      <div class="arch-node">
+        <div class="arch-box">
+          <div class="arch-box-label">UI</div>
+          <div class="arch-box-desc">Render response<br>+ order card<br>+ trace log</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-label">DESIGN DECISION</div>
+    <p>Agent 07 is granted a deliberate exception to the portfolio's 1-call-per-interaction rule. The rationale: genuine tool use requires at minimum a classification pass before the lookup. The hybrid pattern is <em>cheaper than simulated tool use</em> (which embeds the full DB in every call) while being architecturally more honest — the reasoning trace shows real intermediate output, not staged theater.</p>
+  </div>
+</div>
+
+<!-- TOKEN BUDGET -->
+<div class="section">
+  <div class="section-label">Token Analysis</div>
+  <h2>Token Budget per Turn</h2>
+  <p>All figures are per-interaction estimates. The key advantage over simulated tool use: context injected into Call 2 is scoped to a single order record (~100 tokens), not the full database (~500 tokens).</p>
+
+  <table class="token-table">
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Call 1</th>
+        <th>Call 2</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>System prompt</td>
+        <td class="td-accent">~150 tok</td>
+        <td class="td-accent">~150 tok</td>
+        <td>300</td>
+      </tr>
+      <tr>
+        <td>User message</td>
+        <td>~30 tok</td>
+        <td>~30 tok</td>
+        <td>60</td>
+      </tr>
+      <tr>
+        <td>Order record (injected)</td>
+        <td>0</td>
+        <td class="td-accent">~100 tok</td>
+        <td>100</td>
+      </tr>
+      <tr>
+        <td>Conversation history</td>
+        <td>0</td>
+        <td>~80 tok avg</td>
+        <td>80</td>
+      </tr>
+      <tr>
+        <td>Max output</td>
+        <td class="td-success">80 tok</td>
+        <td class="td-warning">800 tok</td>
+        <td>880</td>
+      </tr>
+      <tr>
+        <td><strong>Estimated per turn</strong></td>
+        <td colspan="2"></td>
+        <td class="td-success"><strong>~430 input + 880 output</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout warn">
+    <div class="callout-label">COMPARISON</div>
+    <p>Simulated tool use (full DB in system prompt) would cost ~650 input tokens per turn regardless of query type. The hybrid pattern saves ~220 input tokens per interaction — and keeps output quality higher because Call 2 receives precise, scoped context rather than a noisy full dataset.</p>
+  </div>
+</div>
+
+<!-- CAPABILITIES -->
+<div class="section">
+  <div class="section-label">Capabilities</div>
+  <h2>What Agent 07 Can Do</h2>
+
+  <div class="caps-grid">
+    <div class="cap-card">
+      <div class="cap-icon">🔍</div>
+      <div class="cap-title">Order Lookup</div>
+      <p class="cap-desc">Retrieves full order details by ID or natural language reference. Handles "my last order" and "CDN-00421" equally.</p>
+    </div>
+    <div class="cap-card">
+      <div class="cap-icon">📦</div>
+      <div class="cap-title">Shipment Tracking</div>
+      <p class="cap-desc">Returns carrier, tracking number, ETA, and current status. Links to carrier tracking when available.</p>
+    </div>
+    <div class="cap-card">
+      <div class="cap-icon">✕</div>
+      <div class="cap-title">Cancellation</div>
+      <p class="cap-desc">Checks whether an order is cancellable based on status. Confirms or explains why cancellation isn't possible.</p>
+    </div>
+    <div class="cap-card">
+      <div class="cap-icon">↩</div>
+      <div class="cap-title">Returns & Refunds</div>
+      <p class="cap-desc">Validates return eligibility by delivery date and policy window. Initiates return process or explains ineligibility.</p>
+    </div>
+  </div>
+</div>
+
+<!-- REASONING TRACE -->
+<div class="section">
+  <div class="section-label">UI Design</div>
+  <h2>Visible Reasoning Trace</h2>
+  <p>The thought trace panel at the top of the chat interface shows real intermediate outputs — not staged animations. Each step corresponds to an actual pipeline event:</p>
+
+  <div class="stack-list">
+    <div class="stack-item">
+      <span class="stack-pill">Step 1</span>
+      <p class="stack-desc">Call 1 result: extracted intent type and order ID from user message, with confidence level</p>
+    </div>
+    <div class="stack-item">
+      <span class="stack-pill">Step 2</span>
+      <p class="stack-desc">JS DB lookup result: order found or not found, status surfaced immediately</p>
+    </div>
+    <div class="stack-item">
+      <span class="stack-pill">Step 3</span>
+      <p class="stack-desc">Call 2 completion: support response generated with scoped order context injected</p>
+    </div>
+  </div>
+
+  <p>The trace is collapsible and defaults to expanded during active processing. This makes the agentic pattern legible to technical evaluators without cluttering the experience for casual users.</p>
+</div>
+
+<!-- TECH STACK -->
+<div class="section">
+  <div class="section-label">Technical Stack</div>
+  <h2>Implementation</h2>
+
+  <div class="stack-list">
+    <div class="stack-item">
+      <span class="stack-pill">Claude Sonnet</span>
+      <p class="stack-desc">claude-sonnet-4-20250514 — used for both intent extraction and support response generation</p>
+    </div>
+    <div class="stack-item">
+      <span class="stack-pill">CF Worker</span>
+      <p class="stack-desc">luminary-proxy.vikramyeldandi.workers.dev — default route proxies both API calls to Anthropic</p>
+    </div>
+    <div class="stack-item">
+      <span class="stack-pill">Mock DB</span>
+      <p class="stack-desc">JavaScript object store with 4 Caden orders — replaces a real order API for demo purposes</p>
+    </div>
+    <div class="stack-item">
+      <span class="stack-pill">Vanilla JS</span>
+      <p class="stack-desc">No framework dependencies — single HTML file, portable, zero build step</p>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span class="footer-left">Agent 07 · Vikram Yeldandi · 2026</span>
+  <div class="footer-links">
+    <a href="agent07.html" class="footer-link">Try Agent →</a>
+    <a href="https://vikramyeldandi.github.io/vikramyeldandi-ai-projects/" class="footer-link">Portfolio</a>
+  </div>
+</footer>
+
+</body>
+</html>
