@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent 08 Case Study — AI Decision Approval Workflow · Vikram Yeldandi</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a1628;
+    --navy-mid: #112240;
+    --navy-light: #1d3461;
+    --accent: #4a90d9;
+    --accent-light: #64b5f6;
+    --gold: #c9a84c;
+    --white: #ffffff;
+    --text-muted: #8899aa;
+    --border: rgba(255,255,255,0.08);
+    --card-bg: rgba(255,255,255,0.04);
+    --green: #1d9e75;
+    --green-light: #5dcaa5;
+    --purple: #7f77dd;
+    --purple-light: #afa9ec;
+    --amber: #e8a838;
+    --red: #e05c5c;
+  }
+
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--navy);
+    color: var(--white);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; justify-content:space-between; align-items:center;
+    padding: 18px 48px;
+    background: rgba(10,22,40,0.9);
+    backdrop-filter: blur(12px);
+    border-bottom: 0.5px solid var(--border);
+  }
+  .nav-logo { font-family:'DM Serif Display',serif; font-size:17px; color:var(--white); text-decoration:none; }
+  .nav-logo span { color:var(--accent); }
+  .nav-right { display:flex; align-items:center; gap:20px; }
+  .nav-link {
+    font-size:12px; font-weight:600; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--text-muted); text-decoration:none; transition:color .2s;
+  }
+  .nav-link:hover { color:var(--accent); }
+  .nav-link.primary {
+    background:var(--accent); color:#fff;
+    padding:8px 16px; border-radius:4px;
+    transition:background .2s;
+  }
+  .nav-link.primary:hover { background:var(--accent-light); color:#fff; }
+
+  /* HERO */
+  .cs-hero {
+    padding: 120px 48px 80px;
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .cs-hero::before {
+    content:'';
+    position:absolute; inset:0;
+    background:radial-gradient(ellipse 70% 50% at 50% 0%, rgba(127,119,221,0.1) 0%, transparent 65%);
+    pointer-events:none;
+  }
+  .cs-eyebrow {
+    font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--purple-light);
+    display:flex; align-items:center; gap:10px; margin-bottom:18px;
+    position:relative;
+  }
+  .cs-eyebrow::before { content:''; display:inline-block; width:28px; height:1px; background:var(--purple-light); }
+  .cs-hero h1 {
+    font-family:'DM Serif Display',serif;
+    font-size:clamp(32px,5vw,54px); line-height:1.1;
+    margin-bottom:16px; position:relative;
+  }
+  .cs-hero h1 em { font-style:italic; color:var(--accent-light); }
+  .cs-hero-sub {
+    font-size:16px; color:var(--text-muted); line-height:1.75;
+    max-width:620px; margin-bottom:36px; position:relative;
+  }
+  .cs-meta-row {
+    display:flex; gap:12px; flex-wrap:wrap; position:relative;
+  }
+  .cs-chip {
+    font-size:10px; font-weight:700; letter-spacing:.07em; text-transform:uppercase;
+    padding:4px 12px; border-radius:3px;
+    display:flex; align-items:center; gap:5px;
+  }
+  .cs-chip.purple { background:rgba(127,119,221,0.12); border:0.5px solid rgba(127,119,221,0.3); color:var(--purple-light); }
+  .cs-chip.blue { background:rgba(74,144,217,0.1); border:0.5px solid rgba(74,144,217,0.3); color:var(--accent-light); }
+  .cs-chip.green { background:rgba(29,158,117,0.1); border:0.5px solid rgba(29,158,117,0.3); color:var(--green-light); }
+
+  /* CONTENT */
+  .cs-content { max-width:900px; margin:0 auto; padding:0 48px 100px; }
+
+  .cs-section { margin-bottom: 72px; }
+  .cs-section-label {
+    font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--accent); margin-bottom:20px;
+    display:flex; align-items:center; gap:12px;
+  }
+  .cs-section-label::after { content:''; flex:1; height:0.5px; background:var(--border); }
+  .cs-section h2 {
+    font-family:'DM Serif Display',serif;
+    font-size:28px; color:var(--white);
+    margin-bottom:20px; line-height:1.2;
+  }
+  .cs-body {
+    font-size:15px; line-height:1.85;
+    color:rgba(255,255,255,0.7);
+  }
+  .cs-body p { margin-bottom:16px; }
+  .cs-body p:last-child { margin-bottom:0; }
+  .cs-body strong { color:var(--white); font-weight:500; }
+
+  /* STATS ROW */
+  .stats-row {
+    display:grid; grid-template-columns:repeat(4,1fr);
+    gap:1px; background:var(--border);
+    border:0.5px solid var(--border); border-radius:8px;
+    overflow:hidden; margin-bottom:40px;
+  }
+  .stat-cell {
+    background:var(--navy-mid);
+    padding:28px 20px; text-align:center;
+  }
+  .stat-num {
+    font-family:'DM Serif Display',serif;
+    font-size:34px; color:var(--white); margin-bottom:4px;
+  }
+  .stat-num span { color:var(--accent); }
+  .stat-lbl {
+    font-size:10px; font-weight:700;
+    letter-spacing:.1em; text-transform:uppercase;
+    color:var(--text-muted);
+  }
+
+  /* THRESHOLD TABLE */
+  .threshold-table {
+    width:100%; border-collapse:collapse;
+    border:0.5px solid var(--border); border-radius:8px;
+    overflow:hidden; margin-bottom:28px;
+    font-size:13px;
+  }
+  .threshold-table th {
+    background:rgba(255,255,255,0.04);
+    padding:10px 16px;
+    font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--text-muted); text-align:left;
+    border-bottom:0.5px solid var(--border);
+  }
+  .threshold-table td {
+    padding:12px 16px; border-bottom:0.5px solid var(--border);
+    color:rgba(255,255,255,0.75); vertical-align:top; line-height:1.5;
+  }
+  .threshold-table tr:last-child td { border-bottom:none; }
+  .threshold-table tr:hover td { background:rgba(255,255,255,0.02); }
+  .t-auto { color:var(--green-light); font-weight:600; }
+  .t-route { color:var(--amber); font-weight:600; }
+  .t-escalate { color:var(--red); font-weight:600; }
+
+  /* FLOW DIAGRAM */
+  .flow-diagram {
+    background:var(--navy-mid); border:0.5px solid var(--border);
+    border-radius:8px; padding:32px;
+    margin-bottom:28px; position:relative; overflow:hidden;
+  }
+  .flow-diagram::before {
+    content:''; position:absolute; inset:0;
+    background:radial-gradient(ellipse 60% 40% at 50% 50%, rgba(74,144,217,0.05) 0%, transparent 70%);
+    pointer-events:none;
+  }
+  .flow-row {
+    display:flex; align-items:center; gap:0;
+    margin-bottom:12px; position:relative;
+  }
+  .flow-row:last-child { margin-bottom:0; }
+  .flow-node {
+    background:rgba(255,255,255,0.05); border:0.5px solid var(--border);
+    border-radius:6px; padding:10px 16px;
+    font-size:12px; font-weight:600; text-align:center;
+    flex-shrink:0; min-width:130px;
+  }
+  .flow-node.input { border-color:rgba(74,144,217,0.3); color:var(--accent-light); }
+  .flow-node.process { border-color:rgba(127,119,221,0.3); color:var(--purple-light); }
+  .flow-node.score { border-color:rgba(201,168,76,0.3); color:var(--gold); }
+  .flow-node.auto { border-color:rgba(29,158,117,0.3); color:var(--green-light); }
+  .flow-node.route { border-color:rgba(232,168,56,0.3); color:var(--amber); }
+  .flow-node.escalate { border-color:rgba(224,92,92,0.3); color:var(--red); }
+  .flow-arrow {
+    flex:1; height:1px; background:var(--border); position:relative;
+    margin:0 4px;
+  }
+  .flow-arrow::after {
+    content:'▶'; position:absolute; right:-4px; top:-7px;
+    font-size:8px; color:var(--text-muted);
+  }
+  .flow-split {
+    display:flex; gap:12px; align-items:flex-start;
+    padding-left:30px; position:relative;
+  }
+  .flow-split::before {
+    content:''; position:absolute; left:0; top:50%;
+    width:24px; height:0.5px; background:var(--border);
+  }
+
+  /* CALLOUT */
+  .callout {
+    background:rgba(74,144,217,0.06); border:0.5px solid rgba(74,144,217,0.2);
+    border-left:2px solid var(--accent); border-radius:0 6px 6px 0;
+    padding:16px 20px; margin-bottom:20px;
+    font-size:14px; color:rgba(255,255,255,0.8); line-height:1.7;
+  }
+  .callout strong { color:var(--accent-light); }
+
+  /* PROMPT BOX */
+  .prompt-box {
+    background:var(--navy-mid); border:0.5px solid var(--border);
+    border-radius:8px; overflow:hidden; margin-bottom:20px;
+  }
+  .prompt-box-header {
+    padding:8px 16px; border-bottom:0.5px solid var(--border);
+    background:rgba(255,255,255,0.03);
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .prompt-box-title { font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--text-muted); }
+  .prompt-box-lang { font-size:10px; font-weight:600; color:var(--accent); }
+  .prompt-box pre {
+    font-family:'DM Mono',monospace; font-size:12px;
+    color:rgba(255,255,255,0.8); padding:20px;
+    white-space:pre-wrap; line-height:1.65;
+    overflow-x:auto;
+  }
+
+  /* LEARNINGS */
+  .learnings-grid {
+    display:grid; grid-template-columns:1fr 1fr;
+    gap:16px;
+  }
+  .learning-card {
+    background:var(--card-bg); border:0.5px solid var(--border);
+    border-radius:8px; padding:20px;
+  }
+  .learning-card-num {
+    font-family:'DM Serif Display',serif;
+    font-size:28px; color:rgba(74,144,217,0.2);
+    margin-bottom:8px;
+  }
+  .learning-card-title {
+    font-size:13px; font-weight:600; color:var(--white);
+    margin-bottom:8px; line-height:1.3;
+  }
+  .learning-card-body { font-size:12px; color:var(--text-muted); line-height:1.6; }
+
+  /* CTA */
+  .cs-cta {
+    background:var(--navy-mid); border:0.5px solid var(--border);
+    border-radius:12px; padding:48px 40px; text-align:center;
+    position:relative; overflow:hidden;
+  }
+  .cs-cta::before {
+    content:''; position:absolute; inset:0;
+    background:radial-gradient(ellipse 60% 50% at 50% 0%, rgba(74,144,217,0.08) 0%, transparent 65%);
+    pointer-events:none;
+  }
+  .cs-cta h3 {
+    font-family:'DM Serif Display',serif; font-size:28px;
+    margin-bottom:12px; position:relative;
+  }
+  .cs-cta p { font-size:14px; color:var(--text-muted); margin-bottom:28px; position:relative; }
+  .cta-btns { display:flex; justify-content:center; gap:12px; flex-wrap:wrap; position:relative; }
+  .btn-primary {
+    background:var(--accent); color:#fff;
+    padding:12px 28px; border-radius:4px;
+    font-size:13px; font-weight:600; letter-spacing:.04em; text-transform:uppercase;
+    text-decoration:none; transition:background .2s, transform .15s;
+  }
+  .btn-primary:hover { background:var(--accent-light); transform:translateY(-1px); }
+  .btn-outline {
+    border:1px solid rgba(255,255,255,0.2); color:var(--white);
+    padding:12px 28px; border-radius:4px;
+    font-size:13px; font-weight:500; letter-spacing:.04em; text-transform:uppercase;
+    text-decoration:none; transition:border-color .2s, transform .15s;
+  }
+  .btn-outline:hover { border-color:var(--accent); transform:translateY(-1px); }
+
+  footer {
+    text-align:center; padding:32px 48px;
+    font-size:12px; color:var(--text-muted);
+    border-top:0.5px solid var(--border);
+  }
+  footer a { color:var(--accent); text-decoration:none; }
+
+  @media(max-width:720px) {
+    nav { padding:16px 24px; }
+    .cs-hero { padding:100px 24px 60px; }
+    .cs-content { padding:0 24px 60px; }
+    .stats-row { grid-template-columns:1fr 1fr; }
+    .learnings-grid { grid-template-columns:1fr; }
+    .threshold-table { font-size:11px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Vikram <span>Yeldandi</span></a>
+  <div class="nav-right">
+    <a href="index.html#agents" class="nav-link">← Portfolio</a>
+    <a href="agent08.html" class="nav-link primary">Launch Agent</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="cs-hero">
+  <div class="cs-eyebrow">Case Study · Agent 08</div>
+  <h1>AI Decision Approval<br><em>Workflow Agent</em></h1>
+  <p class="cs-hero-sub">A working HITL governance engine demonstrating how production AI systems should score confidence, apply policy thresholds, and route decisions to the right outcome — autonomously or via human review.</p>
+  <div class="cs-meta-row">
+    <span class="cs-chip purple">HITL Governance</span>
+    <span class="cs-chip purple">Confidence Scoring</span>
+    <span class="cs-chip blue">Escalation Logic</span>
+    <span class="cs-chip blue">Audit Trail</span>
+    <span class="cs-chip green">Cloudflare Worker</span>
+  </div>
+</div>
+
+<div class="cs-content">
+
+  <!-- OVERVIEW STATS -->
+  <div class="stats-row">
+    <div class="stat-cell">
+      <div class="stat-num">3</div>
+      <div class="stat-lbl">Governance Tiers</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-num"><span>≤</span>800</div>
+      <div class="stat-lbl">Max Output Tokens</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-num">5</div>
+      <div class="stat-lbl">Scoring Factors</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-num">1</div>
+      <div class="stat-lbl">API Call / Decision</div>
+    </div>
+  </div>
+
+  <!-- THE PROBLEM -->
+  <div class="cs-section">
+    <div class="cs-section-label">01 · The Problem</div>
+    <h2>When Should AI Act Alone?</h2>
+    <div class="cs-body">
+      <p>The central unsolved challenge in production AI deployment isn't model capability — it's <strong>governance</strong>. When should an AI act autonomously? When should it defer? When should it escalate urgently? Most teams either over-automate (introducing risk) or under-automate (eliminating the efficiency case entirely).</p>
+      <p>This agent demonstrates a principled approach: a <strong>confidence-scored, threshold-governed decision engine</strong> that classifies every incoming decision into one of three tiers — auto-approve, route to human, or escalate — based on a structured evaluation of risk factors.</p>
+      <p>The design is directly applicable to refund processing, content moderation, fraud triage, credit decisioning, and any workflow where AI judgment must be bounded by institutional policy.</p>
+    </div>
+  </div>
+
+  <!-- GOVERNANCE MODEL -->
+  <div class="cs-section">
+    <div class="cs-section-label">02 · Governance Architecture</div>
+    <h2>Three-Tier Threshold Model</h2>
+    <div class="cs-body">
+      <p>Every decision is scored 0.00–1.00 and mapped to a governance outcome based on fixed policy thresholds. Thresholds are <strong>not model hyperparameters</strong> — they are business policy decisions that belong in governance documentation, not in the prompt.</p>
+    </div>
+
+    <table class="threshold-table">
+      <thead>
+        <tr>
+          <th>Confidence Range</th>
+          <th>Outcome</th>
+          <th>What Happens</th>
+          <th>Human Involvement</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="t-auto" style="font-family:'DM Mono',monospace">0.85 – 1.00</span></td>
+          <td><span class="t-auto">Auto-Approve</span></td>
+          <td>Agent executes decision autonomously. Logged to audit trail.</td>
+          <td>None (unless override invoked)</td>
+        </tr>
+        <tr>
+          <td><span class="t-route" style="font-family:'DM Mono',monospace">0.60 – 0.84</span></td>
+          <td><span class="t-route">Route to Human</span></td>
+          <td>Case routed to appropriate human reviewer with context and SLA.</td>
+          <td>Required within SLA window</td>
+        </tr>
+        <tr>
+          <td><span class="t-escalate" style="font-family:'DM Mono',monospace">0.00 – 0.59</span></td>
+          <td><span class="t-escalate">Escalate</span></td>
+          <td>Immediate senior review. Potential hold on action pending investigation.</td>
+          <td>Required immediately</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <strong>Design principle:</strong> The agent never sets its own thresholds. Confidence scoring reflects evidence quality; threshold application is a policy layer applied deterministically after scoring. These are two separate concerns and should be treated as such in any production system.
+    </div>
+  </div>
+
+  <!-- SCORING FACTORS -->
+  <div class="cs-section">
+    <div class="cs-section-label">03 · Scoring Model</div>
+    <h2>Multi-Factor Confidence Scoring</h2>
+    <div class="cs-body">
+      <p>Each decision is evaluated across four scored factors. The agent weights these factors by their relevance to the specific scenario type — a fraud signal carries different factor weights than a routine refund request.</p>
+    </div>
+
+    <table class="threshold-table">
+      <thead>
+        <tr>
+          <th>Factor</th>
+          <th>What It Measures</th>
+          <th>Example High Signal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="font-weight:600;color:var(--white)">Policy Alignment</td>
+          <td>How closely the request fits existing policy rules</td>
+          <td>Refund within policy window, valid receipt</td>
+        </tr>
+        <tr>
+          <td style="font-weight:600;color:var(--white)">Risk Level</td>
+          <td>Financial, legal, or reputational exposure</td>
+          <td>Low-value, precedented, reversible decision</td>
+        </tr>
+        <tr>
+          <td style="font-weight:600;color:var(--white)">Context Clarity</td>
+          <td>Completeness and consistency of available information</td>
+          <td>Full transaction history, verified identity</td>
+        </tr>
+        <tr>
+          <td style="font-weight:600;color:var(--white)">Precedent Match</td>
+          <td>How closely the case resembles prior approved decisions</td>
+          <td>Standard pattern, no anomalous signals</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="cs-body">
+      <p>The composite confidence score is derived from the weighted combination of these factors. The agent produces a numeric score <strong>and</strong> explicit reasoning — making the decision auditable and explainable to any stakeholder.</p>
+    </div>
+  </div>
+
+  <!-- TECHNICAL IMPLEMENTATION -->
+  <div class="cs-section">
+    <div class="cs-section-label">04 · Technical Design</div>
+    <h2>Structured JSON Output + Governance Layer</h2>
+    <div class="cs-body">
+      <p>The core technical pattern is <strong>constrained structured output</strong> — the model is instructed to return only a JSON object conforming to a defined schema. No prose, no markdown. The governance logic (threshold application, routing, SLA assignment) runs in the UI layer, not inside the model.</p>
+    </div>
+
+    <div class="prompt-box">
+      <div class="prompt-box-header">
+        <span class="prompt-box-title">System Prompt (≤300 tokens)</span>
+        <span class="prompt-box-lang">JSON-constrained output</span>
+      </div>
+      <pre>You are an AI Decision Governance Engine. When given a business decision scenario, 
+you MUST respond with valid JSON only — no prose, no markdown.
+
+Output schema:
+{
+  "confidence": 0.00-1.00,
+  "outcome": "AUTO_APPROVE" | "ROUTE_TO_HUMAN" | "ESCALATE",
+  "decision_summary": "one sentence",
+  "reasoning": "2-3 sentences explaining the score",
+  "factors": [
+    { "name": "string", "score": 0.0-1.0, "weight": "HIGH"|"MED"|"LOW" },
+    ...
+  ],
+  "route_to": "string or null",
+  "sla_hours": number or null,
+  "action_required": "string describing what happens next"
+}
+
+Rules: confidence ≥0.85 → AUTO_APPROVE. 0.60–0.84 → ROUTE_TO_HUMAN. &lt;0.60 → ESCALATE.</pre>
+    </div>
+
+    <div class="callout">
+      <strong>Key architectural decision:</strong> Threshold enforcement is implemented in JavaScript, not in the model's reasoning. This means thresholds can be updated via configuration without touching the system prompt — and any override is auditable without re-querying the LLM.
+    </div>
+
+    <div class="cs-body">
+      <p>The agent routes through a <strong>Cloudflare Worker</strong> which handles authentication, rate-limiting, and keeps the Anthropic API key server-side. Multi-turn conversation history is maintained in the client for follow-up queries within a session.</p>
+    </div>
+  </div>
+
+  <!-- DESIGN DECISIONS -->
+  <div class="cs-section">
+    <div class="cs-section-label">05 · Design Decisions</div>
+    <h2>What I Built and Why</h2>
+
+    <div class="learnings-grid">
+      <div class="learning-card">
+        <div class="learning-card-num">01</div>
+        <div class="learning-card-title">Human Override Always Available</div>
+        <div class="learning-card-body">Every outcome — including auto-approvals — surfaces an override button. HITL governance means humans can always intervene. Auto-approval is a policy default, not a lock-out. Overrides are logged to the audit trail.</div>
+      </div>
+      <div class="learning-card">
+        <div class="learning-card-num">02</div>
+        <div class="learning-card-title">Audit Trail Built In</div>
+        <div class="learning-card-body">Every decision, routing event, and human action is timestamped and logged in-session. In production this feeds a governance database. It demonstrates to stakeholders that the system is accountable, not a black box.</div>
+      </div>
+      <div class="learning-card">
+        <div class="learning-card-num">03</div>
+        <div class="learning-card-title">Reasoning is Mandatory, Not Optional</div>
+        <div class="learning-card-body">The system prompt requires explicit reasoning alongside every confidence score. A score of 0.72 without explanation is useless for a human reviewer. Explained scores enable human calibration over time.</div>
+      </div>
+      <div class="learning-card">
+        <div class="learning-card-num">04</div>
+        <div class="learning-card-title">SLA Surfaced at Decision Time</div>
+        <div class="learning-card-body">When routing to human, the agent specifies an SLA in hours. This is derived contextually (fraud vs. routine refund carry different SLAs) rather than hard-coded — making the system adaptive to decision type.</div>
+      </div>
+      <div class="learning-card">
+        <div class="learning-card-num">05</div>
+        <div class="learning-card-title">Separation of Concerns</div>
+        <div class="learning-card-body">Scoring intelligence lives in the model. Threshold policy lives in application code. Routing rules live in configuration. These layers are kept deliberately separate so each can evolve independently without breaking the others.</div>
+      </div>
+      <div class="learning-card">
+        <div class="learning-card-num">06</div>
+        <div class="learning-card-title">Pre-built Scenarios as UX</div>
+        <div class="learning-card-body">The scenario selector demonstrates the governance model across its full range — auto, route, and escalate — making the agent self-documenting. Reviewers can see the system working across risk tiers without constructing test cases.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RELEVANCE -->
+  <div class="cs-section">
+    <div class="cs-section-label">06 · Product Relevance</div>
+    <h2>Why This Pattern Matters in Production</h2>
+    <div class="cs-body">
+      <p>The AI decision approval pattern is one of the most consequential architectural choices a product team makes when deploying AI in enterprise workflows. Get it wrong and you face one of two failure modes: over-automation (AI acts where it shouldn't, creating liability) or under-automation (humans review everything, eliminating the ROI case).</p>
+      <p>This agent demonstrates that <strong>the right answer is a calibrated middle path</strong> — a governance layer that applies policy-driven thresholds to model-generated confidence scores, with a complete HITL layer sitting above it. It's a pattern directly applicable to fraud decisioning, claims processing, content moderation, credit underwriting, and any regulated domain where AI judgment requires institutional accountability.</p>
+      <p>As an AI product leader who has shipped at Wells Fargo and VF Corporation — environments where every automated decision carries regulatory weight — I built this agent to reflect the governance thinking that production deployments actually require, not a demo that ignores the hard parts.</p>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cs-cta">
+    <h3>Try the Live Agent</h3>
+    <p>Run decisions through the governance engine — see confidence scoring, threshold application, and HITL routing in real time.</p>
+    <div class="cta-btns">
+      <a href="agent08.html" class="btn-primary">Launch Agent 08</a>
+      <a href="index.html#agents" class="btn-outline">Full Portfolio</a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  © 2026 Vikram Yeldandi · AI Product Leader · Denver, CO ·
+  <a href="index.html">Portfolio</a>
+</footer>
+
+</body>
+</html>
