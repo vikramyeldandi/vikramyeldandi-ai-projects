@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent 14 Case Study — AI Use Case ROI Estimator</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a1628;
+    --navy-mid: #112240;
+    --navy-light: #1d3461;
+    --accent: #4a90d9;
+    --accent-light: #64b5f6;
+    --gold: #c9a84c;
+    --white: #ffffff;
+    --off-white: #f0f4f8;
+    --text-muted: #8899aa;
+    --border: rgba(255,255,255,0.08);
+    --card-bg: rgba(255,255,255,0.04);
+  }
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { font-family:'DM Sans',sans-serif; background:var(--navy); color:var(--white); overflow-x:hidden; line-height:1.6; }
+
+  nav {
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:20px 48px;
+    background:rgba(10,22,40,0.85); backdrop-filter:blur(12px);
+    border-bottom:0.5px solid var(--border);
+  }
+  .nav-logo { font-family:'DM Serif Display',serif; font-size:18px; color:var(--white); letter-spacing:0.01em; }
+  .nav-logo span { color:var(--accent); }
+  .nav-links { display:flex; gap:32px; list-style:none; }
+  .nav-links a { font-size:13px; font-weight:500; letter-spacing:.04em; color:var(--text-muted); text-decoration:none; text-transform:uppercase; transition:color .2s; }
+  .nav-links a:hover { color:var(--white); }
+
+  .page-wrap { max-width:720px; margin:0 auto; padding:120px 48px 80px; }
+
+  .back-link { display:inline-flex; align-items:center; gap:8px; font-size:13px; color:var(--text-muted); text-decoration:none; margin-bottom:40px; transition:color .2s; }
+  .back-link:hover { color:var(--accent); }
+
+  .cs-label { font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:8px; }
+  .cs-agent { font-size:11px; font-weight:500; letter-spacing:.06em; text-transform:uppercase; color:var(--text-muted); margin-bottom:16px; }
+  .cs-title { font-family:'DM Serif Display',serif; font-size:clamp(28px,4.5vw,46px); line-height:1.1; margin-bottom:14px; }
+  .cs-title em { font-style:italic; color:var(--accent-light); }
+  .cs-tagline { font-size:15px; color:var(--text-muted); margin-bottom:32px; max-width:560px; }
+
+  .cs-meta { display:flex; flex-wrap:wrap; gap:24px; margin-bottom:28px; }
+  .cs-meta-item { display:flex; flex-direction:column; gap:4px; }
+  .cs-meta-label { font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--text-muted); }
+  .cs-meta-value { font-size:13px; color:var(--white); font-family:'DM Mono',monospace; }
+
+  .cs-tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:48px; }
+  .tag { font-size:10px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; padding:3px 8px; border-radius:3px; background:rgba(74,144,217,0.1); border:0.5px solid rgba(74,144,217,0.25); color:var(--accent-light); }
+
+  .cs-divider { border:none; border-top:0.5px solid var(--border); margin:40px 0; }
+
+  .cs-section { margin-bottom:40px; }
+  .cs-section-heading { font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); margin-bottom:16px; }
+  .cs-body { font-size:14px; color:var(--off-white); line-height:1.8; }
+  .cs-body p { margin-bottom:16px; }
+  .cs-body p:last-child { margin-bottom:0; }
+  .cs-body strong { color:var(--white); font-weight:600; }
+
+  .cs-callout { background:var(--card-bg); border:0.5px solid var(--border); border-left:2px solid var(--accent); border-radius:4px; padding:16px 20px; margin:24px 0; font-size:13px; color:var(--text-muted); line-height:1.7; }
+  .cs-callout strong { color:var(--white); }
+
+  .cs-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin:24px 0; }
+  .cs-card { background:var(--card-bg); border:0.5px solid var(--border); border-radius:8px; padding:18px 20px; }
+  .cs-card-label { font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--text-muted); margin-bottom:8px; font-family:'DM Mono',monospace; }
+  .cs-card-content { font-size:13px; color:var(--off-white); line-height:1.65; }
+
+  .token-stat { display:inline-flex; align-items:center; gap:8px; background:rgba(74,144,217,0.08); border:0.5px solid rgba(74,144,217,0.2); border-radius:4px; padding:6px 12px; font-family:'DM Mono',monospace; font-size:12px; color:var(--accent-light); margin:4px 4px 4px 0; }
+
+  .try-agent { display:inline-flex; align-items:center; gap:8px; font-size:13px; font-weight:600; letter-spacing:.04em; color:var(--accent); text-decoration:none; transition:opacity .2s; margin-top:8px; }
+  .try-agent:hover { opacity:.7; }
+
+  footer { border-top:0.5px solid var(--border); padding:32px 48px; text-align:center; font-size:12px; color:var(--text-muted); }
+  footer a { color:var(--accent); text-decoration:none; }
+
+  @media(max-width:640px) {
+    nav { padding:16px 20px; }
+    .nav-links { gap:20px; }
+    .page-wrap { padding:100px 20px 60px; }
+    .cs-grid { grid-template-columns:1fr; }
+    .cs-meta { gap:16px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Vikram <span>Yeldandi</span></div>
+  <ul class="nav-links">
+    <li><a href="index.html">← Portfolio</a></li>
+    <li><a href="agent14.html">Try Agent 14</a></li>
+  </ul>
+</nav>
+
+<div class="page-wrap">
+  <a href="agent14.html" class="back-link">← Back to Agent 14</a>
+
+  <p class="cs-label">Case Study</p>
+  <p class="cs-agent">Agent 14 · AI Use Case ROI Estimator</p>
+  <h1 class="cs-title">Translating AI Capability into <em>Business Language</em></h1>
+  <p class="cs-tagline">How a four-block output schema — verdict, scored dimensions, risks, and next steps — turns a free-text use case description into a structured business case that stakeholders can act on without technical translation.</p>
+
+  <div class="cs-meta">
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">Model</span>
+      <span class="cs-meta-value">claude-sonnet-4-20250514</span>
+    </div>
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">System Prompt</span>
+      <span class="cs-meta-value">&lt; 300 tokens</span>
+    </div>
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">Max Output</span>
+      <span class="cs-meta-value">800 tokens</span>
+    </div>
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">API Calls</span>
+      <span class="cs-meta-value">1 per estimate</span>
+    </div>
+  </div>
+
+  <div class="cs-tags">
+    <span class="tag">ROI Estimation</span>
+    <span class="tag">Business Value</span>
+    <span class="tag">Effort/Impact Scoring</span>
+  </div>
+
+  <hr class="cs-divider">
+
+  <!-- Problem -->
+  <div class="cs-section">
+    <p class="cs-section-heading">The Problem</p>
+    <div class="cs-body">
+      <p>AI use cases rarely fail because the technology doesn't work. They fail because the business case was never made clearly enough to survive procurement, prioritisation, or the first uncomfortable question from a CFO. Product managers and business analysts can describe what an AI use case would do — but translating that into a credible effort-versus-impact framing, with explicit risks and a sequenced path forward, is slow and inconsistent work.</p>
+      <p>The default approach is a spreadsheet or a slide deck assembled by someone with partial information, anchored to optimistic assumptions, and missing the risk factors that will surface six months into delivery. The result is either stalled investment or poorly scoped projects that hit avoidable problems.</p>
+    </div>
+  </div>
+
+  <hr class="cs-divider">
+
+  <!-- Design Approach -->
+  <div class="cs-section">
+    <p class="cs-section-heading">Design Approach</p>
+    <div class="cs-body">
+      <p>Agent 14 is stateless by design — one use case description in, one complete ROI report out. The architecture is identical in principle to Agent 13: a single API call, a structured output schema parsed by the frontend, and distinct UI components for each output block. What differs is the output domain. Review analysis produces sentiment and themes. ROI estimation produces scores, risks, and a directional verdict.</p>
+      <p>The core design decision was to split the output into <strong>four distinct blocks</strong>: an OVERVIEW with a binary verdict and three scored dimensions, a SCORES block with human-readable labels for each dimension, a RISKS block with specific mitigations, and a NEXTSTEPS block written for business stakeholders. Each block answers a different question a decision-maker would ask when evaluating an AI investment.</p>
+    </div>
+
+    <div class="cs-callout">
+      <strong>Key design decision:</strong> The OVERVIEW block carries three numeric fields — EFFICIENCY, COMPLEXITY, and SPEED — expressed as integers from 0–100. These drive the proportional score bars rendered in the UI. A separate SCORES block carries the human-readable interpretation of each number. This split keeps the display logic clean and prevents the model from conflating a bar-chart value with a prose explanation.
+    </div>
+
+    <div class="cs-body">
+      <p>The verdict field is constrained to three values: Strong ROI, Moderate ROI, or Low ROI. This forces the model to commit to a directional assessment rather than hedging, and it maps directly to a colour-coded pill in the UI — green, amber, or red — giving stakeholders an immediate signal before reading the detail.</p>
+      <p>The input is a textarea to match the multi-line nature of use case descriptions. The send button is labelled "Estimate" rather than "Send" or "Analyse" — a deliberate word choice that signals quantification, not just comprehension.</p>
+    </div>
+  </div>
+
+  <hr class="cs-divider">
+
+  <!-- System Prompt Architecture -->
+  <div class="cs-section">
+    <p class="cs-section-heading">System Prompt Architecture</p>
+    <div class="cs-body">
+      <p>The system prompt defines four delimiter blocks — <code>===OVERVIEW===</code>, <code>===SCORES===</code>, <code>===RISKS===</code>, and <code>===NEXTSTEPS===</code> — each parsed independently by the frontend. The OVERVIEW and SCORES blocks are tightly coupled: OVERVIEW carries the machine-readable integers; SCORES carries the matching prose labels. The frontend renders both together as a single score card per dimension.</p>
+    </div>
+
+    <div class="cs-grid">
+      <div class="cs-card">
+        <p class="cs-card-label">Overview Block</p>
+        <p class="cs-card-content">VERDICT plus three integer scores (EFFICIENCY, COMPLEXITY, SPEED) and a single-sentence HEADLINE that commits to an assessment. No hedging language is permitted — the prompt instructs the model to state a position, not a possibility.</p>
+      </div>
+      <div class="cs-card">
+        <p class="cs-card-label">Scores Block</p>
+        <p class="cs-card-content">Three label fields — EFFICIENCY_LABEL, COMPLEXITY_LABEL, SPEED_LABEL — each carrying a human-readable interpretation of the integer score. This is the translation layer between bar-chart logic and business comprehension.</p>
+      </div>
+      <div class="cs-card">
+        <p class="cs-card-label">Risks Block</p>
+        <p class="cs-card-content">2–3 bullet points capped at 25 words each. Each risk must name a category, describe the specific risk for this use case, and state the mitigation. Generic AI risk boilerplate is explicitly prohibited in the prompt.</p>
+      </div>
+      <div class="cs-card">
+        <p class="cs-card-label">Next Steps Block</p>
+        <p class="cs-card-content">2–3 actions written for a business stakeholder, each achievable within 30 days, each starting with a verb and stating the decision or output it unlocks. Avoids technical implementation steps — this is a business case tool, not an engineering spec.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="cs-divider">
+
+  <!-- What I Learned -->
+  <div class="cs-section">
+    <p class="cs-section-heading">What I Learned</p>
+    <div class="cs-body">
+      <p><strong>Verdicts require explicit constraints.</strong> Without constraining the VERDICT field to three specific values, the model produces qualitative prose — "this use case shows promise but has meaningful risks" — which cannot be mapped to a UI component or parsed reliably. The three-value constraint eliminates ambiguity and forces a decision, which is exactly what stakeholders need.</p>
+      <p><strong>Numeric and prose fields must be separate.</strong> The most important structural lesson from building Agent 14 is that a field used for display logic (a bar chart width) and a field used for human reading (a label) cannot be the same field. They require different formats, different constraints, and different parsing logic. Keeping them in separate blocks eliminates format collisions.</p>
+      <p><strong>Risk quality is the hardest prompt constraint to enforce.</strong> Generic risk bullets — "AI models can hallucinate," "change management is important" — are the default without explicit instruction. The 25-word cap, the category-naming requirement, and the prohibition on boilerplate together push the model toward use-case-specific risks. It still requires the most prompt iteration of any block.</p>
+      <p><strong>The audience for next steps is not the builder.</strong> Early testing produced next steps written for an engineering team — "stand up a vector database," "evaluate embedding models." The prompt was revised to explicitly target a business stakeholder and specify a 30-day execution window. The output shifted immediately to procurement decisions, stakeholder workshops, and pilot scoping — which is where business cases actually live.</p>
+    </div>
+  </div>
+
+  <hr class="cs-divider">
+
+  <!-- Token Profile -->
+  <div class="cs-section">
+    <p class="cs-section-heading">Typical Token Profile</p>
+    <div class="cs-body">
+      <p>A single use case description estimated in one API call typically produces:</p>
+    </div>
+    <div style="margin-top:12px;">
+      <span class="token-stat">System: ~270 tokens</span>
+      <span class="token-stat">User input: 80–200 tokens</span>
+      <span class="token-stat">Output: 500–720 tokens</span>
+      <span class="token-stat">Total: ~850–1,190 tokens / run</span>
+    </div>
+  </div>
+
+  <hr class="cs-divider">
+
+  <a href="agent14.html" class="try-agent">Try Agent 14 →</a>
+</div>
+
+<footer>
+  <p>© 2026 Vikram Yeldandi · <a href="index.html">AI Product Portfolio</a> · Agent 14 of 14</p>
+</footer>
+
+</body>
+</html>
