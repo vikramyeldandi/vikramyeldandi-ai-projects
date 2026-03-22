@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent 12 Case Study — AI Product PRD Generator</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a1628;
+    --navy-mid: #112240;
+    --navy-light: #1d3461;
+    --accent: #4a90d9;
+    --accent-light: #64b5f6;
+    --gold: #c9a84c;
+    --white: #ffffff;
+    --off-white: #f0f4f8;
+    --text-muted: #8899aa;
+    --border: rgba(255,255,255,0.08);
+    --card-bg: rgba(255,255,255,0.04);
+  }
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { font-family:'DM Sans',sans-serif; background:var(--navy); color:var(--white); overflow-x:hidden; line-height:1.6; }
+
+  nav {
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:20px 48px;
+    background:rgba(10,22,40,0.85); backdrop-filter:blur(12px);
+    border-bottom:0.5px solid var(--border);
+  }
+  .nav-logo { font-family:'DM Serif Display',serif; font-size:18px; color:var(--white); letter-spacing:0.01em; }
+  .nav-logo span { color:var(--accent); }
+  .nav-links { display:flex; gap:32px; list-style:none; }
+  .nav-links a { font-size:13px; font-weight:500; letter-spacing:.04em; color:var(--text-muted); text-decoration:none; text-transform:uppercase; transition:color .2s; }
+  .nav-links a:hover { color:var(--white); }
+
+  .page-wrap { max-width:720px; margin:0 auto; padding:120px 48px 80px; }
+
+  .back-link { display:inline-flex; align-items:center; gap:8px; font-size:13px; color:var(--text-muted); text-decoration:none; margin-bottom:40px; transition:color .2s; }
+  .back-link:hover { color:var(--accent); }
+
+  .cs-label { font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:8px; }
+  .cs-agent { font-size:11px; font-weight:500; letter-spacing:.06em; text-transform:uppercase; color:var(--text-muted); margin-bottom:16px; }
+  .cs-title { font-family:'DM Serif Display',serif; font-size:clamp(28px,4.5vw,46px); line-height:1.1; margin-bottom:14px; }
+  .cs-title em { font-style:italic; color:var(--accent-light); }
+  .cs-tagline { font-size:15px; color:var(--text-muted); margin-bottom:32px; max-width:560px; }
+
+  .cs-meta { display:flex; flex-wrap:wrap; gap:24px; margin-bottom:28px; }
+  .cs-meta-item { display:flex; flex-direction:column; gap:4px; }
+  .cs-meta-label { font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--text-muted); }
+  .cs-meta-value { font-size:13px; color:var(--white); font-family:'DM Mono',monospace; }
+
+  .cs-tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:48px; }
+  .tag { font-size:10px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; padding:3px 8px; border-radius:3px; background:rgba(74,144,217,0.1); border:0.5px solid rgba(74,144,217,0.25); color:var(--accent-light); }
+  .tag.meta { background:rgba(201,168,76,0.1); border-color:rgba(201,168,76,0.3); color:var(--gold); }
+
+  .cs-divider { border:none; border-top:0.5px solid var(--border); margin:40px 0; }
+
+  .cs-section { margin-bottom:40px; }
+  .cs-section-heading { font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); margin-bottom:16px; }
+  .cs-body { font-size:14px; color:var(--off-white); line-height:1.8; }
+  .cs-body p { margin-bottom:16px; }
+  .cs-body p:last-child { margin-bottom:0; }
+  .cs-body strong { color:var(--white); font-weight:600; }
+
+  .cs-callout { background:var(--card-bg); border:0.5px solid var(--border); border-left:2px solid var(--accent); border-radius:4px; padding:16px 20px; margin:24px 0; font-size:13px; color:var(--text-muted); line-height:1.7; }
+  .cs-callout strong { color:var(--white); }
+
+  .cs-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin:24px 0; }
+  .cs-card { background:var(--card-bg); border:0.5px solid var(--border); border-radius:8px; padding:18px 20px; }
+  .cs-card-label { font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--text-muted); margin-bottom:8px; font-family:'DM Mono',monospace; }
+  .cs-card-content { font-size:13px; color:var(--off-white); line-height:1.65; }
+
+  .token-stat { display:inline-flex; align-items:center; gap:8px; background:rgba(74,144,217,0.08); border:0.5px solid rgba(74,144,217,0.2); border-radius:4px; padding:6px 12px; font-family:'DM Mono',monospace; font-size:12px; color:var(--accent-light); margin:4px 4px 4px 0; }
+
+  .try-agent { display:inline-flex; align-items:center; gap:8px; font-size:13px; font-weight:600; letter-spacing:.04em; color:var(--accent); text-decoration:none; transition:opacity .2s; margin-top:8px; }
+  .try-agent:hover { opacity:.7; }
+
+  footer { border-top:0.5px solid var(--border); padding:32px 48px; text-align:center; font-size:12px; color:var(--text-muted); }
+  footer a { color:var(--accent); text-decoration:none; }
+
+  @media(max-width:640px) {
+    nav { padding:16px 20px; }
+    .nav-links { gap:20px; }
+    .page-wrap { padding:100px 20px 60px; }
+    .cs-grid { grid-template-columns:1fr; }
+    .cs-meta { gap:16px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Vikram <span>Yeldandi</span></div>
+  <ul class="nav-links">
+    <li><a href="index.html">← Portfolio</a></li>
+    <li><a href="agent12.html">Try Agent 12</a></li>
+  </ul>
+</nav>
+
+<div class="page-wrap">
+  <a href="agent12.html" class="back-link">← Back to Agent 12</a>
+
+  <p class="cs-label">Case Study</p>
+  <p class="cs-agent">Agent 12 · AI Product PRD Generator</p>
+  <h1 class="cs-title">Scaffolding <em>Product Thinking</em><br>with Structured AI Output</h1>
+  <p class="cs-tagline">How a constrained system prompt and structured delimiters turn a one-sentence idea into a stakeholder-ready PRD — every time.</p>
+
+  <div class="cs-meta">
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">Model</span>
+      <span class="cs-meta-value">claude-sonnet-4-20250514</span>
+    </div>
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">System Prompt</span>
+      <span class="cs-meta-value">&lt; 300 tokens</span>
+    </div>
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">Max Output</span>
+      <span class="cs-meta-value">800 tokens</span>
+    </div>
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">API Calls</span>
+      <span class="cs-meta-value">1 per turn</span>
+    </div>
+  </div>
+
+  <div class="cs-tags">
+    <span class="tag meta">Meta-AI</span>
+    <span class="tag">PRD</span>
+    <span class="tag">Product Design</span>
+  </div>
+
+  <hr class="cs-divider">
+
+  <!-- Problem -->
+  <div class="cs-section">
+    <p class="cs-section-heading">The Problem</p>
+    <div class="cs-body">
+      <p>Writing a PRD is one of the highest-leverage activities in early product development — and one of the most consistently skipped. The blank page problem is real: most product ideas never get formally structured because the overhead of writing a proper document feels disproportionate to the early-stage uncertainty of the idea.</p>
+      <p>The result is misaligned teams, scopes that drift, and features built on assumptions that were never made explicit. The problem isn't that PMs don't know how to write PRDs — it's that the activation energy is too high when an idea is still forming.</p>
+    </div>
+  </div>
+
+  <hr class="cs-divider">
+
+  <!-- Design Approach -->
+  <div class="cs-section">
+    <p class="cs-section-heading">Design Approach</p>
+    <div class="cs-body">
+      <p>Agent 12 is designed around a single constraint: <strong>one input, four outputs, always</strong>. The system prompt enforces a rigid four-section structure — Problem Statement, User Stories, Acceptance Criteria, and Success Metrics — using explicit delimiters that the frontend parses into rendered cards.</p>
+      <p>This is a deliberate departure from free-form generation. Unconstrained PRD output tends toward verbose, meandering prose that still requires significant human editing. By forcing the model into a strict schema, every generation is immediately usable — not a draft to be redrafted.</p>
+    </div>
+
+    <div class="cs-callout">
+      <strong>Key design decision:</strong> The system prompt instructs the model to make reasonable assumptions when the input is vague, then flag them — rather than asking a clarifying question. This keeps the interaction to a single turn and lets the user react to a concrete output rather than answer abstract questions.
+    </div>
+
+    <div class="cs-body">
+      <p>The four sections were chosen deliberately. Problem Statement grounds the feature in user reality. User Stories force role and motivation to be made explicit. Acceptance Criteria translate intent into testable conditions. Success Metrics prevent the classic failure mode of shipping a feature with no definition of success.</p>
+    </div>
+  </div>
+
+  <hr class="cs-divider">
+
+  <!-- System Prompt Architecture -->
+  <div class="cs-section">
+    <p class="cs-section-heading">System Prompt Architecture</p>
+    <div class="cs-body">
+      <p>The system prompt stays under 300 tokens by doing three things: naming the persona, specifying the exact delimiter format, and stating the output rules tersely. No examples, no lengthy context — just structure and constraints.</p>
+    </div>
+
+    <div class="cs-grid">
+      <div class="cs-card">
+        <p class="cs-card-label">Delimiter Pattern</p>
+        <p class="cs-card-content">Each PRD section is wrapped in <code>===SECTION===</code> / <code>===END===</code> blocks with explicit LABEL and CONTENT fields. The frontend splits on this pattern and renders each into a styled card — separating display logic from generation logic entirely.</p>
+      </div>
+      <div class="cs-card">
+        <p class="cs-card-label">Format Rules</p>
+        <p class="cs-card-content">User Stories follow a mandatory "As a / I want / So that" template. Acceptance Criteria must be testable conditions. Success Metrics must include measurable targets. These rules are stated in the prompt, not left to model discretion.</p>
+      </div>
+      <div class="cs-card">
+        <p class="cs-card-label">Assumption Handling</p>
+        <p class="cs-card-content">Rather than stalling on vague input, the model is instructed to proceed with assumptions and surface them after the four sections. This converts an ambiguous input into a concrete proposal the user can react to.</p>
+      </div>
+      <div class="cs-card">
+        <p class="cs-card-label">Token Budget</p>
+        <p class="cs-card-content">800 token output cap forces the model to be precise. A complete four-section PRD fits comfortably — the constraint discourages verbose generation without sacrificing coverage of all four required sections.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="cs-divider">
+
+  <!-- What I Learned -->
+  <div class="cs-section">
+    <p class="cs-section-heading">What I Learned</p>
+    <div class="cs-body">
+      <p><strong>Structure beats flexibility for tool-like agents.</strong> The most useful version of this agent isn't the most creative one — it's the one whose output is predictably formatted and immediately actionable. Rigid delimiters in the system prompt are what make the frontend parse reliable.</p>
+      <p><strong>Token constraints improve output quality.</strong> Counterintuitively, the 800-token cap produces better PRDs than unconstrained generation. It forces economy of language — acceptance criteria become sharper, success metrics become more specific.</p>
+      <p><strong>Assumptions-first beats clarification-first.</strong> Testing revealed that asking a clarifying question before generating felt like friction. Generating with stated assumptions and inviting correction felt collaborative. Users preferred reacting to something concrete over answering abstract questions.</p>
+    </div>
+  </div>
+
+  <hr class="cs-divider">
+
+  <!-- Token Profile -->
+  <div class="cs-section">
+    <p class="cs-section-heading">Typical Token Profile</p>
+    <div class="cs-body">
+      <p>A single PRD generation for a moderately detailed product idea typically produces:</p>
+    </div>
+    <div style="margin-top:12px;">
+      <span class="token-stat">System: ~240 tokens</span>
+      <span class="token-stat">User input: 40–120 tokens</span>
+      <span class="token-stat">Output: 550–750 tokens</span>
+      <span class="token-stat">Total: ~850–1,100 tokens / turn</span>
+    </div>
+  </div>
+
+  <hr class="cs-divider">
+
+  <a href="agent12.html" class="try-agent">Try Agent 12 →</a>
+</div>
+
+<footer>
+  <p>© 2026 Vikram Yeldandi · <a href="index.html">AI Product Portfolio</a> · Agent 12 of 14</p>
+</footer>
+
+</body>
+</html>
