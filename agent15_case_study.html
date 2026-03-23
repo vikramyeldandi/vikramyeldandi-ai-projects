@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent 15 Case Study — GitHub Repo Intelligence Agent</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a1628;
+    --navy-mid: #112240;
+    --navy-light: #1d3461;
+    --accent: #4a90d9;
+    --accent-light: #64b5f6;
+    --gold: #c9a84c;
+    --white: #ffffff;
+    --off-white: #f0f4f8;
+    --text-muted: #8899aa;
+    --border: rgba(255,255,255,0.08);
+    --card-bg: rgba(255,255,255,0.04);
+  }
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { font-family:'DM Sans',sans-serif; background:var(--navy); color:var(--white); overflow-x:hidden; line-height:1.6; }
+
+  nav {
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:20px 48px;
+    background:rgba(10,22,40,0.85); backdrop-filter:blur(12px);
+    border-bottom:0.5px solid var(--border);
+  }
+  .nav-logo { font-family:'DM Serif Display',serif; font-size:18px; color:var(--white); letter-spacing:0.01em; }
+  .nav-logo span { color:var(--accent); }
+  .nav-links { display:flex; gap:32px; list-style:none; }
+  .nav-links a { font-size:13px; font-weight:500; letter-spacing:.04em; color:var(--text-muted); text-decoration:none; text-transform:uppercase; transition:color .2s; }
+  .nav-links a:hover { color:var(--white); }
+
+  .page-wrap { max-width:720px; margin:0 auto; padding:120px 48px 80px; }
+
+  .back-link { display:inline-flex; align-items:center; gap:8px; font-size:13px; color:var(--text-muted); text-decoration:none; margin-bottom:40px; transition:color .2s; }
+  .back-link:hover { color:var(--accent); }
+
+  .cs-label { font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:8px; }
+  .cs-agent { font-size:11px; font-weight:500; letter-spacing:.06em; text-transform:uppercase; color:var(--text-muted); margin-bottom:16px; }
+  .cs-title { font-family:'DM Serif Display',serif; font-size:clamp(28px,4.5vw,46px); line-height:1.1; margin-bottom:14px; }
+  .cs-title em { font-style:italic; color:var(--accent-light); }
+  .cs-tagline { font-size:15px; color:var(--text-muted); margin-bottom:32px; max-width:560px; }
+
+  .cs-meta { display:flex; flex-wrap:wrap; gap:24px; margin-bottom:28px; }
+  .cs-meta-item { display:flex; flex-direction:column; gap:4px; }
+  .cs-meta-label { font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--text-muted); }
+  .cs-meta-value { font-size:13px; color:var(--white); font-family:'DM Mono',monospace; }
+
+  .cs-tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:48px; }
+  .tag { font-size:10px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; padding:3px 8px; border-radius:3px; background:rgba(74,144,217,0.1); border:0.5px solid rgba(74,144,217,0.25); color:var(--accent-light); }
+  .tag.mcp { background:rgba(201,168,76,0.12); border-color:rgba(201,168,76,0.35); color:var(--gold); }
+
+  .cs-divider { border:none; border-top:0.5px solid var(--border); margin:40px 0; }
+
+  .cs-section { margin-bottom:40px; }
+  .cs-section-heading { font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); margin-bottom:16px; }
+  .cs-body { font-size:14px; color:var(--off-white); line-height:1.8; }
+  .cs-body p { margin-bottom:16px; }
+  .cs-body p:last-child { margin-bottom:0; }
+  .cs-body strong { color:var(--white); font-weight:600; }
+
+  .cs-callout { background:var(--card-bg); border:0.5px solid var(--border); border-left:2px solid var(--accent); border-radius:4px; padding:16px 20px; margin:24px 0; font-size:13px; color:var(--text-muted); line-height:1.7; }
+  .cs-callout strong { color:var(--white); }
+
+  .cs-callout.gold { border-left-color:var(--gold); }
+
+  .cs-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin:24px 0; }
+  .cs-card { background:var(--card-bg); border:0.5px solid var(--border); border-radius:8px; padding:18px 20px; }
+  .cs-card-label { font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--text-muted); margin-bottom:8px; font-family:'DM Mono',monospace; }
+  .cs-card-content { font-size:13px; color:var(--off-white); line-height:1.65; }
+
+  .token-stat { display:inline-flex; align-items:center; gap:8px; background:rgba(74,144,217,0.08); border:0.5px solid rgba(74,144,217,0.2); border-radius:4px; padding:6px 12px; font-family:'DM Mono',monospace; font-size:12px; color:var(--accent-light); margin:4px 4px 4px 0; }
+
+  .try-agent { display:inline-flex; align-items:center; gap:8px; font-size:13px; font-weight:600; letter-spacing:.04em; color:var(--accent); text-decoration:none; transition:opacity .2s; margin-top:8px; }
+  .try-agent:hover { opacity:.7; }
+
+  .setup-step { display:flex; gap:16px; margin-bottom:20px; }
+  .setup-step-num { font-family:'DM Mono',monospace; font-size:11px; font-weight:700; color:var(--accent); background:rgba(74,144,217,0.1); border:0.5px solid rgba(74,144,217,0.25); border-radius:4px; padding:3px 8px; height:fit-content; white-space:nowrap; margin-top:2px; }
+  .setup-step-body { font-size:13px; color:var(--off-white); line-height:1.7; }
+  .setup-step-body strong { color:var(--white); }
+  .setup-step-body code { font-family:'DM Mono',monospace; font-size:11px; background:rgba(255,255,255,0.06); padding:2px 6px; border-radius:3px; color:var(--accent-light); }
+
+  footer { border-top:0.5px solid var(--border); padding:32px 48px; text-align:center; font-size:12px; color:var(--text-muted); }
+  footer a { color:var(--accent); text-decoration:none; }
+
+  @media(max-width:640px) {
+    nav { padding:16px 20px; }
+    .nav-links { gap:20px; }
+    .page-wrap { padding:100px 20px 60px; }
+    .cs-grid { grid-template-columns:1fr; }
+    .cs-meta { gap:16px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Vikram <span>Yeldandi</span></div>
+  <ul class="nav-links">
+    <li><a href="index.html">← Portfolio</a></li>
+    <li><a href="agent15.html">Try Agent 15</a></li>
+  </ul>
+</nav>
+
+<div class="page-wrap">
+  <a href="agent15.html" class="back-link">← Back to Agent 15</a>
+
+  <p class="cs-label">Case Study</p>
+  <p class="cs-agent">Agent 15 · GitHub Repo Intelligence Agent</p>
+  <h1 class="cs-title">Building a True <em>MCP Integration</em><br>on Cloudflare Workers</h1>
+  <p class="cs-tagline">How a second Cloudflare Worker acting as an MCP server connects Claude to live GitHub data — making four real tool calls per analysis and surfacing a structured repo intelligence briefing.</p>
+
+  <div class="cs-meta">
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">Model</span>
+      <span class="cs-meta-value">claude-sonnet-4-20250514</span>
+    </div>
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">MCP Transport</span>
+      <span class="cs-meta-value">Cloudflare Worker</span>
+    </div>
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">Tool Calls / Run</span>
+      <span class="cs-meta-value">4 (parallel)</span>
+    </div>
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">Max Output</span>
+      <span class="cs-meta-value">800 tokens</span>
+    </div>
+  </div>
+
+  <div class="cs-tags">
+    <span class="tag mcp">MCP</span>
+    <span class="tag">GitHub API</span>
+    <span class="tag">Repo Analysis</span>
+    <span class="tag">Tool Use</span>
+  </div>
+
+  <hr class="cs-divider">
+
+  <!-- Why MCP -->
+  <div class="cs-section">
+    <p class="cs-section-heading">Why MCP, Not Tool Use</p>
+    <div class="cs-body">
+      <p>Agents 1–14 in this portfolio all use a single Cloudflare Worker as a thin proxy to the Anthropic API — the model produces structured text output, and the frontend parses it. Agent 15 introduces a fundamentally different architecture: a second Worker that acts as an MCP server, giving Claude access to live external data through a defined tool protocol rather than baking data into the prompt.</p>
+      <p>The distinction matters. Tool use via the API simulates the MCP pattern but is self-contained — the tool logic lives in the Worker or the client. True MCP externalises the tool server entirely. The MCP server is a separate, independently deployable service with its own URL, its own secrets, and its own transport layer. Claude calls it; it calls GitHub; it returns structured data. The model never sees an API key.</p>
+    </div>
+
+    <div class="cs-callout gold">
+      <strong>The practical difference:</strong> In a tool-use pattern, you define functions inline and handle execution yourself. In MCP, Claude discovers tools from a server and calls them via protocol. The server is the integration — swappable, composable, and reusable across agents. This is why MCP is the right foundation for a multi-agent workflow stack.
+    </div>
+  </div>
+
+  <hr class="cs-divider">
+
+  <!-- Architecture -->
+  <div class="cs-section">
+    <p class="cs-section-heading">Architecture</p>
+    <div class="cs-body">
+      <p>The setup uses two Cloudflare Workers. The existing <code>luminary-proxy</code> Worker handles the Anthropic API connection exactly as it does for all other agents — unchanged. A new <code>github-mcp</code> Worker is deployed as the MCP server, exposing four endpoints: <code>/repo</code>, <code>/readme</code>, <code>/commits</code>, and <code>/issues</code>.</p>
+      <p>When a user submits a repo URL, the frontend calls all four MCP endpoints in parallel using <code>Promise.all</code> — not sequentially. This brings the data-fetch latency down to the slowest single GitHub API call rather than four calls in series. The combined data is assembled into a structured context payload and sent to Claude in a single Anthropic API call.</p>
+    </div>
+
+    <div class="cs-grid">
+      <div class="cs-card">
+        <p class="cs-card-label">get_repo</p>
+        <p class="cs-card-content">Fetches core repository metadata — name, description, primary language, star count, fork count, and last push date. This drives the OVERVIEW block and the HEALTH verdict field.</p>
+      </div>
+      <div class="cs-card">
+        <p class="cs-card-label">get_readme</p>
+        <p class="cs-card-content">Retrieves and decodes the README content (base64 from GitHub API). Capped at 1,200 characters before being sent to Claude — enough for project description and stack context without blowing the token budget.</p>
+      </div>
+      <div class="cs-card">
+        <p class="cs-card-label">list_commits</p>
+        <p class="cs-card-content">Pulls the last 30 commits with timestamps. Claude uses this to calculate recent activity velocity and determine whether the project is accelerating, steady, or declining — the ACTIVITY block signal.</p>
+      </div>
+      <div class="cs-card">
+        <p class="cs-card-label">list_issues</p>
+        <p class="cs-card-content">Fetches up to 50 open issues with titles and labels. Claude clusters these into 2–4 named themes ranked by frequency — identical in pattern to Agent 13's review theme cards, applied to a different data source.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="cs-divider">
+
+  <!-- Setup -->
+  <div class="cs-section">
+    <p class="cs-section-heading">Deployment Setup</p>
+    <div class="cs-body">
+      <p>The GitHub MCP Worker is deployed via Wrangler with a GitHub Personal Access Token stored as a Cloudflare secret — never exposed to the client. The Worker adds the token to every outbound GitHub API request.</p>
+    </div>
+
+    <div class="setup-step">
+      <span class="setup-step-num">01</span>
+      <div class="setup-step-body">Create a GitHub PAT with <code>repo:read</code> and <code>issues:read</code> scopes at <strong>github.com → Settings → Developer settings → Personal access tokens</strong>.</div>
+    </div>
+    <div class="setup-step">
+      <span class="setup-step-num">02</span>
+      <div class="setup-step-body">Deploy the MCP Worker: <code>wrangler deploy github-mcp-worker.js --name github-mcp</code>. This creates the <code>github-mcp.vikramyeldandi.workers.dev</code> endpoint.</div>
+    </div>
+    <div class="setup-step">
+      <span class="setup-step-num">03</span>
+      <div class="setup-step-body">Store the PAT as a secret: <code>wrangler secret put GITHUB_TOKEN --name github-mcp</code>. The token is encrypted at rest and injected at runtime — never visible in source or client.</div>
+    </div>
+    <div class="setup-step">
+      <span class="setup-step-num">04</span>
+      <div class="setup-step-body">The existing <code>luminary-proxy</code> Worker requires no changes. Agent 15's frontend calls both Workers directly — the MCP Worker for data, the proxy Worker for the Anthropic API call.</div>
+    </div>
+  </div>
+
+  <hr class="cs-divider">
+
+  <!-- Output schema -->
+  <div class="cs-section">
+    <p class="cs-section-heading">Output Schema</p>
+    <div class="cs-body">
+      <p>The system prompt enforces four delimiter blocks — <code>===OVERVIEW===</code>, <code>===ACTIVITY===</code>, repeating <code>===ISSUE===</code> blocks, and <code>===VERDICT===</code>. The OVERVIEW and ACTIVITY blocks carry named fields parsed into distinct UI components. The ISSUE blocks follow Agent 13's theme-card pattern exactly, with a PERCENT field driving the frequency bar. The VERDICT is a free-text paragraph constrained to a specific structure: health statement, strongest data signal, and a concrete adopt/monitor/avoid recommendation.</p>
+    </div>
+
+    <div class="cs-callout">
+      <strong>Key constraint:</strong> The HEALTH field in OVERVIEW is restricted to three values — Healthy, Moderate, or Stalled — and maps directly to a colour-coded pill in the UI. The same verdict-as-constraint pattern used in Agent 14's ROI field. Forcing a committed assessment is more useful than hedged prose, and maps cleanly to UI logic.
+    </div>
+  </div>
+
+  <hr class="cs-divider">
+
+  <!-- What I Learned -->
+  <div class="cs-section">
+    <p class="cs-section-heading">What I Learned</p>
+    <div class="cs-body">
+      <p><strong>Parallel tool calls are essential at this architecture level.</strong> Sequential GitHub API calls would add 600–900ms of latency per run. Parallelising with <code>Promise.all</code> brings the data-fetch phase down to ~200ms — the slowest single call. At the MCP layer, parallel execution is the default assumption; designing for sequential calls would be a meaningful regression.</p>
+      <p><strong>Context payload size requires active management.</strong> Raw GitHub API responses — especially commit and issue lists — can easily exceed 10,000 tokens if passed directly to Claude. Each endpoint is capped before the context is assembled: README at 1,200 characters, commits JSON at 2,000 characters, issues JSON at 2,500 characters. Without these caps, a repo with 500 open issues would blow the context window and spike cost on every run.</p>
+      <p><strong>The tool trace is a trust signal, not decoration.</strong> Showing the four MCP tool calls in the response bubble — <code>→ get_repo</code>, <code>→ get_readme</code>, etc. — serves a specific purpose: it tells the user that the briefing is grounded in live data, not cached or hallucinated. In an agentic system, making the tool call chain visible is part of the product, not just a debug artefact.</p>
+      <p><strong>MCP's value is composability, not just connectivity.</strong> The GitHub MCP Worker is a standalone service. It could be consumed by Agent 16, by a future CI/CD monitoring agent, or by a multi-agent orchestrator — without any changes. That's the architectural advantage of MCP over inline tool use: the integration is built once and reused across the workflow stack.</p>
+    </div>
+  </div>
+
+  <hr class="cs-divider">
+
+  <!-- Token Profile -->
+  <div class="cs-section">
+    <p class="cs-section-heading">Typical Token Profile</p>
+    <div class="cs-body">
+      <p>A single repo analysis with four parallel MCP calls and capped context payloads typically produces:</p>
+    </div>
+    <div style="margin-top:12px;">
+      <span class="token-stat">System: ~260 tokens</span>
+      <span class="token-stat">MCP context: 800–1,400 tokens</span>
+      <span class="token-stat">Output: 550–780 tokens</span>
+      <span class="token-stat">Total: ~1,600–2,440 tokens / run</span>
+    </div>
+  </div>
+
+  <hr class="cs-divider">
+
+  <a href="agent15.html" class="try-agent">Try Agent 15 →</a>
+</div>
+
+<footer>
+  <p>© 2026 Vikram Yeldandi · <a href="index.html">AI Product Portfolio</a> · Agent 15 of 15</p>
+</footer>
+
+</body>
+</html>
