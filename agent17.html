@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent 17 — Transaction Narrative Enrichment</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a1628;
+    --navy-mid: #112240;
+    --navy-light: #1d3461;
+    --accent: #4a90d9;
+    --accent-light: #64b5f6;
+    --gold: #c9a84c;
+    --white: #ffffff;
+    --off-white: #f0f4f8;
+    --text-muted: #8899aa;
+    --border: rgba(255,255,255,0.08);
+    --card-bg: rgba(255,255,255,0.04);
+    --positive: #5dcaa5;
+    --negative: #e06c6c;
+    --neutral: #c9a84c;
+  }
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { font-family:'DM Sans',sans-serif; background:var(--navy); color:var(--white); overflow-x:hidden; line-height:1.6; }
+
+  nav {
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:20px 48px;
+    background:rgba(10,22,40,0.85); backdrop-filter:blur(12px);
+    border-bottom:0.5px solid var(--border);
+  }
+  .nav-logo { font-family:'DM Serif Display',serif; font-size:18px; color:var(--white); letter-spacing:0.01em; }
+  .nav-logo span { color:var(--accent); }
+  .nav-links { display:flex; gap:32px; list-style:none; }
+  .nav-links a { font-size:13px; font-weight:500; letter-spacing:.04em; color:var(--text-muted); text-decoration:none; text-transform:uppercase; transition:color .2s; }
+  .nav-links a:hover { color:var(--white); }
+
+  .page-wrap { max-width:760px; margin:0 auto; padding:120px 48px 80px; }
+
+  .back-link { display:inline-flex; align-items:center; gap:8px; font-size:13px; color:var(--text-muted); text-decoration:none; margin-bottom:40px; transition:color .2s; }
+  .back-link:hover { color:var(--accent); }
+
+  .agent-eyebrow { font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:12px; }
+  .agent-title { font-family:'DM Serif Display',serif; font-size:clamp(32px,5vw,52px); line-height:1.1; margin-bottom:16px; }
+  .agent-title em { font-style:italic; color:var(--accent-light); }
+  .agent-subtitle { font-size:15px; color:var(--text-muted); margin-bottom:32px; }
+
+  .agent-tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:40px; }
+  .tag { font-size:10px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; padding:3px 8px; border-radius:3px; background:rgba(74,144,217,0.1); border:0.5px solid rgba(74,144,217,0.25); color:var(--accent-light); }
+  .tag.fintech { background:rgba(201,168,76,0.1); border-color:rgba(201,168,76,0.3); color:var(--gold); }
+
+  /* Chat panel */
+  .chat-panel {
+    background:var(--navy-mid); border:0.5px solid var(--border);
+    border-radius:8px; overflow:hidden; margin-bottom:48px;
+  }
+  .panel-header {
+    display:flex; justify-content:space-between; align-items:center;
+    padding:14px 20px; border-bottom:0.5px solid var(--border);
+    background:rgba(255,255,255,0.02);
+  }
+  .panel-title { font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--text-muted); display:flex; align-items:center; gap:8px; }
+  .panel-dot { width:7px; height:7px; border-radius:50%; background:var(--positive); animation:pulse 2.4s ease-in-out infinite; }
+  .panel-meta { font-size:11px; color:var(--text-muted); font-family:'DM Mono',monospace; }
+
+  .presets-bar { display:flex; align-items:center; gap:8px; flex-wrap:wrap; padding:10px 20px; border-bottom:0.5px solid var(--border); background:rgba(0,0,0,0.08); }
+  .presets-label { font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--text-muted); margin-right:4px; }
+  .preset-btn { font-size:10px; font-weight:600; letter-spacing:.04em; text-transform:uppercase; padding:4px 10px; border-radius:3px; cursor:pointer; border:0.5px solid var(--border); background:transparent; color:var(--text-muted); transition:all .2s; }
+  .preset-btn:hover { border-color:rgba(74,144,217,0.4); color:var(--accent); background:rgba(74,144,217,0.08); }
+
+  .chat-area { height:520px; overflow-y:auto; padding:20px; display:flex; flex-direction:column; gap:16px; scroll-behavior:smooth; }
+  .chat-area::-webkit-scrollbar { width:3px; }
+  .chat-area::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
+
+  .msg { display:flex; gap:10px; }
+  .msg.user { flex-direction:row-reverse; }
+  .msg-avatar { width:28px; height:28px; border-radius:4px; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:700; letter-spacing:.04em; flex-shrink:0; }
+  .msg.agent .msg-avatar { background:rgba(74,144,217,0.12); color:var(--accent); border:0.5px solid rgba(74,144,217,0.25); }
+  .msg.user .msg-avatar { background:rgba(255,255,255,0.06); color:var(--text-muted); border:0.5px solid var(--border); }
+  .msg-bubble { max-width:88%; padding:12px 16px; border-radius:6px; font-size:13px; line-height:1.7; }
+  .msg.agent .msg-bubble { background:rgba(255,255,255,0.04); border:0.5px solid var(--border); border-top-left-radius:2px; }
+  .msg.user .msg-bubble { background:rgba(74,144,217,0.1); border:0.5px solid rgba(74,144,217,0.2); border-top-right-radius:2px; }
+  .msg-label { font-size:10px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; margin-bottom:6px; color:var(--text-muted); }
+  .msg.user .msg-label { text-align:right; }
+
+  /* Transaction result cards */
+  .txn-card {
+    background:var(--card-bg); border:0.5px solid var(--border);
+    border-radius:6px; padding:12px 14px; margin-top:8px;
+  }
+  .txn-card-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px; gap:12px; }
+  .txn-raw { font-family:'DM Mono',monospace; font-size:10px; color:var(--text-muted); letter-spacing:.02em; flex:1; line-height:1.4; }
+  .txn-confidence { font-size:10px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; padding:2px 7px; border-radius:10px; white-space:nowrap; flex-shrink:0; }
+  .conf-high { background:rgba(93,202,165,0.15); color:var(--positive); border:0.5px solid rgba(93,202,165,0.3); }
+  .conf-med { background:rgba(201,168,76,0.15); color:var(--neutral); border:0.5px solid rgba(201,168,76,0.3); }
+  .conf-low { background:rgba(224,108,108,0.15); color:var(--negative); border:0.5px solid rgba(224,108,108,0.3); }
+  .txn-merchant { font-size:14px; font-weight:600; color:var(--white); margin-bottom:4px; }
+  .txn-description { font-size:12px; color:var(--off-white); line-height:1.55; margin-bottom:8px; }
+  .txn-meta { display:flex; gap:8px; flex-wrap:wrap; }
+  .txn-tag { font-size:10px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; padding:2px 8px; border-radius:3px; }
+  .txn-category { background:rgba(74,144,217,0.1); border:0.5px solid rgba(74,144,217,0.25); color:var(--accent-light); }
+  .txn-channel { background:rgba(255,255,255,0.05); border:0.5px solid var(--border); color:var(--text-muted); }
+
+  .batch-header {
+    background:rgba(74,144,217,0.05); border:0.5px solid rgba(74,144,217,0.15);
+    border-radius:6px; padding:10px 14px; margin-top:10px;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .batch-header-title { font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); }
+  .batch-header-count { font-size:11px; font-family:'DM Mono',monospace; color:var(--text-muted); }
+
+  .typing { display:flex; gap:4px; align-items:center; padding:4px 0; }
+  .typing span { width:5px; height:5px; border-radius:50%; background:var(--text-muted); animation:typing 1.2s infinite; }
+  .typing span:nth-child(2) { animation-delay:.2s; }
+  .typing span:nth-child(3) { animation-delay:.4s; }
+  @keyframes typing { 0%,60%,100% { opacity:.3; transform:translateY(0); } 30% { opacity:1; transform:translateY(-3px); } }
+  @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
+
+  .input-row { display:flex; gap:10px; align-items:flex-end; padding:14px 20px; border-top:0.5px solid var(--border); background:rgba(0,0,0,0.1); }
+  .chat-input {
+    flex:1; background:rgba(255,255,255,0.05); border:0.5px solid var(--border);
+    border-radius:4px; color:var(--white); font-family:'DM Mono',monospace;
+    font-size:12px; padding:10px 14px; resize:vertical; outline:none;
+    line-height:1.6; min-height:80px; max-height:220px; transition:border-color .2s;
+  }
+  .chat-input:focus { border-color:rgba(74,144,217,0.4); }
+  .chat-input::placeholder { color:var(--text-muted); font-family:'DM Sans',sans-serif; font-size:13px; }
+  .send-btn { background:var(--accent); color:var(--white); border:none; border-radius:50px; cursor:pointer; padding:10px 20px; font-size:12px; font-weight:600; letter-spacing:.04em; text-transform:uppercase; transition:background .2s,transform .15s; white-space:nowrap; height:40px; display:flex; align-items:center; gap:6px; align-self:flex-end; }
+  .send-btn:hover { background:var(--accent-light); transform:translateY(-1px); }
+  .send-btn:disabled { opacity:.4; cursor:not-allowed; transform:none; }
+
+  .input-hint { font-size:10px; color:var(--text-muted); padding:0 20px 10px; letter-spacing:.03em; }
+
+  .status-bar { display:flex; justify-content:space-between; padding:8px 20px; border-top:0.5px solid var(--border); background:rgba(0,0,0,0.08); }
+  .status-items { display:flex; gap:16px; }
+  .status-item { font-size:10px; color:var(--text-muted); display:flex; align-items:center; gap:5px; letter-spacing:.04em; }
+  .sdot { width:5px; height:5px; border-radius:50%; }
+  .sdot.ok { background:var(--positive); }
+
+  /* Info cards */
+  .info-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:48px; }
+  .info-card { background:var(--card-bg); border:0.5px solid var(--border); border-radius:8px; padding:20px; }
+  .info-card-icon { font-size:20px; margin-bottom:10px; }
+  .info-card-title { font-size:14px; font-weight:600; margin-bottom:6px; }
+  .info-card-body { font-size:12px; color:var(--text-muted); line-height:1.65; }
+
+  .view-case { display:inline-flex; align-items:center; gap:8px; font-size:13px; font-weight:600; letter-spacing:.04em; color:var(--accent); text-decoration:none; transition:opacity .2s; }
+  .view-case:hover { opacity:.7; }
+
+  footer { border-top:0.5px solid var(--border); padding:32px 48px; text-align:center; font-size:12px; color:var(--text-muted); }
+  footer a { color:var(--accent); text-decoration:none; }
+
+  @media(max-width:640px) {
+    nav { padding:16px 20px; }
+    .nav-links { gap:20px; }
+    .page-wrap { padding:100px 20px 60px; }
+    .info-grid { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Vikram <span>Yeldandi</span></div>
+  <ul class="nav-links">
+    <li><a href="index.html">← Portfolio</a></li>
+    <li><a href="agent17_case_study.html">Case Study</a></li>
+  </ul>
+</nav>
+
+<div class="page-wrap">
+  <a href="index.html" class="back-link">← Back to Portfolio</a>
+
+  <p class="agent-eyebrow">Agent 17 · FinTech · Transaction Enrichment</p>
+  <h1 class="agent-title">Transaction Narrative <em>Enrichment Agent</em></h1>
+  <p class="agent-subtitle">Paste raw bank transaction strings and get back clean, human-readable descriptions — merchant name resolved, category classified, channel identified, and confidence scored in a single pass.</p>
+
+  <div class="agent-tags">
+    <span class="tag fintech">FinTech</span>
+    <span class="tag">Transaction Enrichment</span>
+    <span class="tag">Classification</span>
+    <span class="tag">Structured Output</span>
+  </div>
+
+  <!-- Chat Panel -->
+  <div class="chat-panel">
+    <div class="panel-header">
+      <div class="panel-title"><div class="panel-dot"></div>Transaction Enrichment · Active</div>
+      <div class="panel-meta" id="sessionMeta">session: txn-0001</div>
+    </div>
+
+    <div class="presets-bar">
+      <span class="presets-label">Sample batches:</span>
+      <button class="preset-btn" onclick="loadPreset('retail')">Retail Mix</button>
+      <button class="preset-btn" onclick="loadPreset('travel')">Travel & Transport</button>
+      <button class="preset-btn" onclick="loadPreset('subscriptions')">Subscriptions</button>
+      <button class="preset-btn" onclick="loadPreset('ambiguous')">Ambiguous Strings</button>
+    </div>
+
+    <div class="chat-area" id="chatArea">
+      <div class="msg agent">
+        <div class="msg-avatar">A17</div>
+        <div class="msg-bubble">
+          <div class="msg-label">Transaction Enrichment</div>
+          Paste raw transaction strings — one per line. I'll resolve the merchant name, classify the category, identify the payment channel, write a clean human-readable description, and assign a confidence score to each enrichment.
+        </div>
+      </div>
+    </div>
+
+    <div class="input-row">
+      <textarea class="chat-input" id="chatInput" placeholder="Paste raw transaction strings here — one per line..." oninput="autoResize(this)"></textarea>
+      <button class="send-btn" id="sendBtn" onclick="sendMessage()">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
+        Enrich
+      </button>
+    </div>
+    <div class="input-hint">Tip: paste 3–10 raw transaction strings for best results. Use the preset buttons above to try with sample data.</div>
+
+    <div class="status-bar">
+      <div class="status-items">
+        <div class="status-item"><div class="sdot ok"></div>Cloudflare Worker</div>
+        <div class="status-item"><div class="sdot ok"></div>Claude API</div>
+        <div class="status-item"><div class="sdot ok"></div><span id="tokenCount">Tokens: 0</span></div>
+      </div>
+      <div class="status-item" id="turnCount">Run: 0</div>
+    </div>
+  </div>
+
+  <!-- Info cards -->
+  <div class="info-grid">
+    <div class="info-card">
+      <div class="info-card-icon">🏪</div>
+      <h3 class="info-card-title">Merchant Resolution</h3>
+      <p class="info-card-body">Cryptic bank codes and truncated acquirer strings are resolved to the real merchant name — including brand, location context, and trading name where identifiable.</p>
+    </div>
+    <div class="info-card">
+      <div class="info-card-icon">🗂️</div>
+      <h3 class="info-card-title">Category & Channel</h3>
+      <p class="info-card-body">Each transaction is assigned a spend category (e.g. Groceries, Travel, Subscriptions) and a payment channel (Online, In-Store, Contactless, Direct Debit) based on string signals.</p>
+    </div>
+    <div class="info-card">
+      <div class="info-card-icon">📊</div>
+      <h3 class="info-card-title">Confidence Scoring</h3>
+      <p class="info-card-body">Every enrichment carries a HIGH, MEDIUM, or LOW confidence rating — flagging ambiguous strings so downstream systems or analysts know where to apply manual review.</p>
+    </div>
+  </div>
+
+  <a href="agent17_case_study.html" class="view-case">Read the Case Study →</a>
+</div>
+
+<footer>
+  <p>© 2026 Vikram Yeldandi · <a href="index.html">AI Product Portfolio</a> · Agent 17 of 17</p>
+</footer>
+
+<script>
+  const WORKER_URL = 'https://luminary-proxy.vikramyeldandi.workers.dev/';
+  let totalTokens = 0;
+  let runCount = 0;
+  let isLoading = false;
+
+  const SYSTEM_PROMPT = `You are Agent 17 — a transaction narrative enrichment engine. Transform each raw bank transaction string into a structured enrichment record.
+
+For each transaction, output one block using these exact delimiters:
+
+===TXN===
+RAW: [original string, reproduced exactly]
+MERCHANT: [resolved merchant name]
+DESCRIPTION: [clean human-readable description, max 20 words]
+CATEGORY: [single category: Groceries | Dining | Travel | Transport | Retail | Subscriptions | Utilities | Healthcare | Entertainment | Finance | Other]
+CHANNEL: [one of: In-Store | Online | Contactless | Direct Debit | ATM | Transfer | Unknown]
+CONFIDENCE: [HIGH | MEDIUM | LOW]
+===END===
+
+Rules:
+- Process every transaction string in the input — never skip one.
+- MERCHANT must be the real trading name, not the acquirer code or bank reference.
+- DESCRIPTION must be plain English a bank customer would recognise.
+- If the string is genuinely ambiguous, set CONFIDENCE to LOW and make your best inference.
+- Never invent transaction details not inferable from the string itself.
+- Output TXN blocks only — no preamble, no commentary.`;
+
+  const PRESETS = {
+    retail: `SQ *PRET A MANGER LONDON GB
+AMZN MKTP UK*2K4L9 WWW.AMAZON.CO.UK
+TESCO STORES 2814 LONDON GB
+ASOS.COM LTD LONDON GB 02073771234
+M&S SIMPLY FOOD PADDINGTON
+WHOLEFDS MKT #10456 LONDON
+IKEA LTD WEMBLEY GB`,
+
+    travel: `UBER *TRIP 1A2B3C HELP.UBER.COM
+BA.COM BRITISH AIRWAYS LONDON
+TRAINLINE.COM 08712444366 GB
+MARRIOTT LONDON MARBLE ARCH
+NATIONAL EXPRESS LTD BIRMINGHAM
+EASYJET EZY4421 LUTON GB
+CITYMAPPER PASS LONDON`,
+
+    subscriptions: `NETFLIX.COM 08081960000
+SPOTIFY AB 08000260026 GB
+APPLE.COM/BILL 0800 048 0408
+ADOBE SYSTEMS INC 08009170680
+GOOGLE *STORAGE GOOGLE.COM/CH
+NYT*DIGITAL SUBSCRIPTION 1-800-NYTIMES
+AMAZON PRIME*2K9X1 AMZN.COM`,
+
+    ambiguous: `SQ *23849 LONDON GB
+PAYPAL *TECHSOL 35314369001
+DD REF 7X92KL UTILCO
+STRIPE PAYMENTS EUROPE
+ACH CREDIT BACS 003921CORP
+SP * DIGITAL SVCS 0208881
+CRD PUR 04/03 293847562`
+  };
+
+  function loadPreset(key) {
+    const input = document.getElementById('chatInput');
+    input.value = PRESETS[key];
+    autoResize(input);
+    input.focus();
+  }
+
+  function autoResize(el) {
+    el.style.height = 'auto';
+    el.style.height = Math.min(el.scrollHeight, 220) + 'px';
+  }
+
+  function addMessage(role, rawContent) {
+    const area = document.getElementById('chatArea');
+    const div = document.createElement('div');
+    div.className = 'msg ' + role;
+
+    const avatar = document.createElement('div');
+    avatar.className = 'msg-avatar';
+    avatar.textContent = role === 'agent' ? 'A17' : 'YOU';
+
+    const bubble = document.createElement('div');
+    bubble.className = 'msg-bubble';
+
+    const label = document.createElement('div');
+    label.className = 'msg-label';
+    label.textContent = role === 'agent' ? 'Transaction Enrichment' : 'Your Transactions';
+    bubble.appendChild(label);
+
+    if (role === 'user') {
+      const lines = rawContent.trim().split('\n').filter(l => l.trim());
+      const preview = document.createElement('div');
+      preview.style.color = 'var(--text-muted)';
+      preview.style.fontSize = '12px';
+      preview.textContent = lines.length + ' transaction' + (lines.length !== 1 ? 's' : '') + ' submitted for enrichment';
+      bubble.appendChild(preview);
+    } else if (role === 'agent' && rawContent.includes('===TXN===')) {
+      renderEnrichmentResult(bubble, rawContent);
+    } else {
+      const text = document.createElement('div');
+      text.innerHTML = rawContent.replace(/\n/g, '<br>');
+      bubble.appendChild(text);
+    }
+
+    div.appendChild(avatar);
+    div.appendChild(bubble);
+    area.appendChild(div);
+    area.scrollTop = area.scrollHeight;
+  }
+
+  function renderEnrichmentResult(bubble, raw) {
+    const txnRegex = /===TXN===([\s\S]*?)===END===/g;
+    const transactions = [];
+    let match;
+    while ((match = txnRegex.exec(raw)) !== null) {
+      const t = match[1];
+      const rawStr  = (t.match(/RAW:\s*(.+)/)         || [])[1] || '';
+      const merchant= (t.match(/MERCHANT:\s*(.+)/)    || [])[1] || '';
+      const desc    = (t.match(/DESCRIPTION:\s*(.+)/) || [])[1] || '';
+      const category= (t.match(/CATEGORY:\s*(.+)/)    || [])[1] || '';
+      const channel = (t.match(/CHANNEL:\s*(.+)/)     || [])[1] || '';
+      const conf    = (t.match(/CONFIDENCE:\s*(.+)/)  || [])[1] || 'LOW';
+      transactions.push({ rawStr, merchant, desc, category, channel, conf: conf.trim().toUpperCase() });
+    }
+
+    if (transactions.length === 0) return;
+
+    const header = document.createElement('div');
+    header.className = 'batch-header';
+    header.innerHTML = `
+      <span class="batch-header-title">Enrichment Results</span>
+      <span class="batch-header-count">${transactions.length} transaction${transactions.length !== 1 ? 's' : ''} processed</span>`;
+    bubble.appendChild(header);
+
+    transactions.forEach(t => {
+      const confClass = t.conf === 'HIGH' ? 'conf-high' : t.conf === 'MEDIUM' ? 'conf-med' : 'conf-low';
+      const card = document.createElement('div');
+      card.className = 'txn-card';
+      card.innerHTML = `
+        <div class="txn-card-header">
+          <span class="txn-raw">${t.rawStr.trim()}</span>
+          <span class="txn-confidence ${confClass}">${t.conf}</span>
+        </div>
+        <div class="txn-merchant">${t.merchant.trim()}</div>
+        <div class="txn-description">${t.desc.trim()}</div>
+        <div class="txn-meta">
+          <span class="txn-tag txn-category">${t.category.trim()}</span>
+          <span class="txn-tag txn-channel">${t.channel.trim()}</span>
+        </div>`;
+      bubble.appendChild(card);
+    });
+  }
+
+  function showTyping() {
+    const area = document.getElementById('chatArea');
+    const div = document.createElement('div');
+    div.className = 'msg agent'; div.id = 'typingMsg';
+    div.innerHTML = '<div class="msg-avatar">A17</div><div class="msg-bubble"><div class="msg-label">Transaction Enrichment</div><div class="typing"><span></span><span></span><span></span></div></div>';
+    area.appendChild(div);
+    area.scrollTop = area.scrollHeight;
+  }
+
+  function removeTyping() {
+    const t = document.getElementById('typingMsg');
+    if (t) t.remove();
+  }
+
+  async function sendMessage() {
+    if (isLoading) return;
+    const input = document.getElementById('chatInput');
+    const text = input.value.trim();
+    if (!text) return;
+
+    isLoading = true;
+    document.getElementById('sendBtn').disabled = true;
+    input.value = ''; input.style.height = '80px';
+
+    addMessage('user', text);
+    showTyping();
+
+    try {
+      const res = await fetch(WORKER_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 800,
+          system: SYSTEM_PROMPT,
+          messages: [{ role: 'user', content: text }]
+        })
+      });
+
+      const data = await res.json();
+      removeTyping();
+
+      if (data.content && data.content[0]) {
+        const reply = data.content[0].text;
+        totalTokens += (data.usage?.input_tokens || 0) + (data.usage?.output_tokens || 0);
+        runCount++;
+        document.getElementById('tokenCount').textContent = 'Tokens: ' + totalTokens;
+        document.getElementById('turnCount').textContent = 'Run: ' + runCount;
+        addMessage('agent', reply);
+      } else {
+        addMessage('agent', 'Worker error — check Cloudflare Worker configuration.');
+      }
+    } catch (err) {
+      removeTyping();
+      addMessage('agent', 'Connection error: ' + err.message);
+    }
+
+    isLoading = false;
+    document.getElementById('sendBtn').disabled = false;
+  }
+
+  document.getElementById('sessionMeta').textContent = 'session: txn-' + Math.floor(Math.random() * 9000 + 1000);
+</script>
+</body>
+</html>
