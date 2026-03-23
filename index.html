@@ -457,146 +457,6 @@
   .hero-cta     { animation: fadeUp .6s ease .4s both; }
   .hero-stats   { animation: fadeUp .6s ease .3s both; }
 
-  /* ─── STEALTH TILE ─── */
-  .stealth-tile {
-    grid-column: 1 / -1;
-    background: linear-gradient(135deg, #0d0f14 0%, #111318 40%, #0a0c11 100%);
-    border: 0.5px solid rgba(255,255,255,0.06);
-    border-radius: 8px;
-    padding: 24px 36px;
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 40px;
-    min-height: 100px;
-    cursor: default;
-  }
-  /* Subtle matte sweep */
-  .stealth-tile::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: linear-gradient(105deg, rgba(255,255,255,0.015) 0%, transparent 55%, rgba(255,255,255,0.008) 100%);
-    pointer-events: none;
-  }
-  /* Top edge line — graphite, not accent */
-  .stealth-tile::after {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(160,160,160,0.25) 30%, rgba(200,200,200,0.35) 50%, rgba(160,160,160,0.25) 70%, transparent);
-  }
-  .stealth-tile-left {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    flex: 1;
-    position: relative;
-    z-index: 1;
-  }
-  .stealth-eyebrow {
-    font-size: 10px; font-weight: 700;
-    letter-spacing: .14em; text-transform: uppercase;
-    color: rgba(180,180,180,0.45);
-    display: flex; align-items: center; gap: 10px;
-  }
-  .stealth-eyebrow::before {
-    content: '';
-    display: inline-block; width: 24px; height: 0.5px;
-    background: rgba(180,180,180,0.3);
-  }
-  .stealth-name {
-    font-family: 'DM Serif Display', serif;
-    font-size: 22px;
-    color: rgba(255,255,255,0.85);
-    letter-spacing: 0.02em;
-    line-height: 1.2;
-  }
-  .stealth-desc {
-    font-size: 13px; line-height: 1.7;
-    color: rgba(255,255,255,0.35);
-    max-width: 520px;
-  }
-  .stealth-manifesto {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    font-weight: 300;
-    line-height: 1.6;
-    color: rgba(255,255,255,0.72);
-    letter-spacing: 0.01em;
-    margin: 0;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .stealth-manifesto .s-bullet {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 22px; height: 22px;
-    border-radius: 50%;
-    flex-shrink: 0;
-    font-size: 11px;
-    font-family: 'DM Mono', monospace;
-    font-weight: 600;
-    letter-spacing: 0;
-  }
-  .s-bullet-1 {
-    background: rgba(74,144,217,0.12);
-    border: 0.5px solid rgba(74,144,217,0.35);
-    color: #4a90d9;
-  }
-  .s-bullet-2 {
-    background: rgba(160,160,200,0.08);
-    border: 0.5px solid rgba(160,160,200,0.25);
-    color: rgba(200,200,220,0.7);
-  }
-  .s-bullet-3 {
-    background: rgba(93,202,165,0.1);
-    border: 0.5px solid rgba(93,202,165,0.3);
-    color: #5dcaa5;
-  }
-  .stealth-badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    margin-top: 4px;
-    padding: 5px 14px;
-    border-radius: 3px;
-    background: rgba(255,255,255,0.03);
-    border: 0.5px solid rgba(255,255,255,0.1);
-    font-size: 10px; font-weight: 700;
-    letter-spacing: .12em; text-transform: uppercase;
-    color: rgba(200,200,200,0.5);
-    width: fit-content;
-  }
-  .stealth-badge-dot {
-    width: 5px; height: 5px; border-radius: 50%;
-    background: rgba(200,200,200,0.3);
-    animation: stealthPulse 2.8s ease-in-out infinite;
-  }
-  @keyframes stealthPulse {
-    0%, 100% { opacity: 0.3; }
-    50% { opacity: 0.8; }
-  }
-  /* B-2 silhouette SVG */
-  .stealth-bomber {
-    flex-shrink: 0;
-    width: 220px;
-    opacity: 0.18;
-    position: relative;
-    z-index: 1;
-    filter: drop-shadow(0 0 18px rgba(180,180,180,0.08));
-  }
-
-  .stealth-emoji {
-    display: inline-block;
-    animation: emojiFloat 2.4s ease-in-out infinite;
-  }
-  @keyframes emojiFloat {
-    0%, 100% { transform: translateY(0) scale(1); opacity: 0.7; }
-    50%       { transform: translateY(-5px) scale(1.15); opacity: 1; }
-  }
-
   /* ─── RESPONSIVE ─── */
   @media(max-width:900px){
     nav { padding:16px 24px; }
@@ -791,7 +651,7 @@
         </div>
         <div class="mini-stat-divider"></div>
         <div class="mini-stat">
-          <div class="mini-stat-val">18</div>
+          <div class="mini-stat-val">14</div>
           <div class="mini-stat-label">AI Agents &amp; Counting</div>
         </div>
         <div class="mini-stat-divider"></div>
@@ -822,7 +682,7 @@
     </div>
     <div class="about-grid">
       <div class="about-text">
-        <p>I'm an <strong>AI Product Leader</strong> with 15+ years of experience driving end-to-end digital transformation across eCommerce, FinTech, ElderTech, and Utilities. I've led product strategy across iconic brands including <strong>The North Face, Vans, Timberland</strong>, and <strong>Williams-Sonoma family of brands</strong>.</p>
+        <p>I'm an <strong>AI Product Leader</strong> with 15+ years of experience driving end-to-end digital transformation across eCommerce, FinTech, ElderTech, and Utilities. I've led product strategy across iconic brands including <strong>The North Face, Vans, Timberland</strong>, and <strong>Williams-Sonoma, Inc.</strong>.</p>
         <p>I'm now focused on the intersection of <strong>AI and product management</strong> — building, evaluating, and shipping AI-powered systems that create measurable business outcomes. This portfolio showcases AI agents I designed and deployed across Retail, Retail SaaS, and FinTech domains.</p>
         <p>Each agent demonstrates a core concept in applied AI — from RAG and guardrails to multi-step orchestration and multimodal analysis.</p>
       </div>
@@ -833,7 +693,7 @@
         </div>
         <div class="highlight">
           <div class="highlight-label">Past Companies</div>
-          <div class="highlight-value">VF Corporation · Williams-Sonoma family of brands · Wells Fargo · Omatochi</div>
+          <div class="highlight-value">VF Corporation · Williams-Sonoma, Inc. · Wells Fargo · Omatochi</div>
         </div>
         <div class="highlight">
           <div class="highlight-label">Education</div>
@@ -860,32 +720,6 @@
     <div class="section-line"></div>
   </div>
   <div class="agents-grid">
-
-    <!-- STEALTH TILE — Agent 19 placeholder -->
-    <div class="stealth-tile">
-      <div class="stealth-tile-left">
-        <span class="stealth-eyebrow">Next Deployment · Stealth Mode</span>
-        <h3 class="stealth-name">Agent — Classified &nbsp;<span class="stealth-emoji" style="animation-delay:0s">🤖</span> <span class="stealth-emoji" style="animation-delay:0.4s">🧠</span> <span class="stealth-emoji" style="animation-delay:0.8s">⚙️</span></h3>
-        <br>
-        <p class="stealth-manifesto"><span class="s-bullet s-bullet-1">◈</span> The model shouldn't matter.</p>
-        <p class="stealth-manifesto"><span class="s-bullet s-bullet-2">⌘</span> Your goal becomes the command.</p>
-        <p class="stealth-manifesto"><span class="s-bullet s-bullet-3">◎</span> The outcome does the rest.</p>
-
-      </div>
-      <svg class="stealth-bomber" viewBox="0 0 440 200" xmlns="http://www.w3.org/2000/svg" fill="none">
-        <!-- B-2 Spirit top-down silhouette -->
-        <path d="M220 20 L380 160 L340 155 L300 145 L260 148 L240 155 L220 158 L200 155 L180 148 L140 145 L100 155 L60 160 Z" fill="rgba(255,255,255,0.9)"/>
-        <path d="M220 20 L260 70 L280 110 L260 148 L220 158 L180 148 L160 110 L180 70 Z" fill="rgba(0,0,0,0.35)"/>
-        <path d="M220 60 L235 90 L220 95 L205 90 Z" fill="rgba(0,0,0,0.2)"/>
-        <!-- Engine nozzles -->
-        <ellipse cx="255" cy="152" rx="8" ry="4" fill="rgba(0,0,0,0.4)"/>
-        <ellipse cx="270" cy="150" rx="8" ry="4" fill="rgba(0,0,0,0.4)"/>
-        <ellipse cx="185" cy="152" rx="8" ry="4" fill="rgba(0,0,0,0.4)"/>
-        <ellipse cx="170" cy="150" rx="8" ry="4" fill="rgba(0,0,0,0.4)"/>
-        <!-- Center line -->
-        <line x1="220" y1="25" x2="220" y2="155" stroke="rgba(0,0,0,0.15)" stroke-width="1"/>
-      </svg>
-    </div>
 
     <a href="agent01_case_study.html" target="_blank" style="text-decoration:none;color:inherit;display:contents;">
     <div class="agent-card built" style="cursor:pointer;">
@@ -1155,22 +989,6 @@
     </div>
     </a>
 
-    <a href="agent18.html" style="text-decoration:none;color:inherit;display:contents;">
-    <div class="agent-card built" style="cursor:pointer;">
-      <span class="agent-status status-live">Live</span>
-      <p class="agent-num">Agent 18</p>
-      <h3 class="agent-name">AdFit — Creative Resize Briefer</h3>
-      <p class="agent-desc">Describe your marketing creative and get a precise, opinionated resizing brief for every format — crop anchors, safe zones, copy rules, and platform restrictions across Meta, Google, LinkedIn, TikTok, and display.</p>
-      <div class="agent-tags">
-        <span class="tag">Creative Ops</span>
-        <span class="tag">Paid Social</span>
-        <span class="tag">Display Ads</span>
-        <span class="tag retail">Marketing</span>
-      </div>
-      <p style="font-size:11px;color:var(--accent);margin-top:12px;font-weight:600;letter-spacing:.04em;">VIEW CASE STUDY →</p>
-    </div>
-    </a>
-
 </section>
 
 <!-- SKILLS -->
@@ -1256,7 +1074,7 @@
     <div class="exp-pillar">
       <div class="exp-pillar-icon">🤖</div>
       <div class="exp-pillar-title">Applied AI &amp; GenAI Product</div>
-      <p class="exp-pillar-body">Hands-on experience designing and deploying <strong>production AI agents</strong> including grounded FAQ bots, RAG pipelines, multi-step orchestrators, and multimodal agents. Deep fluency in system prompt design, guardrails, context window management, tool use, and evaluation frameworks. Currently building a portfolio of 18 agents across Retail, FinTech, and developer tooling domains.</p>
+      <p class="exp-pillar-body">Hands-on experience designing and deploying <strong>production AI agents</strong> including grounded FAQ bots, RAG pipelines, multi-step orchestrators, and multimodal agents. Deep fluency in system prompt design, guardrails, context window management, tool use, and evaluation frameworks. Currently building a portfolio of 17 agents across Retail, FinTech, and developer tooling domains.</p>
     </div>
     <div class="exp-pillar">
       <div class="exp-pillar-icon">🛍️</div>
