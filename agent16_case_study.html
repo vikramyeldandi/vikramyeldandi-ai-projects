@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent 16 Case Study — Multi-Agent Marketing Repurposer</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a1628;
+    --navy-mid: #112240;
+    --navy-light: #1d3461;
+    --accent: #4a90d9;
+    --accent-light: #64b5f6;
+    --gold: #c9a84c;
+    --white: #ffffff;
+    --off-white: #f0f4f8;
+    --text-muted: #8899aa;
+    --border: rgba(255,255,255,0.08);
+    --card-bg: rgba(255,255,255,0.04);
+    --purple: #afa9ec;
+  }
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { font-family:'DM Sans',sans-serif; background:var(--navy); color:var(--white); overflow-x:hidden; line-height:1.6; }
+
+  nav { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; justify-content:space-between; align-items:center; padding:20px 48px; background:rgba(10,22,40,0.85); backdrop-filter:blur(12px); border-bottom:0.5px solid var(--border); }
+  .nav-logo { font-family:'DM Serif Display',serif; font-size:18px; color:var(--white); letter-spacing:0.01em; }
+  .nav-logo span { color:var(--accent); }
+  .nav-links { display:flex; gap:32px; list-style:none; }
+  .nav-links a { font-size:13px; font-weight:500; letter-spacing:.04em; color:var(--text-muted); text-decoration:none; text-transform:uppercase; transition:color .2s; }
+  .nav-links a:hover { color:var(--white); }
+
+  .page-wrap { max-width:720px; margin:0 auto; padding:120px 48px 80px; }
+  .back-link { display:inline-flex; align-items:center; gap:8px; font-size:13px; color:var(--text-muted); text-decoration:none; margin-bottom:40px; transition:color .2s; }
+  .back-link:hover { color:var(--accent); }
+
+  .cs-label { font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:8px; }
+  .cs-agent { font-size:11px; font-weight:500; letter-spacing:.06em; text-transform:uppercase; color:var(--text-muted); margin-bottom:16px; }
+  .cs-title { font-family:'DM Serif Display',serif; font-size:clamp(28px,4.5vw,46px); line-height:1.1; margin-bottom:14px; }
+  .cs-title em { font-style:italic; color:var(--accent-light); }
+  .cs-tagline { font-size:15px; color:var(--text-muted); margin-bottom:32px; max-width:560px; }
+
+  .cs-meta { display:flex; flex-wrap:wrap; gap:24px; margin-bottom:28px; }
+  .cs-meta-item { display:flex; flex-direction:column; gap:4px; }
+  .cs-meta-label { font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--text-muted); }
+  .cs-meta-value { font-size:13px; color:var(--white); font-family:'DM Mono',monospace; }
+
+  .cs-tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:48px; }
+  .tag { font-size:10px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; padding:3px 8px; border-radius:3px; background:rgba(74,144,217,0.1); border:0.5px solid rgba(74,144,217,0.25); color:var(--accent-light); }
+  .tag.multi { background:rgba(175,169,236,0.12); border-color:rgba(175,169,236,0.35); color:var(--purple); }
+
+  .cs-divider { border:none; border-top:0.5px solid var(--border); margin:40px 0; }
+  .cs-section { margin-bottom:40px; }
+  .cs-section-heading { font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); margin-bottom:16px; }
+  .cs-body { font-size:14px; color:var(--off-white); line-height:1.8; }
+  .cs-body p { margin-bottom:16px; }
+  .cs-body p:last-child { margin-bottom:0; }
+  .cs-body strong { color:var(--white); font-weight:600; }
+
+  .cs-callout { background:var(--card-bg); border:0.5px solid var(--border); border-left:2px solid var(--accent); border-radius:4px; padding:16px 20px; margin:24px 0; font-size:13px; color:var(--text-muted); line-height:1.7; }
+  .cs-callout strong { color:var(--white); }
+  .cs-callout.purple { border-left-color:var(--purple); }
+  .cs-callout.gold { border-left-color:var(--gold); }
+
+  .cs-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin:24px 0; }
+  .cs-card { background:var(--card-bg); border:0.5px solid var(--border); border-radius:8px; padding:18px 20px; }
+  .cs-card-label { font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--text-muted); margin-bottom:8px; font-family:'DM Mono',monospace; }
+  .cs-card-content { font-size:13px; color:var(--off-white); line-height:1.65; }
+
+  .token-stat { display:inline-flex; align-items:center; gap:8px; background:rgba(74,144,217,0.08); border:0.5px solid rgba(74,144,217,0.2); border-radius:4px; padding:6px 12px; font-family:'DM Mono',monospace; font-size:12px; color:var(--accent-light); margin:4px 4px 4px 0; }
+
+  .try-agent { display:inline-flex; align-items:center; gap:8px; font-size:13px; font-weight:600; letter-spacing:.04em; color:var(--accent); text-decoration:none; transition:opacity .2s; margin-top:8px; }
+  .try-agent:hover { opacity:.7; }
+
+  footer { border-top:0.5px solid var(--border); padding:32px 48px; text-align:center; font-size:12px; color:var(--text-muted); }
+  footer a { color:var(--accent); text-decoration:none; }
+
+  @media(max-width:640px) {
+    nav { padding:16px 20px; }
+    .nav-links { gap:20px; }
+    .page-wrap { padding:100px 20px 60px; }
+    .cs-grid { grid-template-columns:1fr; }
+    .cs-meta { gap:16px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Vikram <span>Yeldandi</span></div>
+  <ul class="nav-links">
+    <li><a href="index.html">← Portfolio</a></li>
+    <li><a href="agent16.html">Try Agent 16</a></li>
+  </ul>
+</nav>
+
+<div class="page-wrap">
+  <a href="agent16.html" class="back-link">← Back to Agent 16</a>
+
+  <p class="cs-label">Case Study</p>
+  <p class="cs-agent">Agent 16 · Multi-Agent Marketing Repurposer</p>
+  <h1 class="cs-title">Six Agents, One Run, <em>One Campaign Pack</em></h1>
+  <p class="cs-tagline">How an orchestrator-first multi-agent architecture with parallel specialist execution and a synthesiser quality pass turns a single piece of content into a consistent four-channel campaign — without a marketing team.</p>
+
+  <div class="cs-meta">
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">Model</span>
+      <span class="cs-meta-value">claude-sonnet-4-20250514</span>
+    </div>
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">API Calls</span>
+      <span class="cs-meta-value">6 per run</span>
+    </div>
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">Execution</span>
+      <span class="cs-meta-value">Sequential + parallel</span>
+    </div>
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">Max Output</span>
+      <span class="cs-meta-value">800 tokens / agent</span>
+    </div>
+  </div>
+
+  <div class="cs-tags">
+    <span class="tag multi">Multi-Agent</span>
+    <span class="tag">Marketing</span>
+    <span class="tag">Content Repurposing</span>
+    <span class="tag">Parallel Execution</span>
+  </div>
+
+  <hr class="cs-divider">
+
+  <div class="cs-section">
+    <p class="cs-section-heading">The Problem</p>
+    <div class="cs-body">
+      <p>Marketing teams write one good piece of content and then manually rewrite it four or five times for different channels. The blog post becomes an email, the email becomes a LinkedIn post, the LinkedIn post gets compressed into tweets, and somewhere along the way the core message drifts. The Product Hunt tagline contradicts the email subject line. The Twitter thread uses a statistic the LinkedIn post doesn't mention. By the time all four channels are published, the campaign lacks the consistency that makes it memorable.</p>
+      <p>The problem is not creativity — it's coordination. Each format has different constraints, different audiences, and different conventions. Doing it well requires either a specialist for each channel or a generalist who context-switches four times and loses fidelity each time.</p>
+    </div>
+  </div>
+
+  <hr class="cs-divider">
+
+  <div class="cs-section">
+    <p class="cs-section-heading">Architecture</p>
+    <div class="cs-body">
+      <p>Agent 16 uses a three-stage pipeline: orchestrator, parallel specialists, synthesiser. The key architectural decision is that specialists never see the raw source content — they only receive the orchestrator's structured brief. This is not a performance optimisation. It's a quality decision.</p>
+    </div>
+
+    <div class="cs-callout purple">
+      <strong>Why specialists receive a brief, not the source:</strong> If four agents all read a 600-word blog post independently, they each extract different insights, emphasise different angles, and produce outputs that diverge. When they all work from the same structured brief — same core message, same key points, same CTA — divergence becomes a choice rather than an accident. The synthesiser then has a meaningful job: checking whether the choice was sound.
+    </div>
+
+    <div class="cs-grid">
+      <div class="cs-card">
+        <p class="cs-card-label">Orchestrator — Call 1</p>
+        <p class="cs-card-content">Reads the source content and produces a structured brief: core message, audience, tone, key points, CTA, and a list of things to avoid. This brief is the only input specialists receive. The orchestrator runs alone — its output quality gates everything downstream.</p>
+      </div>
+      <div class="cs-card">
+        <p class="cs-card-label">Specialists — Calls 2–5 (parallel)</p>
+        <p class="cs-card-content">Four agents fire simultaneously via Promise.all: Email, LinkedIn, Twitter/X, and Product Hunt. Each has a distinct system prompt with its own persona, constraints, and output schema. They receive identical input but produce structurally different outputs.</p>
+      </div>
+      <div class="cs-card">
+        <p class="cs-card-label">Synthesiser — Call 6</p>
+        <p class="cs-card-content">Receives all four outputs plus the original brief and runs a consistency check. Outputs a Pass or Flag verdict with specific checks on message alignment and tone. If it flags an inconsistency, the UI surfaces it explicitly rather than hiding it.</p>
+      </div>
+      <div class="cs-card">
+        <p class="cs-card-label">Pipeline Visualiser</p>
+        <p class="cs-card-content">The UI renders a live agent pipeline showing each node activating and completing in real time. The six nodes — ORC, EM, LI, TW, PH, SYN — pulse as their call fires and turn solid when done. This makes the multi-agent architecture visible, not just implied.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="cs-divider">
+
+  <div class="cs-section">
+    <p class="cs-section-heading">Channel Constraints</p>
+    <div class="cs-body">
+      <p>Each specialist operates under explicit format constraints enforced by its system prompt. These constraints are not arbitrary — they reflect the real publishing requirements of each platform and force the model to make editorial decisions rather than padding to fill space.</p>
+    </div>
+
+    <div class="cs-grid">
+      <div class="cs-card">
+        <p class="cs-card-label">Email</p>
+        <p class="cs-card-content">Subject line capped at 55 characters. Preview text at 90 characters. Body at 180 words, prose only — no bullet points. Opens with the insight, not a greeting. One CTA button, max 4 words.</p>
+      </div>
+      <div class="cs-card">
+        <p class="cs-card-label">LinkedIn</p>
+        <p class="cs-card-content">150–200 words. Hook first — not a question. Max 2 sentences per paragraph for readability. One concrete data point. Max 3 hashtags. Written as a VP would post, not a social media manager.</p>
+      </div>
+      <div class="cs-card">
+        <p class="cs-card-label">Twitter / X</p>
+        <p class="cs-card-content">4-tweet thread, each under 240 characters. Every tweet must earn its place — no filler. One hashtag maximum, on the final tweet only. The hook tweet is the most constrained: it must stop a scroll.</p>
+      </div>
+      <div class="cs-card">
+        <p class="cs-card-label">Product Hunt</p>
+        <p class="cs-card-content">Tagline at 60 characters — what it does, not what it is. Description at 260 characters. Maker comment written in first person as the founder, 80–120 words. Genuine, not polished.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="cs-divider">
+
+  <div class="cs-section">
+    <p class="cs-section-heading">What I Learned</p>
+    <div class="cs-body">
+      <p><strong>The orchestrator is the most load-bearing prompt in the system.</strong> If the brief is vague, all four specialists produce vague output. The orchestrator prompt went through the most iteration of any in this project — specifically the AVOID field, which prevents specialists from inventing angles or statistics the source content doesn't support. Without it, specialists hallucinate specifics to fill their formats.</p>
+      <p><strong>Parallel execution changes the UX contract.</strong> When four calls fire simultaneously, the user waits for the slowest one — typically 3–5 seconds. This is faster than sequential execution but long enough to need clear status signalling. The pipeline visualiser with pulsing nodes is not decoration — it's the feedback mechanism that tells the user something real is happening and prevents abandoned sessions.</p>
+      <p><strong>The synthesiser is more useful as a flag than a fixer.</strong> An earlier design had the synthesiser rewrite inconsistent outputs. This made the pipeline 8 calls instead of 6 and added latency without proportional quality improvement. The current design surfaces flags explicitly and lets the user decide what to do — which is the right allocation of human judgment in an agentic workflow.</p>
+      <p><strong>Brand context must be in every call, not just the orchestrator.</strong> In early testing, specialists drifted toward generic marketing language when they only received the brief. Adding the Arcflow brand context — tone, audience, what to avoid — directly to each specialist's system prompt anchored the voice consistently across all four channels.</p>
+    </div>
+  </div>
+
+  <hr class="cs-divider">
+
+  <div class="cs-section">
+    <p class="cs-section-heading">Typical Token Profile</p>
+    <div class="cs-body"><p>A 400-word source article processed across six agents typically produces:</p></div>
+    <div style="margin-top:12px;">
+      <span class="token-stat">Orchestrator: ~600 tokens</span>
+      <span class="token-stat">Each specialist: ~700 tokens</span>
+      <span class="token-stat">Synthesiser: ~900 tokens</span>
+      <span class="token-stat">Total: ~4,100–5,300 tokens / run</span>
+    </div>
+
+    <div class="cs-callout gold" style="margin-top:20px;">
+      <strong>Cost per run:</strong> At Sonnet pricing ($3/MTok input, $15/MTok output), a full 6-agent run costs approximately $0.015–0.022 — less than two cents. The parallel execution of four specialists means the wall-clock time is roughly equivalent to two sequential calls, not five.
+    </div>
+  </div>
+
+  <hr class="cs-divider">
+
+  <a href="agent16.html" class="try-agent">Try Agent 16 →</a>
+</div>
+
+<footer>
+  <p>© 2026 Vikram Yeldandi · <a href="index.html">AI Product Portfolio</a> · Agent 16 of 16</p>
+</footer>
+
+</body>
+</html>
