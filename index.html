@@ -616,6 +616,11 @@
     .exp-metrics { grid-template-columns: repeat(2,1fr); }
   }
 
+
+  @keyframes floatEmoji {
+    0%, 100% { transform: translateY(0px); opacity: 1; }
+    50% { transform: translateY(-5px); opacity: 0.75; }
+  }
 </style>
 </head>
 <body>
@@ -728,7 +733,11 @@
           <span style="display:inline-block;width:24px;height:1px;background:#afa9ec;opacity:0.6;"></span>
           <p style="font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin:0;">NEXT DEPLOYMENT · STEALTH MODE</p>
         </div>
-        <h3 style="font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--white);margin-bottom:18px;">Agent — Classified 🤖🧠⚙️</h3>
+        <h3 style="font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--white);margin-bottom:18px;">Agent — Classified <span class="stealth-emoji" style="display:inline-flex;gap:4px;vertical-align:middle;">
+          <span style="display:inline-block;animation:floatEmoji 2.4s ease-in-out infinite;">🤖</span>
+          <span style="display:inline-block;animation:floatEmoji 2.4s ease-in-out infinite;animation-delay:0.4s;">🧠</span>
+          <span style="display:inline-block;animation:floatEmoji 2.4s ease-in-out infinite;animation-delay:0.8s;">⚙️</span>
+        </span></h3>
         <ul style="list-style:none;display:flex;flex-direction:row;flex-wrap:wrap;gap:16px 32px;margin:0;padding:0;">
           <li style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-muted);">
             <span style="width:18px;height:18px;border-radius:50%;background:rgba(74,144,217,0.15);border:1.5px solid var(--accent);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
