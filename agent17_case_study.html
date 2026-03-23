@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent 17 Case Study — Transaction Narrative Enrichment</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a1628;
+    --navy-mid: #112240;
+    --navy-light: #1d3461;
+    --accent: #4a90d9;
+    --accent-light: #64b5f6;
+    --gold: #c9a84c;
+    --white: #ffffff;
+    --off-white: #f0f4f8;
+    --text-muted: #8899aa;
+    --border: rgba(255,255,255,0.08);
+    --card-bg: rgba(255,255,255,0.04);
+  }
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { font-family:'DM Sans',sans-serif; background:var(--navy); color:var(--white); overflow-x:hidden; line-height:1.6; }
+
+  nav {
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:20px 48px;
+    background:rgba(10,22,40,0.85); backdrop-filter:blur(12px);
+    border-bottom:0.5px solid var(--border);
+  }
+  .nav-logo { font-family:'DM Serif Display',serif; font-size:18px; color:var(--white); letter-spacing:0.01em; }
+  .nav-logo span { color:var(--accent); }
+  .nav-links { display:flex; gap:32px; list-style:none; }
+  .nav-links a { font-size:13px; font-weight:500; letter-spacing:.04em; color:var(--text-muted); text-decoration:none; text-transform:uppercase; transition:color .2s; }
+  .nav-links a:hover { color:var(--white); }
+
+  .page-wrap { max-width:720px; margin:0 auto; padding:120px 48px 80px; }
+
+  .back-link { display:inline-flex; align-items:center; gap:8px; font-size:13px; color:var(--text-muted); text-decoration:none; margin-bottom:40px; transition:color .2s; }
+  .back-link:hover { color:var(--accent); }
+
+  .cs-label { font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:8px; }
+  .cs-agent { font-size:11px; font-weight:500; letter-spacing:.06em; text-transform:uppercase; color:var(--text-muted); margin-bottom:16px; }
+  .cs-title { font-family:'DM Serif Display',serif; font-size:clamp(28px,4.5vw,46px); line-height:1.1; margin-bottom:14px; }
+  .cs-title em { font-style:italic; color:var(--accent-light); }
+  .cs-tagline { font-size:15px; color:var(--text-muted); margin-bottom:32px; max-width:560px; }
+
+  .cs-meta { display:flex; flex-wrap:wrap; gap:24px; margin-bottom:28px; }
+  .cs-meta-item { display:flex; flex-direction:column; gap:4px; }
+  .cs-meta-label { font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--text-muted); }
+  .cs-meta-value { font-size:13px; color:var(--white); font-family:'DM Mono',monospace; }
+
+  .cs-tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:48px; }
+  .tag { font-size:10px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; padding:3px 8px; border-radius:3px; background:rgba(74,144,217,0.1); border:0.5px solid rgba(74,144,217,0.25); color:var(--accent-light); }
+  .tag.fintech { background:rgba(201,168,76,0.1); border-color:rgba(201,168,76,0.3); color:var(--gold); }
+
+  .cs-divider { border:none; border-top:0.5px solid var(--border); margin:40px 0; }
+
+  .cs-section { margin-bottom:40px; }
+  .cs-section-heading { font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); margin-bottom:16px; }
+  .cs-body { font-size:14px; color:var(--off-white); line-height:1.8; }
+  .cs-body p { margin-bottom:16px; }
+  .cs-body p:last-child { margin-bottom:0; }
+  .cs-body strong { color:var(--white); font-weight:600; }
+
+  .cs-callout { background:var(--card-bg); border:0.5px solid var(--border); border-left:2px solid var(--accent); border-radius:4px; padding:16px 20px; margin:24px 0; font-size:13px; color:var(--text-muted); line-height:1.7; }
+  .cs-callout strong { color:var(--white); }
+
+  .cs-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin:24px 0; }
+  .cs-card { background:var(--card-bg); border:0.5px solid var(--border); border-radius:8px; padding:18px 20px; }
+  .cs-card-label { font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--text-muted); margin-bottom:8px; font-family:'DM Mono',monospace; }
+  .cs-card-content { font-size:13px; color:var(--off-white); line-height:1.65; }
+
+  /* Transaction transform example */
+  .txn-transform { background:var(--card-bg); border:0.5px solid var(--border); border-radius:8px; padding:20px; margin:24px 0; }
+  .txn-transform-label { font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--text-muted); margin-bottom:12px; }
+  .txn-raw-example { font-family:'DM Mono',monospace; font-size:12px; color:var(--text-muted); padding:8px 12px; background:rgba(0,0,0,0.2); border-radius:4px; margin-bottom:10px; letter-spacing:.02em; }
+  .txn-arrow { font-size:12px; color:var(--accent); margin:6px 0; text-align:center; }
+  .txn-enriched { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .txn-field { padding:6px 10px; background:rgba(74,144,217,0.05); border:0.5px solid rgba(74,144,217,0.15); border-radius:4px; }
+  .txn-field-label { font-size:9px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--text-muted); margin-bottom:2px; }
+  .txn-field-value { font-size:12px; color:var(--off-white); }
+  .txn-field.full { grid-column:1/-1; }
+
+  .token-stat { display:inline-flex; align-items:center; gap:8px; background:rgba(74,144,217,0.08); border:0.5px solid rgba(74,144,217,0.2); border-radius:4px; padding:6px 12px; font-family:'DM Mono',monospace; font-size:12px; color:var(--accent-light); margin:4px 4px 4px 0; }
+
+  .try-agent { display:inline-flex; align-items:center; gap:8px; font-size:13px; font-weight:600; letter-spacing:.04em; color:var(--accent); text-decoration:none; transition:opacity .2s; margin-top:8px; }
+  .try-agent:hover { opacity:.7; }
+
+  footer { border-top:0.5px solid var(--border); padding:32px 48px; text-align:center; font-size:12px; color:var(--text-muted); }
+  footer a { color:var(--accent); text-decoration:none; }
+
+  @media(max-width:640px) {
+    nav { padding:16px 20px; }
+    .nav-links { gap:20px; }
+    .page-wrap { padding:100px 20px 60px; }
+    .cs-grid { grid-template-columns:1fr; }
+    .cs-meta { gap:16px; }
+    .txn-enriched { grid-template-columns:1fr; }
+    .txn-field.full { grid-column:1; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Vikram <span>Yeldandi</span></div>
+  <ul class="nav-links">
+    <li><a href="index.html">← Portfolio</a></li>
+    <li><a href="agent17.html">Try Agent 17</a></li>
+  </ul>
+</nav>
+
+<div class="page-wrap">
+  <a href="agent17.html" class="back-link">← Back to Agent 17</a>
+
+  <p class="cs-label">Case Study</p>
+  <p class="cs-agent">Agent 17 · Transaction Narrative Enrichment</p>
+  <h1 class="cs-title">From <em>Cryptic Bank Code</em><br>to Human-Readable Truth</h1>
+  <p class="cs-tagline">How a six-field output schema and a stateless single-turn architecture transforms raw acquirer strings into clean, categorised transaction narratives — with a confidence signal built in for downstream triage.</p>
+
+  <div class="cs-meta">
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">Model</span>
+      <span class="cs-meta-value">claude-sonnet-4-20250514</span>
+    </div>
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">System Prompt</span>
+      <span class="cs-meta-value">&lt; 300 tokens</span>
+    </div>
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">Max Output</span>
+      <span class="cs-meta-value">800 tokens</span>
+    </div>
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">API Calls</span>
+      <span class="cs-meta-value">1 per batch</span>
+    </div>
+  </div>
+
+  <div class="cs-tags">
+    <span class="tag fintech">FinTech</span>
+    <span class="tag">Transaction Enrichment</span>
+    <span class="tag">Classification</span>
+    <span class="tag">Structured Output</span>
+  </div>
+
+  <hr class="cs-divider">
+
+  <!-- Problem -->
+  <div class="cs-section">
+    <p class="cs-section-heading">The Problem</p>
+    <div class="cs-body">
+      <p>Bank transaction strings are generated for payment processing infrastructure — not for humans. What lands in a customer's account history is often the acquirer reference, a truncated legal entity name, or a POS terminal code: <code style="font-family:'DM Mono',monospace;font-size:12px;color:var(--accent-light);">SQ *PRET A MANGER LONDON GB</code> or <code style="font-family:'DM Mono',monospace;font-size:12px;color:var(--accent-light);">AMZN MKTP UK*2K4L9</code>.</p>
+      <p>For consumer-facing fintech products — PFM apps, open banking platforms, spend analytics dashboards — this creates a costly enrichment problem. Raw strings must be resolved to real merchant names, categorised into spend buckets, and described in language customers recognise. Traditionally this requires merchant lookup databases, category taxonomies, and rule-based classifiers that need continuous maintenance. The long tail of novel, ambiguous, or regional strings breaks every rule-based system eventually.</p>
+    </div>
+  </div>
+
+  <!-- Transform Example -->
+  <div class="txn-transform">
+    <p class="txn-transform-label">Enrichment Example</p>
+    <div class="txn-raw-example">AMZN MKTP UK*2K4L9 WWW.AMAZON.CO.UK</div>
+    <div class="txn-arrow">↓ enriched in a single API call</div>
+    <div class="txn-enriched">
+      <div class="txn-field">
+        <div class="txn-field-label">Merchant</div>
+        <div class="txn-field-value">Amazon Marketplace UK</div>
+      </div>
+      <div class="txn-field">
+        <div class="txn-field-label">Category</div>
+        <div class="txn-field-value">Retail</div>
+      </div>
+      <div class="txn-field">
+        <div class="txn-field-label">Channel</div>
+        <div class="txn-field-value">Online</div>
+      </div>
+      <div class="txn-field">
+        <div class="txn-field-label">Confidence</div>
+        <div class="txn-field-value">HIGH</div>
+      </div>
+      <div class="txn-field full">
+        <div class="txn-field-label">Description</div>
+        <div class="txn-field-value">Online purchase from Amazon Marketplace UK</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="cs-divider">
+
+  <!-- Design Approach -->
+  <div class="cs-section">
+    <p class="cs-section-heading">Design Approach</p>
+    <div class="cs-body">
+      <p>Agent 17 is stateless by design — each batch of transaction strings is a single API call returning a complete set of enrichment records. There is no conversation history, no follow-up turns, no state to manage. This mirrors how transaction enrichment would operate in a real pipeline: a batch in, structured records out.</p>
+      <p>The core schema enforces <strong>six fields per transaction</strong>: RAW (the original string reproduced for traceability), MERCHANT, DESCRIPTION, CATEGORY, CHANNEL, and CONFIDENCE. Each field maps to a specific downstream use — merchant name for display, category for spend analytics, channel for fraud signals, confidence for routing to manual review queues.</p>
+    </div>
+
+    <div class="cs-callout">
+      <strong>Key design decision:</strong> The CONFIDENCE field is a triage signal, not a quality hedge. HIGH means the string contained enough unambiguous signals to enrich with certainty. LOW means the string is genuinely ambiguous and the enrichment is an inference — the downstream system should route it to a human review queue or a fallback lookup. This distinction is load-bearing for real-world pipeline integration.
+    </div>
+
+    <div class="cs-body">
+      <p>The input uses a monospace textarea — a deliberate choice. Transaction strings are technical data, not natural language, and the font signals to the user that raw, unformatted strings are expected. The send button is labelled "Enrich" rather than "Send" or "Analyse" to name the operation precisely.</p>
+    </div>
+  </div>
+
+  <hr class="cs-divider">
+
+  <!-- System Prompt Architecture -->
+  <div class="cs-section">
+    <p class="cs-section-heading">System Prompt Architecture</p>
+    <div class="cs-body">
+      <p>The prompt defines a single repeating delimiter block — <code style="font-family:'DM Mono',monospace;font-size:12px;color:var(--accent-light);">===TXN===</code> to <code style="font-family:'DM Mono',monospace;font-size:12px;color:var(--accent-light);">===END===</code> — with six named fields. The frontend parses each block and renders it as a transaction card with the raw string, merchant name, description, and two metadata tags (category and channel), plus a colour-coded confidence badge.</p>
+    </div>
+
+    <div class="cs-grid">
+      <div class="cs-card">
+        <p class="cs-card-label">Merchant Resolution</p>
+        <p class="cs-card-content">The prompt explicitly distinguishes merchant name from acquirer code — the model must return the real trading name, not the payment processor reference. This prevents outputs like "SQ *" appearing as the resolved merchant.</p>
+      </div>
+      <div class="cs-card">
+        <p class="cs-card-label">Category Taxonomy</p>
+        <p class="cs-card-content">A fixed 11-category list is specified in the prompt — Groceries, Dining, Travel, Transport, Retail, Subscriptions, Utilities, Healthcare, Entertainment, Finance, Other. Constraining the taxonomy prevents free-form category invention and makes outputs machine-readable downstream.</p>
+      </div>
+      <div class="cs-card">
+        <p class="cs-card-label">Channel Classification</p>
+        <p class="cs-card-content">Six channel options — In-Store, Online, Contactless, Direct Debit, ATM, Transfer, Unknown — are defined as a closed list. Channel inference from string patterns (e.g. a URL suffix → Online, DD REF → Direct Debit) is a signal the model picks up reliably.</p>
+      </div>
+      <div class="cs-card">
+        <p class="cs-card-label">No-Skip Rule</p>
+        <p class="cs-card-content">An explicit prompt constraint — "process every transaction string, never skip one" — prevents the model from silently dropping ambiguous strings. Every input line must produce a TXN block, even if the enrichment is low-confidence.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="cs-divider">
+
+  <!-- What I Learned -->
+  <div class="cs-section">
+    <p class="cs-section-heading">What I Learned</p>
+    <div class="cs-body">
+      <p><strong>The monospace input is a UX signal, not just aesthetic.</strong> Using a monospace font in the textarea communicates that raw, technical strings are expected — not sentences or paragraphs. It reduces the cognitive friction of pasting data directly from a terminal or CSV export, and aligns the interface with how practitioners actually work with transaction data.</p>
+      <p><strong>Closed taxonomies are load-bearing.</strong> Without a fixed category list, the model produces categories that are semantically correct but machine-unreadable — "Fast Food," "Quick Service Restaurant," and "Takeaway" all mean the same thing but would create three separate spend buckets in a PFM dashboard. A constrained list of 11 categories eliminates this entirely.</p>
+      <p><strong>Confidence is triage, not hedging.</strong> The original design had CONFIDENCE as a quality signal. Testing revealed it works better as a routing signal — HIGH goes straight to display, LOW goes to a review queue. Reframing the field in the prompt produced more calibrated outputs than asking the model to "rate its certainty."</p>
+      <p><strong>The no-skip rule matters more than it seems.</strong> Without it, the model silently drops strings that look like internal reference codes or genuinely ambiguous entries — exactly the strings a fraud analyst most needs to review. Making skipping impossible, and requiring a LOW-confidence enrichment instead, keeps the pipeline complete.</p>
+      <p><strong>Stateless is correct for batch enrichment.</strong> Unlike a conversational agent, transaction enrichment has no memory dependency. Each batch is independent. Stateless architecture reduces latency, eliminates context window bloat, and makes the output deterministic — every run on the same input produces the same structure.</p>
+    </div>
+  </div>
+
+  <hr class="cs-divider">
+
+  <!-- Token Profile -->
+  <div class="cs-section">
+    <p class="cs-section-heading">Typical Token Profile</p>
+    <div class="cs-body">
+      <p>A batch of 6–8 transaction strings enriched in a single call typically produces:</p>
+    </div>
+    <div style="margin-top:12px;">
+      <span class="token-stat">System: ~270 tokens</span>
+      <span class="token-stat">User input: 80–180 tokens</span>
+      <span class="token-stat">Output: 400–700 tokens</span>
+      <span class="token-stat">Total: ~750–1,150 tokens / run</span>
+    </div>
+  </div>
+
+  <hr class="cs-divider">
+
+  <a href="agent17.html" class="try-agent">Try Agent 17 →</a>
+</div>
+
+<footer>
+  <p>© 2026 Vikram Yeldandi · <a href="index.html">AI Product Portfolio</a> · Agent 17 of 17</p>
+</footer>
+
+</body>
+</html>
