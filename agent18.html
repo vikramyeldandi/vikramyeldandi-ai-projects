@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AdFit — Right size. Right platform. Right now.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a1628;
+      --surface: #112240;
+      --surface2: #1a2f52;
+      --accent: #4a90d9;
+      --accent2: #6aabf7;
+      --text: #e8edf5;
+      --text-muted: #7a90b0;
+      --border: rgba(74, 144, 217, 0.15);
+      --radius: 12px;
+    }
+
+    html, body { height: 100%; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* NAV */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 40px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(10, 22, 40, 0.85);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-left a, .nav-right a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      transition: color 0.2s;
+    }
+
+    .nav-left a:hover, .nav-right a:hover { color: var(--accent); }
+
+    .nav-left a::before { content: '← '; }
+
+    /* MAIN */
+    main {
+      flex: 1;
+      max-width: 900px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 60px 40px 80px;
+    }
+
+    /* BACK LINK */
+    .back-link {
+      display: inline-block;
+      font-size: 12px;
+      font-family: 'DM Mono', monospace;
+      color: var(--text-muted);
+      text-decoration: none;
+      margin-bottom: 32px;
+      letter-spacing: 0.06em;
+      transition: color 0.2s;
+    }
+    .back-link:hover { color: var(--accent); }
+    .back-link::before { content: '← '; }
+
+    /* EYEBROW */
+    .eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+
+    /* TITLE */
+    h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(36px, 6vw, 52px);
+      font-weight: 400;
+      line-height: 1.1;
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+
+    /* SUBTITLE */
+    .subtitle {
+      font-size: 16px;
+      color: var(--text-muted);
+      max-width: 520px;
+      margin-bottom: 24px;
+      line-height: 1.7;
+    }
+
+    /* TAGS */
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 48px;
+    }
+
+    .tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      padding: 5px 12px;
+      border-radius: 4px;
+      background: rgba(74, 144, 217, 0.1);
+      border: 1px solid var(--border);
+      color: var(--accent);
+    }
+
+    /* CHAT PANEL */
+    .chat-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 40px;
+    }
+
+    /* PRESETS BAR */
+    .presets-bar {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .preset-btn {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 7px 14px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: rgba(74, 144, 217, 0.07);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .preset-btn:hover {
+      background: rgba(74, 144, 217, 0.15);
+      color: var(--text);
+      border-color: var(--accent);
+    }
+
+    /* CHAT MESSAGES */
+    .chat-messages {
+      padding: 24px 20px;
+      min-height: 280px;
+      max-height: 420px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .chat-messages::-webkit-scrollbar { width: 4px; }
+    .chat-messages::-webkit-scrollbar-track { background: transparent; }
+    .chat-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+    .msg {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      max-width: 85%;
+    }
+
+    .msg.user { align-self: flex-end; align-items: flex-end; }
+    .msg.agent { align-self: flex-start; align-items: flex-start; }
+
+    .msg-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .msg-bubble {
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .msg.user .msg-bubble {
+      background: var(--accent);
+      color: #fff;
+      border-bottom-right-radius: 3px;
+    }
+
+    .msg.agent .msg-bubble {
+      background: var(--surface2);
+      color: var(--text);
+      border-bottom-left-radius: 3px;
+      border: 1px solid var(--border);
+    }
+
+    .msg.agent .msg-bubble strong {
+      color: var(--accent2);
+      font-weight: 600;
+    }
+
+    .msg.agent .msg-bubble ul {
+      margin: 8px 0 0 16px;
+    }
+
+    .msg.agent .msg-bubble li {
+      margin-bottom: 4px;
+    }
+
+    /* TYPING INDICATOR */
+    .typing {
+      display: none;
+      align-self: flex-start;
+      padding: 12px 16px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      border-bottom-left-radius: 3px;
+    }
+
+    .typing.visible { display: flex; gap: 4px; align-items: center; }
+
+    .typing span {
+      width: 6px; height: 6px;
+      background: var(--text-muted);
+      border-radius: 50%;
+      animation: bounce 1.2s infinite;
+    }
+
+    .typing span:nth-child(2) { animation-delay: 0.2s; }
+    .typing span:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes bounce {
+      0%, 60%, 100% { transform: translateY(0); }
+      30% { transform: translateY(-6px); }
+    }
+
+    /* CHAT INPUT */
+    .chat-input-row {
+      display: flex;
+      gap: 10px;
+      padding: 16px 20px;
+      border-top: 1px solid var(--border);
+      background: rgba(10, 22, 40, 0.4);
+    }
+
+    .chat-input {
+      flex: 1;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      outline: none;
+      resize: none;
+      min-height: 42px;
+      max-height: 120px;
+      transition: border-color 0.2s;
+    }
+
+    .chat-input::placeholder { color: var(--text-muted); }
+    .chat-input:focus { border-color: var(--accent); }
+
+    .send-btn {
+      background: var(--accent);
+      border: none;
+      border-radius: 8px;
+      padding: 10px 18px;
+      color: #fff;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .send-btn:hover { background: var(--accent2); }
+    .send-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* INFO CARDS */
+    .info-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+
+    .info-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+    }
+
+    .info-card-icon {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .info-card-title {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .info-card-body {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 24px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+    }
+
+    footer a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    footer a:hover { color: var(--accent); }
+
+    @media (max-width: 600px) {
+      nav { padding: 16px 20px; }
+      main { padding: 40px 20px 60px; }
+      footer { padding: 20px; flex-direction: column; gap: 8px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-left">
+      <a href="https://vikramyeldandi.github.io/vikramyeldandi-ai-projects/">Portfolio</a>
+    </div>
+    <div class="nav-right">
+      <a href="agent18_case_study.html">Case Study</a>
+    </div>
+  </nav>
+
+  <main>
+    <a class="back-link" href="https://vikramyeldandi.github.io/vikramyeldandi-ai-projects/">Portfolio</a>
+
+    <div class="eyebrow">Agent 18 · Creative Ops</div>
+    <h1>AdFit</h1>
+    <p class="subtitle">Right size. Right platform. Right now. Describe your creative and get a precise resizing brief for every format — social, paid, display, and beyond.</p>
+
+    <div class="tags">
+      <span class="tag">Creative Ops</span>
+      <span class="tag">Media Planning</span>
+      <span class="tag">Paid Social</span>
+      <span class="tag">Display Ads</span>
+      <span class="tag">Brand</span>
+    </div>
+
+    <div class="chat-panel">
+      <div class="presets-bar">
+        <button class="preset-btn" onclick="sendPreset('Resize for Instagram: hero image, logo top-left, CTA bottom-right, product center')">Instagram set</button>
+        <button class="preset-btn" onclick="sendPreset('What formats do I need for a Google Display campaign?')">Google Display</button>
+        <button class="preset-btn" onclick="sendPreset('LinkedIn sponsored ad — 1200x628 banner with headline and CTA. What adapts to 1:1?')">LinkedIn</button>
+        <button class="preset-btn" onclick="sendPreset('Safe zones and text limits for Meta paid ads')">Meta safe zones</button>
+      </div>
+
+      <div class="chat-messages" id="chatMessages">
+        <div class="msg agent">
+          <span class="msg-label">AdFit</span>
+          <div class="msg-bubble">
+            Describe your creative — layout, key elements, aspect ratio — and tell me which platforms or formats you're targeting. I'll give you a precise resizing brief: crop anchors, safe zones, copy rules, and what to cut at each size.
+          </div>
+        </div>
+      </div>
+
+      <div class="typing" id="typingIndicator">
+        <span></span><span></span><span></span>
+      </div>
+
+      <div class="chat-input-row">
+        <textarea
+          class="chat-input"
+          id="chatInput"
+          placeholder="Describe your creative and target formats..."
+          rows="1"
+          onkeydown="handleKey(event)"
+          oninput="autoResize(this)"
+        ></textarea>
+        <button class="send-btn" id="sendBtn" onclick="sendMessage()">Send →</button>
+      </div>
+    </div>
+
+    <div class="info-cards">
+      <div class="info-card">
+        <div class="info-card-icon">⚡</div>
+        <div class="info-card-title">Instant Briefs</div>
+        <div class="info-card-body">Get a complete resizing brief in seconds — ready to hand off to a designer or feed into Figma, Canva, or Adobe Express.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">📐</div>
+        <div class="info-card-title">Platform-Precise</div>
+        <div class="info-card-body">Specs, safe zones, and text limits for Meta, Google, LinkedIn, TikTok, display networks, and branded placements.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">🎯</div>
+        <div class="info-card-title">Opinionated Output</div>
+        <div class="info-card-body">Not just dimensions — crop anchors, copy truncation rules, and what to drop at small sizes. Like a senior art director on call.</div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <span>Agent 18 · AdFit</span>
+    <a href="agent18_case_study.html">View Case Study →</a>
+  </footer>
+
+  <script>
+    const PROXY = 'https://luminary-proxy.vikramyeldandi.workers.dev/';
+    const MODEL = 'claude-sonnet-4-20250514';
+
+    const SYSTEM = `You are AdFit, a creative ops agent specializing in marketing creative resizing. You think like a senior art director with deep knowledge of ad platform specs.
+
+When a user describes a creative, provide a precise, actionable resizing brief covering:
+- Recommended formats and exact dimensions
+- Crop anchor and focal point guidance
+- Safe zones for text and logos
+- Copy adaptation rules (what to shorten or drop)
+- Platform-specific restrictions or policies
+
+Be direct and prescriptive. No filler. Format with clear headers when listing multiple formats. If a key detail is missing, ask one targeted question before proceeding.`;
+
+    const history = [];
+
+    function scrollBottom() {
+      const el = document.getElementById('chatMessages');
+      el.scrollTop = el.scrollHeight;
+    }
+
+    function addMessage(role, html) {
+      const msgs = document.getElementById('chatMessages');
+      const div = document.createElement('div');
+      div.className = `msg ${role === 'user' ? 'user' : 'agent'}`;
+      div.innerHTML = `
+        <span class="msg-label">${role === 'user' ? 'You' : 'AdFit'}</span>
+        <div class="msg-bubble">${html}</div>
+      `;
+      msgs.appendChild(div);
+      scrollBottom();
+    }
+
+    function formatResponse(text) {
+      return text
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/^### (.+)$/gm, '<strong style="display:block;margin-top:10px;color:var(--accent2)">$1</strong>')
+        .replace(/^## (.+)$/gm, '<strong style="display:block;margin-top:10px;color:var(--accent2)">$1</strong>')
+        .replace(/^- (.+)$/gm, '<li>$1</li>')
+        .replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>')
+        .replace(/\n\n/g, '<br><br>')
+        .replace(/\n/g, '<br>');
+    }
+
+    async function sendMessage() {
+      const input = document.getElementById('chatInput');
+      const btn = document.getElementById('sendBtn');
+      const text = input.value.trim();
+      if (!text) return;
+
+      input.value = '';
+      autoResize(input);
+      btn.disabled = true;
+
+      addMessage('user', text);
+      history.push({ role: 'user', content: text });
+
+      const typing = document.getElementById('typingIndicator');
+      typing.classList.add('visible');
+      scrollBottom();
+
+      try {
+        const res = await fetch(PROXY, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            model: MODEL,
+            max_tokens: 800,
+            system: SYSTEM,
+            messages: history
+          })
+        });
+
+        const data = await res.json();
+        const reply = data.content?.[0]?.text || 'Something went wrong. Please try again.';
+        history.push({ role: 'assistant', content: reply });
+        typing.classList.remove('visible');
+        addMessage('agent', formatResponse(reply));
+      } catch (e) {
+        typing.classList.remove('visible');
+        addMessage('agent', 'Connection error. Please check your network and try again.');
+      }
+
+      btn.disabled = false;
+      input.focus();
+    }
+
+    function sendPreset(text) {
+      document.getElementById('chatInput').value = text;
+      sendMessage();
+    }
+
+    function handleKey(e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    }
+
+    function autoResize(el) {
+      el.style.height = 'auto';
+      el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+    }
+  </script>
+</body>
+</html>
