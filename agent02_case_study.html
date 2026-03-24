@@ -271,6 +271,30 @@
 <span class="cm">// Strict rule: only answer from what was retrieved</span></pre>
   </div>
 
+  <!-- N8N WORKFLOW -->
+  <div class="section-eyebrow" style="margin-top:40px;">02b — n8n Workflow Implementation</div>
+  <h2>The same pipeline, built in n8n</h2>
+  <p>The RAG pipeline above was also implemented as a <strong>7-node n8n workflow</strong> — translating each pipeline stage into a discrete, auditable node. This demonstrates how the same architecture can be orchestrated as a visual, no-code workflow for teams that need transparency, maintainability, and rapid iteration without managing custom backend code.</p>
+
+  <div style="margin:28px 0; border:0.5px solid var(--border); border-radius:10px; overflow:hidden;">
+    <img
+      src="https://raw.githubusercontent.com/vikramyeldandi/vikramyeldandi-ai-projects/main/Agent-02-n8n.png"
+      alt="Agent 02 n8n workflow — 7-node RAG pipeline"
+      style="width:100%; display:block;"
+    />
+  </div>
+
+  <div class="two-col">
+    <div class="info-card accent-left-blue">
+      <h3>7 Nodes, 4 Pipeline Stages</h3>
+      <p><strong>Receive Question</strong> → <strong>Embed Query</strong> → <strong>Retrieve Products</strong> → <strong>Build Context</strong> → <strong>Ask Claude</strong> → <strong>Format Response</strong> → <strong>Return Response</strong>. Each node maps directly to one responsibility in the RAG pipeline.</p>
+    </div>
+    <div class="info-card accent-left-gold">
+      <h3>Single Cloudflare Worker Proxy</h3>
+      <p>All three external API calls — OpenAI embeddings, Pinecone retrieval, and Claude generation — route through a single Cloudflare Worker, differentiated by an <strong>action</strong> field. API keys never leave the server.</p>
+    </div>
+  </div>
+
   <div class="divider"></div>
 
   <!-- DATA PREPARATION -->
@@ -361,17 +385,7 @@
     </div>
   </div>
 
-  <!-- CTA -->
-  <div class="cta-bar">
-    <div>
-      <h3>Try it yourself</h3>
-      <p>Ask about candles, rugs, bedding, outdoor — or try a vague question to test retrieval quality.</p>
-    </div>
-    <div class="cta-actions">
-      <a href="index.html" class="cta-btn ghost">← Portfolio</a>
-      <a href="agent02_chat.html" target="_blank" class="cta-btn green">Launch Agent 02 →</a>
-    </div>
-  </div>
+
 
 </div>
 </body>
