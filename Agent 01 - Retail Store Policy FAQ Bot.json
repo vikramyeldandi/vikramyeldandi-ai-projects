@@ -1,0 +1,229 @@
+{
+  "name": "Agent 01 - Retail Store Policy FAQ Bot",
+  "nodes": [
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "claude-sonnet-4-5-20250929",
+          "cachedResultName": "Claude Sonnet 4.5"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        -752,
+        -112
+      ],
+      "id": "4a128b9c-957a-4aa3-a81a-5c1a7c747baa",
+      "name": "Anthropic Chat Model",
+      "credentials": {
+        "anthropicApi": {
+          "id": "LyT7mpvr4FIanU0g",
+          "name": "Anthropic account 2"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -608,
+        -128
+      ],
+      "id": "a62fbc06-09d6-4ea4-a088-e2dc1da1cdbf",
+      "name": "Simple Memory",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body.message }}\n",
+        "options": {
+          "systemMessage": "You are the Luminary Home Customer Service Assistant — a helpful, friendly, and professional AI agent for Luminary Home, a homeware and lifestyle retailer.\n\nYOUR JOB: Answer customer questions using ONLY the POLICY DOCUMENT below. Do not use general knowledge.\n\nSTRICT RULES:\n1. Only answer from the policy document. If not covered, direct to help@luminaryhome.com or 0800 123 4567.\n2. Never make up information.\n3. Never discuss competitor brands.\n4. Never give legal, financial, or medical advice.\n5. Acknowledge frustration before answering.\n6. For fraud or account security — tell customer to call immediately. Do not resolve.\n\nTONE: Friendly, professional, plain language. Like a knowledgeable shop assistant.\nFORMAT: 3-5 sentences max. Bullets only for multi-part answers. Always end with \"Is there anything else I can help you with today?\"\nYOU ARE NOT: A general AI. Cannot access accounts or process transactions.\n\nPOLICY DOCUMENT:\nRETURNS: Standard 30 days, unused, original packaging, proof of purchase. Holiday extension: Nov 1-Dec 31 purchases returnable until Jan 31. Non-returnable: personalised items, burned candles, digital gift cards, Final Sale, items missing tags. Refunds: 5-7 business days to original payment; immediate in-store. Faulty items: replacement or refund within 90 days.\nSTORE HOURS: Mon-Sat 9am-8pm. Sunday 10am-6pm. Public holidays 10am-4pm selected locations.\nREWARDS: 1 point per $1 spent. 100 points = $1 credit. Expires after 12 months inactivity. Tiers: Silver 0-499pts, Gold 500-1499pts (1.25x + free standard shipping), Platinum 1500+pts (1.5x + free express + early sale access). Join free at luminaryhome.com/rewards.\nDELIVERY: Standard 3-5 days free over $60. Express 1-2 days $8.99. Same-day selected areas before 12pm $14.99. International 30 countries. Large items 7-14 days.\nPAYMENTS: Accepts Visa, Mastercard, Amex, PayPal, Apple Pay, Google Pay, Gift Cards, Klarna. No cash online, no cheques, no crypto.\nPRICE MATCH: Identical items from direct competitors, at time of purchase only. Not marketplaces or clearance.\nGIFT CARDS: $10/$25/$50/$100. No expiry. Cannot exchange for cash.\nCONTACT: Mon-Fri 8am-7pm, Sat 9am-5pm. help@luminaryhome.com. 0800 123 4567 (UK) / 1-800-555-0199 (US). Escalation: relations@luminaryhome.com."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -608,
+        -352
+      ],
+      "id": "6755567b-e351-4478-914d-33ef3e4d7a6f",
+      "name": "Luminary Home FAQ Agent",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({response: $json.output}) }}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        -208,
+        -432
+      ],
+      "id": "dd4829b5-1a5d-4568-9d69-fd14ef5189e9",
+      "name": "Return Claude Response"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ {\"error\": \"Something went wrong. Please try again or contact help@luminaryhome.com.\"} }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        -208,
+        -272
+      ],
+      "id": "68152e78-22fa-4db6-a05e-88345e182a7f",
+      "name": "Return Error Fallback"
+    },
+    {
+      "parameters": {
+        "multipleMethods": true,
+        "httpMethod": [
+          "POST"
+        ],
+        "path": "agent01-faq",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -816,
+        -352
+      ],
+      "id": "87b815a7-c368-479f-a256-6ad71efb3de2",
+      "name": "Receive Customer Message",
+      "webhookId": "42c79e03-6837-4988-b02f-85f6be5197ae"
+    },
+    {
+      "parameters": {
+        "content": "1) Entry point for the FAQ bot. Receives POST requests with a \"message\" field containing the customer's question."
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1088,
+        -400
+      ],
+      "id": "a9accdcb-ba8d-4b7a-803e-99f15068d1c4",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "AI Agent powered by Claude Sonnet. Uses a grounded system prompt tied to the Luminary Home policy document. Guardrails prevent off-topic responses, competitor mentions, and hallucinations."
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -608,
+        -528
+      ],
+      "id": "abd71cfc-04f4-4688-a7da-ba812e4cddc1",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "Returns Claude's response as JSON to the caller. Maps the agent output field to a clean response object."
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        16,
+        -480
+      ],
+      "id": "9cf8680b-bb19-485c-a722-cd0112dda1f3",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "Catches any AI Agent failures and returns a friendly error message directing the customer to contact support."
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        16,
+        -272
+      ],
+      "id": "258f1bb5-4aff-4fbd-abe1-3d8dcd1f1a18",
+      "name": "Sticky Note3"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Luminary Home FAQ Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Luminary Home FAQ Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Luminary Home FAQ Agent": {
+      "main": [
+        [
+          {
+            "node": "Return Claude Response",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Return Error Fallback",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Receive Customer Message": {
+      "main": [
+        [
+          {
+            "node": "Luminary Home FAQ Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "b7398520-cfbc-4f7b-83c5-1a273ac96267",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e44bb886f98012fecb5ee79f32acf596c89adff9abffecbadb00d1aa1f238416"
+  },
+  "id": "2wSn8YuzoTfgMRTC",
+  "tags": []
+}
