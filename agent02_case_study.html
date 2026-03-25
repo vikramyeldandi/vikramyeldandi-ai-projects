@@ -189,7 +189,7 @@
 
 <!-- HERO -->
 <div class="hero">
-  <div class="breadcrumb">Applied AI Portfolio <span>·</span> Agent 02 of 12</div>
+  <div class="breadcrumb">Applied AI Portfolio <span>·</span> Agent 02</div>
   <div class="hero-meta">
     <span class="badge live">● Live</span>
     <span class="badge retail">Retail SaaS</span>
@@ -221,21 +221,8 @@
 
   <div class="divider"></div>
 
-  <!-- N8N WORKFLOW -->
-  <div class="section-eyebrow">02 — n8n Workflow Implementation</div>
-  <h2>The same pipeline, built in n8n</h2>
-  <p>The RAG pipeline above was also implemented as a <strong>7-node n8n workflow</strong> — translating each pipeline stage into a discrete, auditable node. This demonstrates how the same architecture can be orchestrated as a visual, no-code workflow for teams that need transparency, maintainability, and rapid iteration without managing custom backend code.</p>
-
-  <div style="margin:28px 0; border:0.5px solid var(--border); border-radius:10px; overflow:hidden;">
-    <img
-      src="https://raw.githubusercontent.com/vikramyeldandi/vikramyeldandi-ai-projects/main/Agent-02-n8n.png"
-      alt="Agent 02 n8n workflow — 7-node RAG pipeline"
-      style="width:100%; display:block;"
-    />
-  </div>
-
   <!-- ARCHITECTURE -->
-  <div class="section-eyebrow" style="margin-top:40px;">03 — RAG Pipeline Architecture</div>
+  <div class="section-eyebrow">02 — RAG Pipeline Architecture</div>
   <h2>How the pipeline works</h2>
   <p>Every query passes through a four-stage pipeline before an answer is generated. Each stage is independently auditable — you can see exactly which products were retrieved and why the answer was produced.</p>
 
@@ -287,7 +274,7 @@
   <div class="divider"></div>
 
   <!-- DATA PREPARATION -->
-  <div class="section-eyebrow">04 — Data Preparation & Chunking</div>
+  <div class="section-eyebrow">03 — Data Preparation & Chunking</div>
   <h2>Building the vector store</h2>
   <p>The catalogue contains <strong>100 products across 10 categories</strong>. Each product is converted into a single richly structured text chunk — combining all fields into a coherent, searchable passage. This one-product-per-chunk strategy ensures that retrieval always returns complete, coherent records rather than fragmented snippets.</p>
 
@@ -309,7 +296,7 @@
   <div class="divider"></div>
 
   <!-- CONCEPTS -->
-  <div class="section-eyebrow">05 — Concepts Demonstrated</div>
+  <div class="section-eyebrow">04 — Concepts Demonstrated</div>
   <h2>What this agent teaches</h2>
 
   <div class="concept-grid">
@@ -348,7 +335,7 @@
   <div class="divider"></div>
 
   <!-- LESSONS -->
-  <div class="section-eyebrow">06 — Lessons Learned</div>
+  <div class="section-eyebrow">05 — Lessons Learned</div>
   <h2>What I'd do differently</h2>
 
   <div class="lesson-list">
@@ -374,7 +361,17 @@
     </div>
   </div>
 
-
+  <!-- CTA -->
+  <div class="cta-bar">
+    <div>
+      <h3>Try it yourself</h3>
+      <p>Ask about candles, rugs, bedding, outdoor — or try a vague question to test retrieval quality.</p>
+    </div>
+    <div class="cta-actions">
+      <a href="index.html" class="cta-btn ghost">← Portfolio</a>
+      <a href="agent02_chat.html" target="_blank" class="cta-btn green">Launch Agent 02 →</a>
+    </div>
+  </div>
 
 </div>
 </body>
