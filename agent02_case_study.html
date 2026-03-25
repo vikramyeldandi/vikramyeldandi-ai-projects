@@ -222,7 +222,16 @@
   <div class="divider"></div>
 
   <!-- ARCHITECTURE -->
-  <div class="section-eyebrow">02 — RAG Pipeline Architecture</div>
+  <div class="section-eyebrow">02 — n8n Workflow Architecture</div>
+  <h2>How the pipeline is orchestrated</h2>
+  <p>The n8n workflow wires the full pipeline end-to-end — from receiving the webhook to returning the grounded answer. Each node maps directly to a pipeline stage: query embedding, Pinecone retrieval, context assembly, Claude generation, and structured response. Error handling is wired at every step so failures surface cleanly rather than silently.</p>
+
+  <img src="Agent-02-n8n.png" alt="Agent 02 n8n workflow diagram" style="width:100%; border-radius:6px; margin-top:16px; border:0.5px solid rgba(255,255,255,0.08);" />
+
+  <div class="divider"></div>
+
+  <!-- RAG PIPELINE -->
+  <div class="section-eyebrow">03 — RAG Pipeline Architecture</div>
   <h2>How the pipeline works</h2>
   <p>Every query passes through a four-stage pipeline before an answer is generated. Each stage is independently auditable — you can see exactly which products were retrieved and why the answer was produced.</p>
 
@@ -274,7 +283,7 @@
   <div class="divider"></div>
 
   <!-- DATA PREPARATION -->
-  <div class="section-eyebrow">03 — Data Preparation & Chunking</div>
+  <div class="section-eyebrow">04 — Data Preparation & Chunking</div>
   <h2>Building the vector store</h2>
   <p>The catalogue contains <strong>100 products across 10 categories</strong>. Each product is converted into a single richly structured text chunk — combining all fields into a coherent, searchable passage. This one-product-per-chunk strategy ensures that retrieval always returns complete, coherent records rather than fragmented snippets.</p>
 
@@ -296,7 +305,7 @@
   <div class="divider"></div>
 
   <!-- CONCEPTS -->
-  <div class="section-eyebrow">04 — Concepts Demonstrated</div>
+  <div class="section-eyebrow">05 — Concepts Demonstrated</div>
   <h2>What this agent teaches</h2>
 
   <div class="concept-grid">
@@ -335,7 +344,7 @@
   <div class="divider"></div>
 
   <!-- LESSONS -->
-  <div class="section-eyebrow">05 — Lessons Learned</div>
+  <div class="section-eyebrow">06 — Lessons Learned</div>
   <h2>What I'd do differently</h2>
 
   <div class="lesson-list">
@@ -361,17 +370,6 @@
     </div>
   </div>
 
-  <!-- CTA -->
-  <div class="cta-bar">
-    <div>
-      <h3>Try it yourself</h3>
-      <p>Ask about candles, rugs, bedding, outdoor — or try a vague question to test retrieval quality.</p>
-    </div>
-    <div class="cta-actions">
-      <a href="index.html" class="cta-btn ghost">← Portfolio</a>
-      <a href="agent02_chat.html" target="_blank" class="cta-btn green">Launch Agent 02 →</a>
-    </div>
-  </div>
 
 </div>
 </body>
