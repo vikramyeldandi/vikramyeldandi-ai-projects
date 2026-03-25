@@ -90,7 +90,7 @@
   </div>
 </nav>
 <div class="hero">
-  <div class="breadcrumb">Applied AI Portfolio <span>&middot;</span> Agent 03 of 12</div>
+  <div class="breadcrumb">Applied AI Portfolio <span>&middot;</span> Agent 03</div>
   <div class="hero-meta">
     <span class="badge live">&#x25CF; Live</span>
     <span class="badge saas">Retail SaaS</span>
@@ -109,7 +109,12 @@
     <div class="info-card accent-left-blue"><h3>The Objective</h3><p>An automated LLM-as-Judge pipeline that scores Agent 02's RAG responses on three dimensions and produces a quantified pass-rate report.</p></div>
   </div>
   <div class="divider"></div>
-  <div class="section-eyebrow">02 &mdash; How LLM-as-Judge Works</div>
+  <div class="section-eyebrow">02 &mdash; n8n Workflow Implementation</div>
+  <h2>The same pipeline, built in n8n</h2>
+  <p>The eval pipeline is orchestrated in n8n &mdash; a webhook triggers a loop over all 20 benchmark questions. For each question, the workflow embeds the query via OpenAI, retrieves the top-3 matching products from Pinecone, generates Agent 02's answer using Claude, then passes the question, retrieved context, and answer to a second Claude instance acting as judge. Scores are aggregated across all questions and returned as a structured pass-rate report.</p>
+  <img src="https://raw.githubusercontent.com/vikramyeldandi/vikramyeldandi-ai-projects/cf407499b0a81aae51dab5d0ac6d2f83762216e8/Agent-03-n8n.png" alt="Agent 03 n8n workflow diagram" style="width:100%;border-radius:8px;border:0.5px solid var(--border);margin-top:8px;display:block;" />
+  <div class="divider"></div>
+  <div class="section-eyebrow">03 &mdash; How LLM-as-Judge Works</div>
   <h2>Claude evaluating Claude</h2>
   <p>Traditional rule-based evaluation checks for keyword matches &mdash; brittle, unable to handle paraphrasing, and blind to reasoning quality. LLM-as-Judge uses a second model instance as an impartial evaluator, assessing responses the way a human expert would.</p>
   <div class="eval-flow">
@@ -119,7 +124,7 @@
     <div class="eval-step"><div class="eval-step-num">4</div><div class="eval-step-content"><div class="eval-step-title">Dashboard aggregates the report</div><p class="eval-step-desc">Pass/Partial/Fail verdicts are tallied. Average scores per dimension are charted. Results can be filtered by category and exported as JSON.</p></div></div>
   </div>
   <div class="divider"></div>
-  <div class="section-eyebrow">03 &mdash; Scoring Framework</div>
+  <div class="section-eyebrow">04 &mdash; Scoring Framework</div>
   <h2>How each response is scored</h2>
   <p>Every response is evaluated on three independent dimensions. A response can be factually accurate but incomplete, or complete but contain hallucinated details &mdash; each dimension captures a different failure mode.</p>
   <table class="score-table">
@@ -134,7 +139,7 @@
   </table>
   <p style="margin-top:20px;">Verdict thresholds: <strong>PASS</strong> = average &ge; 4.0 &nbsp;&middot;&nbsp; <strong>PARTIAL</strong> = average &ge; 2.5 &nbsp;&middot;&nbsp; <strong>FAIL</strong> = average &lt; 2.5</p>
   <div class="divider"></div>
-  <div class="section-eyebrow">04 &mdash; Eval Dataset Design</div>
+  <div class="section-eyebrow">05 &mdash; Eval Dataset Design</div>
   <h2>20 questions across 6 failure modes</h2>
   <p>The eval dataset is designed to stress-test different aspects of the RAG pipeline &mdash; not just easy lookups. Each category targets a specific failure mode that production systems commonly encounter.</p>
   <div class="code-block">
@@ -149,7 +154,7 @@
 <span class="cs">Difficulty:</span> <span class="cv">Easy (9) &middot; Medium (5) &middot; Hard (4) &middot; Edge (2)</span></pre>
   </div>
   <div class="divider"></div>
-  <div class="section-eyebrow">05 &mdash; Concepts Demonstrated</div>
+  <div class="section-eyebrow">06 &mdash; Concepts Demonstrated</div>
   <h2>What this agent teaches</h2>
   <div class="concept-grid">
     <div class="concept-card"><div class="concept-icon">&#x2696;&#xFE0F;</div><div class="concept-name">LLM-as-Judge</div><p class="concept-desc">Using a second model instance to evaluate responses &mdash; the same pattern used by Anthropic, OpenAI, and enterprise AI teams to automate quality measurement.</p></div>
@@ -160,7 +165,7 @@
     <div class="concept-card"><div class="concept-icon">&#x1F4E4;</div><div class="concept-name">Exportable Reports</div><p class="concept-desc">Results export as timestamped JSON &mdash; shareable with engineering teams, trackable over time, and importable into dashboards or notebooks.</p></div>
   </div>
   <div class="divider"></div>
-  <div class="section-eyebrow">06 &mdash; Lessons Learned</div>
+  <div class="section-eyebrow">07 &mdash; Lessons Learned</div>
   <h2>What I would do differently</h2>
   <div class="lesson-list">
     <div class="lesson"><div class="lesson-num">1</div><p class="lesson-text"><strong>Edge cases reveal the most important failure modes.</strong> The two &ldquo;products not in catalogue&rdquo; questions are the most revealing &mdash; they test whether the agent honestly says &ldquo;I don't have that&rdquo; or hallucinates a product. In production, honest refusal is far better than a confident wrong answer.</p></div>
@@ -169,13 +174,7 @@
     <div class="lesson"><div class="lesson-num">4</div><p class="lesson-text"><strong>Track scores over time, not just point-in-time.</strong> A single eval run tells you current quality. A trend over 10 runs tells you whether the system is improving or degrading. Time-series eval tracking is what separates mature AI teams from teams that just run demos.</p></div>
     <div class="lesson"><div class="lesson-num">5</div><p class="lesson-text"><strong>Human-in-the-loop review on borderline cases is essential.</strong> PARTIAL verdicts are where the most learning happens &mdash; a human expert can identify exactly what the model got right and wrong, and use that to improve the prompt or retrieval strategy.</p></div>
   </div>
-  <div class="cta-bar">
-    <div><h3>Run the eval yourself</h3><p>Click Run Full Eval &mdash; watch Agent 02 answer 20 questions and Claude judge each one in real time.</p></div>
-    <div class="cta-actions">
-      <a href="index.html" class="cta-btn ghost">&larr; Portfolio</a>
-      <a href="agent03_eval.html" target="_blank" class="cta-btn green">Launch Agent 03 &rarr;</a>
-    </div>
-  </div>
+
 </div>
 </body>
 </html>
