@@ -49,17 +49,11 @@
       z-index: 100;
     }
 
-    .nav-left a, .nav-right a {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 13px;
-      font-weight: 500;
-      letter-spacing: 0.04em;
-      transition: color 0.2s;
-    }
-
-    .nav-left a:hover, .nav-right a:hover { color: var(--accent); }
-    .nav-left a::before { content: '← '; }
+    .nav-logo { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--text); letter-spacing: 0.01em; }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a { font-size: 13px; font-weight: 500; letter-spacing: 0.04em; color: var(--text-muted); text-decoration: none; text-transform: uppercase; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--text); }
 
     /* MAIN */
     main {
@@ -323,20 +317,15 @@
     /* FOOTER */
     footer {
       border-top: 1px solid var(--border);
-      padding: 24px 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-family: 'DM Mono', monospace;
-      font-size: 11px;
+      padding: 32px 40px;
+      text-align: center;
+      font-size: 12px;
       color: var(--text-muted);
-      letter-spacing: 0.04em;
     }
 
     footer a {
-      color: var(--text-muted);
+      color: var(--accent);
       text-decoration: none;
-      transition: color 0.2s;
     }
 
     footer a:hover { color: var(--accent); }
@@ -352,12 +341,11 @@
 <body>
 
   <nav>
-    <div class="nav-left">
-      <a href="https://vikramyeldandi.github.io/vikramyeldandi-ai-projects/">Portfolio</a>
-    </div>
-    <div class="nav-right">
-      <a href="agent18.html">Try Agent 18 →</a>
-    </div>
+    <div class="nav-logo">Vikram <span>Yeldandi</span></div>
+    <ul class="nav-links">
+      <li><a href="index.html">← Portfolio</a></li>
+      <li><a href="agent18.html">Try Agent 18</a></li>
+    </ul>
   </nav>
 
   <main>
@@ -491,8 +479,7 @@
   </main>
 
   <footer>
-    <span>Agent 18 · AdFit · Case Study</span>
-    <a href="agent18.html">Try Agent →</a>
+    <p>© 2026 Vikram Yeldandi · <a href="index.html">AI Product Portfolio</a></p>
   </footer>
 
 </body>
