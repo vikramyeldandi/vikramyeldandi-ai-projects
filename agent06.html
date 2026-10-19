@@ -678,7 +678,7 @@
     <div class="footer-pill">
       <div class="pill">
         <span class="pill-dot"></span>
-        Claude Vision · claude-sonnet-5-5 · 1 call / image
+        Claude Vision · claude-sonnet-4-20250514 · 1 call / image
       </div>
     </div>
 
@@ -824,12 +824,13 @@ Return only the JSON object. No backticks, no explanation.`;
       const data = await response.json();
       const raw = data.content?.map(b => b.text || '').join('') || '';
 
-      // Strip any accidental markdown fences
-      const cleaned = raw.replace(/```json|```/g, '').trim();
+      // Extract JSON object — handles leading prose, date preambles, markdown fences
+      const match = raw.match(/\{[\s\S]*\}/);
+      if (!match) throw new Error('Model returned non-JSON. Raw: ' + raw.slice(0, 200));
       try {
-        return JSON.parse(cleaned);
+        return JSON.parse(match[0]);
       } catch {
-        throw new Error('Model returned non-JSON. Raw: ' + raw.slice(0, 200));
+        throw new Error('Model returned malformed JSON. Raw: ' + raw.slice(0, 200));
       }
     }
 
