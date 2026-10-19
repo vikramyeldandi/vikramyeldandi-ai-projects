@@ -583,7 +583,7 @@ async function askClaude(query, products) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       action: 'chat',
-      model: 'claude-sonnet-4-20250514',
+      model: 'claude-sonnet-5-5',
       max_tokens: 512,
       system: SYSTEM,
       messages: history
