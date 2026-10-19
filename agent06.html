@@ -678,7 +678,7 @@
     <div class="footer-pill">
       <div class="pill">
         <span class="pill-dot"></span>
-        Claude Vision · claude-sonnet-4-20250514 · 1 call / image
+        Claude Vision · claude-sonnet-5-5 · 1 call / image
       </div>
     </div>
 
@@ -809,7 +809,7 @@ Return only the JSON object. No backticks, no explanation.`;
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
+          model: 'claude-sonnet-5-5',
           max_tokens: MAX_TOKENS,
           system: SYSTEM_PROMPT,
           messages: [{ role: 'user', content: userContent }]
