@@ -367,7 +367,7 @@ async function send() {
     removeTyping();
 
 if (data.content && data.content[0] && data.content[0].text) {
-      const reply = data.content[0].text;
+      const reply = data.content.find(b => b.type === 'text')?.text;
       history.push({ role: 'assistant', content: reply });
       addMsg('bot', reply);
     } else {
