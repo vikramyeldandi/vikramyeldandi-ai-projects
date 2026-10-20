@@ -881,7 +881,7 @@ async function callAgent(userText) {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'claude-sonnet-4-6',
         max_tokens: 800,
         system: SYSTEM_PROMPT,
         messages: conversationHistory
@@ -892,7 +892,8 @@ async function callAgent(userText) {
     conversationHistory.push({ role: 'assistant', content: raw });
 
     removeThinking();
-    const cleaned = raw.replace(/```json|```/g, '').trim();
+    const fenceMatch = raw.match(/```(?:json)?\s*([\s\S]*?)```/);
+    const cleaned = (fenceMatch ? fenceMatch[1] : raw).trim();
     const data = JSON.parse(cleaned);
     renderDecisionCard(data);
     logAudit(`Outcome: ${data.outcome} · Confidence: ${Math.round(data.confidence*100)}%`);
