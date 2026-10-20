@@ -578,15 +578,18 @@ ${JSON.stringify(issuesData, null, 2).slice(0, 2500)}
       const data = await res.json();
       removeTyping();
 
-      if (data.content && data.content[0]) {
-        const reply = data.content[0].text;
+      const textBlock = Array.isArray(data.content) ? data.content.find(b => b.type === 'text' && b.text) : null;
+
+      if (textBlock) {
+        const reply = textBlock.text;
         totalTokens += (data.usage?.input_tokens || 0) + (data.usage?.output_tokens || 0);
         runCount++;
         document.getElementById('tokenCount').textContent = 'Tokens: ' + totalTokens;
         document.getElementById('turnCount').textContent  = 'Run: ' + runCount;
         addMessage('agent', reply, toolTrace);
       } else {
-        addMessage('agent', 'Worker error — check Cloudflare Worker configuration.');
+        const detail = data && data.error ? (data.error.message || JSON.stringify(data.error)) : ('stop_reason: ' + (data && data.stop_reason) + ', block types: ' + (Array.isArray(data && data.content) ? data.content.map(b => b.type).join(', ') : 'none'));
+        addMessage('agent', 'No text returned from the model — ' + detail);
       }
 
     } catch (err) {
