@@ -338,7 +338,7 @@ When a user describes a system, generate targeted adversarial test cases, classi
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
+          model: 'claude-sonnet-4-5',
           max_tokens: 800,
           system: SYSTEM_PROMPT,
           messages: [{ role: 'user', content: modeCtx }]
