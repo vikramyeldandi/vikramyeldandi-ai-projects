@@ -568,7 +568,7 @@ ${JSON.stringify(issuesData, null, 2).slice(0, 2500)}
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
+          model: 'claude-sonnet-5-5',
           max_tokens: 800,
           system: SYSTEM_PROMPT,
           messages: [{ role: 'user', content: `Analyse this GitHub repository data and produce the structured briefing:\n\n${repoContext}` }]
