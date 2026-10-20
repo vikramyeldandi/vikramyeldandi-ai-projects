@@ -443,7 +443,7 @@ CRD PUR 04/03 293847562`
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           model: 'claude-sonnet-5-5',
-          max_tokens: 800,
+          max_tokens: 2000,
           system: SYSTEM_PROMPT,
           messages: [{ role: 'user', content: text }]
         })
@@ -452,8 +452,9 @@ CRD PUR 04/03 293847562`
       const data = await res.json();
       removeTyping();
 
-      if (data.content && data.content[0]) {
-        const reply = data.content[0].text;
+      const textBlock = Array.isArray(data.content) && data.content.find(b => b.type === 'text');
+      if (textBlock) {
+        const reply = textBlock.text;
         totalTokens += (data.usage?.input_tokens || 0) + (data.usage?.output_tokens || 0);
         runCount++;
         document.getElementById('tokenCount').textContent = 'Tokens: ' + totalTokens;
