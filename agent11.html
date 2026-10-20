@@ -359,6 +359,7 @@ After the products, add one short closing sentence. Be concise. Never explain yo
         body: JSON.stringify({
           model: 'claude-sonnet-5-5',
           max_tokens: 800,
+          thinking: { type: 'disabled' },
           system: SYSTEM_PROMPT,
           messages: conversationHistory
         })
@@ -367,8 +368,9 @@ After the products, add one short closing sentence. Be concise. Never explain yo
       const data = await res.json();
       removeTyping();
 
-      if (data.content && data.content[0] && data.content[0].text) {
-        const reply = data.content[0].text;
+      const textBlock = data.content && data.content.find(b => b.type === 'text');
+      if (textBlock && textBlock.text) {
+        const reply = textBlock.text;
         conversationHistory.push({ role: 'assistant', content: reply });
         totalTokens += (data.usage?.input_tokens || 0) + (data.usage?.output_tokens || 0);
         turnCount++;
