@@ -275,6 +275,8 @@ After the products, add one short closing sentence. Be concise. Never explain yo
   }
 
   function addMessage(role, rawContent) {
+    if (rawContent === undefined || rawContent === null) rawContent = '[No response received]';
+    rawContent = String(rawContent);
     const area = document.getElementById('chatArea');
     const div = document.createElement('div');
     div.className = 'msg ' + role;
@@ -365,7 +367,7 @@ After the products, add one short closing sentence. Be concise. Never explain yo
       const data = await res.json();
       removeTyping();
 
-      if (data.content && data.content[0]) {
+      if (data.content && data.content[0] && data.content[0].text) {
         const reply = data.content[0].text;
         conversationHistory.push({ role: 'assistant', content: reply });
         totalTokens += (data.usage?.input_tokens || 0) + (data.usage?.output_tokens || 0);
@@ -374,7 +376,8 @@ After the products, add one short closing sentence. Be concise. Never explain yo
         document.getElementById('turnCount').textContent = 'Turn: ' + turnCount;
         addMessage('agent', reply);
       } else {
-        addMessage('agent', 'Worker error — check Cloudflare Worker configuration.');
+        const errDetail = data.error?.message || data.type || JSON.stringify(data).slice(0, 200);
+        addMessage('agent', 'Worker error: ' + errDetail);
       }
     } catch (err) {
       removeTyping();
