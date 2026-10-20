@@ -514,15 +514,17 @@ Pockets are well designed — lots of them and they zip securely.`
       const data = await res.json();
       removeTyping();
 
-      if (data.content && data.content[0]) {
-        const reply = data.content[0].text;
+      const textBlock = data.content && data.content.find(b => b.type === 'text');
+      if (textBlock) {
+        const reply = textBlock.text;
         totalTokens += (data.usage?.input_tokens || 0) + (data.usage?.output_tokens || 0);
         runCount++;
         document.getElementById('tokenCount').textContent = 'Tokens: ' + totalTokens;
         document.getElementById('turnCount').textContent = 'Run: ' + runCount;
         addMessage('agent', reply);
       } else {
-        addMessage('agent', 'Worker error — check Cloudflare Worker configuration.');
+        const errMsg = data.error?.message || 'Worker error — check Cloudflare Worker configuration.';
+        addMessage('agent', errMsg);
       }
     } catch (err) {
       removeTyping();
