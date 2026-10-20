@@ -809,6 +809,7 @@ Return only the JSON object. No backticks, no explanation.`;
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          action: 'vision',
           model: 'claude-sonnet-5-5',
           max_tokens: MAX_TOKENS,
           system: SYSTEM_PROMPT,
