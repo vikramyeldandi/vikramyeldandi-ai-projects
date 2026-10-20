@@ -233,20 +233,12 @@
   let turnCount = 0;
   let isLoading = false;
 
-  const SYSTEM_PROMPT = `You are Agent 12 — an AI Product PRD Generator. Transform a product idea into a structured PRD with exactly four sections, using these delimiters:
-
+  const SYSTEM_PROMPT = `PRD generator. Output exactly 4 sections using this format:
 ===SECTION===
-LABEL: [Problem Statement | User Stories | Acceptance Criteria | Success Metrics]
-CONTENT: [content here]
+LABEL: <name>
+CONTENT: <content>
 ===END===
-
-Rules:
-- Always output all four sections in order.
-- User Stories: write 2-3 stories in "As a [user], I want to [action] so that [benefit]" format.
-- Acceptance Criteria: write 3-4 specific, testable conditions.
-- Success Metrics: write 2-3 measurable KPIs with targets.
-- Be concise and precise. No filler. No meta-commentary about the PRD itself.
-- If the idea is vague, make reasonable assumptions and note them briefly at the end.`;
+Sections in order: Problem Statement, User Stories (As a/I want/So that), Acceptance Criteria (testable), Success Metrics (measurable KPIs). No extra text. If vague, assume and note it.`;
 
   const PRESETS = {
     onboarding:    'An onboarding flow for a B2B SaaS tool that helps new users get to their first "aha moment" within 5 minutes of signing up.',
@@ -398,7 +390,8 @@ Rules:
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           model: 'claude-sonnet-5-5',
-          max_tokens: 800,
+          max_tokens: 1200,
+          thinking: { type: 'disabled' },
           system: SYSTEM_PROMPT,
           messages: conversationHistory
         })
@@ -407,8 +400,9 @@ Rules:
       const data = await res.json();
       removeTyping();
 
-      if (data.content && data.content[0] && data.content[0].text) {
-        const reply = data.content[0].text;
+      const textBlock = data.content && data.content.find(b => b.type === 'text');
+      if (textBlock && textBlock.text) {
+        const reply = textBlock.text;
         conversationHistory.push({ role: 'assistant', content: reply });
         totalTokens += (data.usage?.input_tokens || 0) + (data.usage?.output_tokens || 0);
         turnCount++;
